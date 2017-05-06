@@ -30,13 +30,11 @@
 # include <QDir>
 # include <QFileInfo>
 # include <QImage>
-# include <QGLFramebufferObject>
-# include <QGLPixelBuffer>
 # include <Inventor/SbViewVolume.h>
 # include <Inventor/nodes/SoCamera.h>
 #endif
 
-
+#include <QtOpenGL.h>
 #include "View3DPy.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtern.h"
@@ -51,6 +49,8 @@
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "View3DViewerPy.h"
+#include "ActiveObjectList.h"
+
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
@@ -63,6 +63,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/DocumentObjectPy.h>
 #include <CXX/Objects.hxx>
 
 using namespace Gui;
@@ -79,6 +80,7 @@ void View3DInventorPy::init_type()
 
     add_varargs_method("message",&View3DInventorPy::message,"message()");
     add_varargs_method("fitAll",&View3DInventorPy::fitAll,"fitAll()");
+    add_keyword_method("boxZoom",&View3DInventorPy::boxZoom,"boxZoom()");
 
     add_varargs_method("viewBottom",&View3DInventorPy::viewBottom,"viewBottom()");
     add_varargs_method("viewFront",&View3DInventorPy::viewFront,"viewFront()");
@@ -125,14 +127,14 @@ void View3DInventorPy::init_type()
         "Return the current cursor position relative to the coordinate system of the\n"
         "viewport region.\n");
     add_varargs_method("getObjectInfo",&View3DInventorPy::getObjectInfo,
-        "getObjectInfo(tuple of integers) -> dictionary or None\n"
+        "getObjectInfo(tuple(int,int), [pick_radius]) -> dictionary or None\n"
         "\n"
         "Return a dictionary with the name of document, object and component. The\n"
         "dictionary also contains the coordinates of the appropriate 3d point of\n"
         "the underlying geometry in the scenegraph.\n"
         "If no geometry was found 'None' is returned, instead.\n");
     add_varargs_method("getObjectsInfo",&View3DInventorPy::getObjectsInfo,
-        "getObjectsInfo(tuple of integers) -> dictionary or None\n"
+        "getObjectsInfo(tuple(int,int), [pick_radius]) -> dictionary or None\n"
         "\n"
         "Does the same as getObjectInfo() but returns a list of dictionaries or None.\n");
     add_varargs_method("getSize",&View3DInventorPy::getSize,"getSize()");
@@ -172,6 +174,9 @@ void View3DInventorPy::init_type()
         "Remove the DraggerCalback function from the coin node\n"
         "Possibles types :\n"
         "'addFinishCallback','addStartCallback','addMotionCallback','addValueChangedCallback'\n");
+    add_varargs_method("setActiveObject", &View3DInventorPy::setActiveObject, "setActiveObject(name,object)\nadd or set a new active object");
+    add_varargs_method("getActiveObject", &View3DInventorPy::getActiveObject, "getActiveObject(name)\nreturns the active object for the given type");
+
 }
 
 View3DInventorPy::View3DInventorPy(View3DInventor *vi)
@@ -223,14 +228,24 @@ Py::Object View3DInventorPy::getattr(const char * attr)
         throw Py::RuntimeError(s_out.str());
     }
     else {
-        Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
-        if (PyCFunction_Check(obj.ptr())) {
-            PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
-            if (!pycxx_handler)
-                pycxx_handler = op->m_ml->ml_meth;
-            op->m_ml->ml_meth = method_varargs_ext_handler;
+        // see if an active object has the same name
+        App::DocumentObject *docObj = _view->getActiveObject<App::DocumentObject*>(attr);
+        if (docObj) {
+            return Py::Object(docObj->getPyObject(),true);
         }
-        return obj;
+        else {
+            // else looking for a method with the name and call it
+            Py::Object obj = Py::PythonExtension<View3DInventorPy>::getattr(attr);
+            if (PyCFunction_Check(obj.ptr())) {
+                PyCFunctionObject* op = reinterpret_cast<PyCFunctionObject*>(obj.ptr());
+                if (op->m_ml->ml_flags == METH_VARARGS) {
+                    if (!pycxx_handler)
+                        pycxx_handler = op->m_ml->ml_meth;
+                    op->m_ml->ml_meth = method_varargs_ext_handler;
+                }
+            }
+            return obj;
+        }
     }
 }
 
@@ -287,6 +302,19 @@ Py::Object View3DInventorPy::fitAll(const Py::Tuple& args)
     catch(...) {
         throw Py::Exception("Unknown C++ exception");
     }
+    return Py::None();
+}
+
+Py::Object View3DInventorPy::boxZoom(const Py::Tuple& args, const Py::Dict& kwds)
+{
+    static char* kwds_box[] = {"XMin", "YMin", "XMax", "YMax", NULL};
+    short xmin, ymin, xmax, ymax;
+    if (!PyArg_ParseTupleAndKeywords(args.ptr(), kwds.ptr(), "hhhh", kwds_box,
+                                     &xmin, &ymin, &xmax, &ymax))
+        throw Py::Exception();
+
+    SbBox2s box(xmin, ymin, xmax, ymax);
+    _view->getViewer()->boxZoom(box);
     return Py::None();
 }
 
@@ -463,7 +491,7 @@ Py::Object View3DInventorPy::viewRotateLeft(const Py::Tuple& args)
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir,float( M_PI/2));
+      SbRotation nrot(vdir, (float)M_PI/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -489,7 +517,7 @@ Py::Object View3DInventorPy::viewRotateRight(const Py::Tuple& args)
       SbRotation rot = cam->orientation.getValue();
       SbVec3f vdir(0, 0, -1);
       rot.multVec(vdir, vdir);
-      SbRotation nrot(vdir, float(-M_PI/2));
+      SbRotation nrot(vdir, (float)-M_PI/2);
       cam->orientation.setValue(rot*nrot);
     }
     catch (const Base::Exception& e) {
@@ -668,25 +696,38 @@ Py::Object View3DInventorPy::isAnimationEnabled(const Py::Tuple& args)
 
 void View3DInventorPy::createImageFromFramebuffer(int width, int height, const QColor& bgcolor, QImage& img)
 {
+    View3DInventorViewer* viewer = _view->getViewer();
+    static_cast<QtGLWidget*>(viewer->getGLWidget())->makeCurrent();
+
+    const QtGLContext* context = QtGLContext::currentContext();
+    if (!context) {
+        Base::Console().Warning("createImageFromFramebuffer failed because no context is active\n");
+        return;
+    }
 #if QT_VERSION >= 0x040600
-    QGLFramebufferObjectFormat format;
+    QtGLFramebufferObjectFormat format;
     format.setSamples(8);
-    format.setAttachment(QGLFramebufferObject::Depth);
-    QGLFramebufferObject fbo(width, height, format);
+    format.setAttachment(QtGLFramebufferObject::Depth);
+#if defined(HAVE_QT5_OPENGL)
+    format.setInternalTextureFormat(GL_RGB32F_ARB);
 #else
-    QGLFramebufferObject fbo(width, height, QGLFramebufferObject::Depth);
+    format.setInternalTextureFormat(GL_RGB);
 #endif
-    const QColor col = _view->getViewer()->backgroundColor();
-    bool on = _view->getViewer()->hasGradientBackground();
+    QtGLFramebufferObject fbo(width, height, format);
+#else
+    QtGLFramebufferObject fbo(width, height, QtGLFramebufferObject::Depth);
+#endif
+    const QColor col = viewer->backgroundColor();
+    bool on = viewer->hasGradientBackground();
 
     if (bgcolor.isValid()) {
-        _view->getViewer()->setBackgroundColor(bgcolor);
-        _view->getViewer()->setGradientBackground(false);
+        viewer->setBackgroundColor(bgcolor);
+        viewer->setGradientBackground(false);
     }
 
-    _view->getViewer()->renderToFramebuffer(&fbo);
-    _view->getViewer()->setBackgroundColor(col);
-    _view->getViewer()->setGradientBackground(on);
+    viewer->renderToFramebuffer(&fbo);
+    viewer->setBackgroundColor(col);
+    viewer->setGradientBackground(on);
     img = fbo.toImage();
 }
 
@@ -695,10 +736,13 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
     char *cFileName,*cColor="Current",*cComment="$MIBA";
     int w=-1,h=-1;
 
-    if (!PyArg_ParseTuple(args.ptr(), "s|iiss",&cFileName,&w,&h,&cColor,&cComment))
+    if (!PyArg_ParseTuple(args.ptr(), "et|iiss","utf-8",&cFileName,&w,&h,&cColor,&cComment))
         throw Py::Exception();
 
-    QFileInfo fi(QString::fromUtf8(cFileName));
+    std::string encodedName = std::string(cFileName);
+    PyMem_Free(cFileName);
+    QFileInfo fi(QString::fromUtf8(encodedName.c_str()));
+
     if (!fi.absoluteDir().exists())
         throw Py::RuntimeError("Directory where to save image doesn't exist");
 
@@ -710,7 +754,11 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
         bg.setNamedColor(colname);
 
     QImage img;
+#if !defined(HAVE_QT5_OPENGL)
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    bool pbuffer = false;
+#endif
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         createImageFromFramebuffer(w, h, bg, img);
@@ -726,7 +774,7 @@ Py::Object View3DInventorPy::saveImage(const Py::Tuple& args)
 
     SoFCOffscreenRenderer& renderer = SoFCOffscreenRenderer::instance();
     SoCamera* cam = _view->getViewer()->getSoRenderManager()->getCamera();
-    renderer.writeToImageFile(cFileName, cComment, cam->getViewVolume().getMatrix(), img);
+    renderer.writeToImageFile(encodedName.c_str(), cComment, cam->getViewVolume().getMatrix(), img);
 
     return Py::None();
 }
@@ -740,17 +788,17 @@ Py::Object View3DInventorPy::saveVectorGraphic(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|is",&filename,&ps,&name))
         throw Py::Exception();
 
-    std::auto_ptr<SoVectorizeAction> vo;
+    std::unique_ptr<SoVectorizeAction> vo;
     Base::FileInfo fi(filename);
     if (fi.hasExtension("ps") || fi.hasExtension("eps")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoVectorizePSAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoVectorizePSAction());
         //vo->setGouraudThreshold(0.0f);
     }
     else if (fi.hasExtension("svg")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeSVGAction());
     }
     else if (fi.hasExtension("idtf")) {
-        vo = std::auto_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
+        vo = std::unique_ptr<SoVectorizeAction>(new SoFCVectorizeU3DAction());
     }
     else {
         throw Py::Exception("Not supported vector graphic");
@@ -1124,7 +1172,8 @@ Py::Object View3DInventorPy::getCursorPos(const Py::Tuple& args)
 Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+    float r = _view->getViewer()->getPickRadius();
+    if (!PyArg_ParseTuple(args.ptr(), "O|f", &object, &r))
         throw Py::Exception();
 
     try {
@@ -1143,6 +1192,7 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
         // which is regarded as error-prone.
         SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPoint(SbVec2s((long)x,(long)y));
+        action.setRadius(r);
         action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         SoPickedPoint *Point = action.getPickedPoint();
 
@@ -1193,7 +1243,8 @@ Py::Object View3DInventorPy::getObjectInfo(const Py::Tuple& args)
 Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
 {
     PyObject* object;
-    if (!PyArg_ParseTuple(args.ptr(), "O", &object))
+    float r = _view->getViewer()->getPickRadius();
+    if (!PyArg_ParseTuple(args.ptr(), "O|f", &object, &r))
         throw Py::Exception();
 
     try {
@@ -1212,6 +1263,7 @@ Py::Object View3DInventorPy::getObjectsInfo(const Py::Tuple& args)
         // which is regarded as error-prone.
         SoRayPickAction action(_view->getViewer()->getSoRenderManager()->getViewportRegion());
         action.setPickAll(true);
+        action.setRadius(r);
         action.setPoint(SbVec2s((long)x,(long)y));
         action.apply(_view->getViewer()->getSoRenderManager()->getSceneGraph());
         const SoPickedPointList& pp = action.getPickedPointList();
@@ -2110,47 +2162,83 @@ Py::Object View3DInventorPy::addDraggerCallback(const Py::Tuple& args)
 
 Py::Object View3DInventorPy::removeDraggerCallback(const Py::Tuple& args)
 {
-    PyObject* dragger;
-    char* type;
-    PyObject* method;
-    if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger,&type, &method))
-        throw Py::Exception();
+	PyObject* dragger;
+	char* type;
+	PyObject* method;
+	if (!PyArg_ParseTuple(args.ptr(), "OsO", &dragger, &type, &method))
+		throw Py::Exception();
 
-    //Check if dragger is a SoDragger object and cast
-    void* ptr = 0;
-    try {
-        Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
-    }
-    catch (const Base::Exception&) {
-        throw Py::Exception("The first argument must be of type SoDragger");
-    }
+	//Check if dragger is a SoDragger object and cast
+	void* ptr = 0;
+	try {
+		Base::Interpreter().convertSWIGPointerObj("pivy.coin", "SoDragger *", dragger, &ptr, 0);
+	}
+	catch (const Base::Exception&) {
+		throw Py::Exception("The first argument must be of type SoDragger");
+	}
 
-    SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
-    try {
-        if (strcmp(type,"addFinishCallback")==0) {
-            drag->removeFinishCallback(draggerCallback,method);
-        }
-        else if (strcmp(type,"addStartCallback")==0) {
-            drag->removeStartCallback(draggerCallback,method);
-        }
-        else if (strcmp(type,"addMotionCallback")==0) {
-            drag->removeMotionCallback(draggerCallback,method);
-        }
-        else if (strcmp(type,"addValueChangedCallback")==0) {
-            drag->removeValueChangedCallback(draggerCallback,method);
-        }
-        else {
-            std::string s;
-            std::ostringstream s_out;
-            s_out << type << " is not a valid dragger callback type";
-            throw Py::Exception(s_out.str());
-        }
+	SoDragger* drag = reinterpret_cast<SoDragger*>(ptr);
+	try {
+		if (strcmp(type, "addFinishCallback") == 0) {
+			drag->removeFinishCallback(draggerCallback, method);
+		}
+		else if (strcmp(type, "addStartCallback") == 0) {
+			drag->removeStartCallback(draggerCallback, method);
+		}
+		else if (strcmp(type, "addMotionCallback") == 0) {
+			drag->removeMotionCallback(draggerCallback, method);
+		}
+		else if (strcmp(type, "addValueChangedCallback") == 0) {
+			drag->removeValueChangedCallback(draggerCallback, method);
+		}
+		else {
+			std::string s;
+			std::ostringstream s_out;
+			s_out << type << " is not a valid dragger callback type";
+			throw Py::Exception(s_out.str());
+		}
 
-        callbacks.remove(method);
-        Py_DECREF(method);
-        return Py::Callable(method, false);
-    }
-    catch (const Py::Exception&) {
-        throw;
-    }
+		callbacks.remove(method);
+		Py_DECREF(method);
+		return Py::Callable(method, false);
+	}
+	catch (const Py::Exception&) {
+		throw;
+	}
+}
+
+Py::Object View3DInventorPy::setActiveObject(const Py::Tuple& args)
+{
+	PyObject* docObject = 0;
+	char* name;
+	
+        //allow reset of active object by setting "None"
+        if( args.length() == 2 && args.back() == Py::None() ) {
+            PyArg_Parse(args.front().ptr(), "s", &name);
+            _view->setActiveObject(NULL, name);
+            return Py::None();
+        }
+        
+        if (!PyArg_ParseTuple(args.ptr(), "sO!", &name, &App::DocumentObjectPy::Type, &docObject))
+		throw Py::Exception();
+                
+
+	if (docObject){
+		App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObject)->getDocumentObjectPtr();
+		_view->setActiveObject(obj, name);
+	}
+	return Py::None();
+}
+
+Py::Object View3DInventorPy::getActiveObject(const Py::Tuple& args)
+{
+    char* name;
+    if (!PyArg_ParseTuple(args.ptr(), "s", &name))
+                throw Py::Exception();
+    
+    App::DocumentObject* obj = _view->getActiveObject<App::DocumentObject*>(name);
+    if(!obj)
+        return Py::None();
+    
+    return Py::Object(obj->getPyObject());
 }

@@ -4,7 +4,7 @@
 <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+46"/>
+        <location filename="../../Command.cpp" line="+50"/>
         <source>Mesh</source>
         <translation>Maillage</translation>
     </message>
@@ -17,6 +17,43 @@
         <location line="+1"/>
         <source>Tessellate shape</source>
         <translation>Tessellation de la forme</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartSection</name>
+    <message>
+        <location line="+106"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Maillage</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartTrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Maillage</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Trim mesh with a plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Trims a mesh with a plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -34,99 +71,109 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Options de maillage</translation>
+        <translation>Options de maillage</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standard</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+54"/>
+        <source>Define segments by face colors</source>
+        <translation type="unfinished">Define segments by face colors</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Apply face colors to mesh</source>
+        <translation type="unfinished">Apply face colors to mesh</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Longueur maximale d&apos;arêtes:</translation>
+        <translation>Longueur maximale d&apos;arêtes:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Finesse :</translation>
+        <translation>Finesse :</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Très grossier</translation>
+        <translation>Très grossier</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Grossier</translation>
+        <translation>Grossier</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Moyen</translation>
+        <translation>Moyen</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fin</translation>
+        <translation>Fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Très fin</translation>
+        <translation>Très fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Défini par l&apos;utilisateur</translation>
+        <translation>Défini par l&apos;utilisateur</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Classement des tailles de maillages:</translation>
+        <translation>Classement des tailles de maillages:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Eléments par arête:</translation>
+        <translation>Eléments par arête:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Éléments par rayon de courbure :</translation>
+        <translation>Éléments par rayon de courbure :</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimiser la surface</translation>
+        <translation>Optimiser la surface</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Éléments de second ordre</translation>
+        <translation>Éléments de second ordre</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Quadrilatère principale</translation>
+        <translation>Dominé par quadrilatères</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation type="obsolete">Réglages</translation>
     </message>
     <message>
-        <location line="-246"/>
+        <location line="-247"/>
         <source>Surface deviation:</source>
         <translation>Déviation de surface :</translation>
     </message>
@@ -135,7 +182,7 @@
         <translation type="obsolete">Longueur maximale d&apos;arête :</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+222"/>
+        <location filename="../../Tessellation.cpp" line="+224"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Sélectionner d&apos;abord une forme pour le maillage.</translation>
     </message>
@@ -143,6 +190,32 @@
         <location line="+7"/>
         <source>No such document &apos;%1&apos;.</source>
         <translation>Aucun document &apos;%1&apos;.</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_Section</name>
+    <message>
+        <location filename="../../Command.cpp" line="+93"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you section the mesh.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_TrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you trim the mesh.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

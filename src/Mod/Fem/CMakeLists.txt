@@ -1,69 +1,125 @@
 
+if(BUILD_FEM_VTK)
+    add_definitions(-DFC_USE_VTK)
+endif(BUILD_FEM_VTK)
+
+# suppress warnings from smesh
+if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_CLANGXX)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-overloaded-virtual")
+endif()
+
 add_subdirectory(App)
+
 if(BUILD_GUI)
     add_subdirectory(Gui)
 endif(BUILD_GUI)
 
+# changes on the file list here needs to be made in App/CMakeLists.txt as well
+INSTALL(
+    FILES
+        convert2TetGen.py
+        importCcxDatResults.py
+        importCcxFrdResults.py
+        importFenicsMesh.py
+        importInpMesh.py
+        importToolsFem.py
+        importVTKResults.py
+        importZ88Mesh.py
+        importZ88O2Results.py
+        Init.py
+        InitGui.py
+        FemGmshTools.py
+        FemInputWriter.py
+        FemInputWriterCcx.py
+        FemInputWriterZ88.py
+        FemMesh2Mesh.py
+        FemMeshTools.py
+        FemSelectionObserver.py
+        FemTools.py
+        FemToolsCcx.py
+        FemToolsZ88.py
+        ObjectsFem.py
+        TestFem.py
+    DESTINATION
+        Mod/Fem
+)
 
 INSTALL(
     FILES
-        # changes on the file list here needs to be made in App/CMakeLists.txt as well
-        Init.py
-        InitGui.py
-
-        convert2TetGen.py
-        FemExample.py
-
-        SelectionObserverFem.py
-        TestFem.py
-
-        ccxDatReader.py
-        ccxFrdReader.py
-        ccxInpWriter.py
-        FemTools.py
-
-        FemCommands.py
-        _CommandFemFromShape.py
-        _CommandPurgeFemResults.py
-        _CommandQuickAnalysis.py
-
-        _CommandMechanicalShowResult.py
-        _TaskPanelResultControl.py
-        TaskPanelShowDisplacement.ui
-
-        _FemAnalysis.py
-        _ViewProviderFemAnalysis.py
-
-        MechanicalAnalysis.py
-        _CommandNewMechanicalAnalysis.py
-
-        _CommandMechanicalJobControl.py
-        _TaskPanelJobControl.py
-        TaskPanelMechanicalAnalysis.ui
-
-        FemBeamSection.py
-        _FemBeamSection.py
-        _ViewProviderFemBeamSection.py
-        _CommandFemBeamSection.py
-        _TaskPanelFemBeamSection.py
-        TaskPanelFemBeamSection.ui
-
-        FemShellThickness.py
-        _FemShellThickness.py
-        _ViewProviderFemShellThickness.py
-        _CommandFemShellThickness.py
-        _TaskPanelFemShellThickness.py
-        TaskPanelFemShellThickness.ui
-
-        MechanicalMaterial.py
-        _MechanicalMaterial.py
-        _ViewProviderMechanicalMaterial.py
-        _CommandMechanicalMaterial.py
-        _TaskPanelMechanicalMaterial.py
-        TaskPanelMechanicalMaterial.ui
-
+        PyObjects/__init__.py
+        PyObjects/_FemConstraintSelfWeight.py
+        PyObjects/_FemElementFluid1D.py
+        PyObjects/_FemElementGeometry1D.py
+        PyObjects/_FemElementGeometry2D.py
+        PyObjects/_FemMaterialMechanicalNonlinear.py
+        PyObjects/_FemMeshGmsh.py
+        PyObjects/_FemMeshGroup.py
+        PyObjects/_FemMeshRegion.py
+        PyObjects/_FemResultMechanical.py
+        PyObjects/_FemSolverCalculix.py
+        PyObjects/_FemSolverZ88.py
+        PyObjects/_FemMaterial.py
     DESTINATION
-        Mod/Fem
+        Mod/Fem/PyObjects
+)
+
+INSTALL(
+    FILES
+        PyGui/FemCommands.py
+        PyGui/__init__.py
+        PyGui/_CommandFemAnalysis.py
+        PyGui/_CommandFemConstraintSelfWeight.py
+        PyGui/_CommandFemElementFluid1D.py
+        PyGui/_CommandFemElementGeometry1D.py
+        PyGui/_CommandFemElementGeometry2D.py
+        PyGui/_CommandFemMaterialMechanicalNonlinear.py
+        PyGui/_CommandFemMaterialSolid.py
+        PyGui/_CommandFemMaterialFluid.py
+        PyGui/_CommandFemMesh2Mesh.py
+        PyGui/_CommandFemMeshClear.py
+        PyGui/_CommandFemMeshGmshFromShape.py
+        PyGui/_CommandFemMeshGroup.py
+        PyGui/_CommandFemMeshNetgenFromShape.py
+        PyGui/_CommandFemMeshPrintInfo.py
+        PyGui/_CommandFemMeshRegion.py
+        PyGui/_CommandFemResultShow.py
+        PyGui/_CommandFemResultsPurge.py
+        PyGui/_CommandFemSolverCalculix.py
+        PyGui/_CommandFemSolverControl.py
+        PyGui/_CommandFemSolverRun.py
+        PyGui/_CommandFemSolverZ88.py
+        PyGui/_TaskPanelFemElementFluid1D.py
+        PyGui/_TaskPanelFemElementGeometry1D.py
+        PyGui/_TaskPanelFemElementGeometry2D.py
+        PyGui/_TaskPanelFemMaterial.py
+        PyGui/_TaskPanelFemMeshGmsh.py
+        PyGui/_TaskPanelFemMeshGroup.py
+        PyGui/_TaskPanelFemMeshRegion.py
+        PyGui/_TaskPanelFemResultShow.py
+        PyGui/_TaskPanelFemSolverCalculix.py
+        PyGui/_ViewProviderFemConstraintSelfWeight.py
+        PyGui/_ViewProviderFemElementFluid1D.py
+        PyGui/_ViewProviderFemElementGeometry1D.py
+        PyGui/_ViewProviderFemElementGeometry2D.py
+        PyGui/_ViewProviderFemMaterial.py
+        PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
+        PyGui/_ViewProviderFemMeshGmsh.py
+        PyGui/_ViewProviderFemMeshGroup.py
+        PyGui/_ViewProviderFemMeshRegion.py
+        PyGui/_ViewProviderFemResultMechanical.py
+        PyGui/_ViewProviderFemSolverCalculix.py
+        PyGui/_ViewProviderFemSolverZ88.py
+        PyGui/TaskPanelFemElementFluid1D.ui
+        PyGui/TaskPanelFemElementGeometry1D.ui
+        PyGui/TaskPanelFemElementGeometry2D.ui
+        PyGui/TaskPanelFemMaterial.ui
+        PyGui/TaskPanelFemMeshGmsh.ui
+        PyGui/TaskPanelFemMeshGroup.ui
+        PyGui/TaskPanelFemMeshRegion.ui
+        PyGui/TaskPanelFemResultShow.ui
+        PyGui/TaskPanelFemSolverCalculix.ui
+    DESTINATION
+        Mod/Fem/PyGui
 )
 
 INSTALL(
@@ -71,8 +127,6 @@ INSTALL(
         # changes on the file list here needs to be made in App/CMakeLists.txt as well
         test_files/ccx/mesh_points.csv
         test_files/ccx/mesh_volumes.csv
-        test_files/ccx/static_analysis.inp
-        test_files/ccx/frequency_analysis.inp
         test_files/ccx/cube_frequency.inp
         test_files/ccx/cube_frequency.dat
         test_files/ccx/cube_frequency.frd
@@ -81,6 +135,14 @@ INSTALL(
         test_files/ccx/cube_static.dat
         test_files/ccx/cube_static.frd
         test_files/ccx/cube_static_expected_values
+        test_files/ccx/cube.fcstd
+        test_files/ccx/spine_points.csv
+        test_files/ccx/spine_volumes.csv
+        test_files/ccx/spine_thermomech.inp
+        test_files/ccx/spine_thermomech.dat
+        test_files/ccx/spine_thermomech.frd
+        test_files/ccx/spine_thermomech_expected_values
+        test_files/ccx/spine_thermomech.fcstd
     DESTINATION
         Mod/Fem/test_files/ccx
 )

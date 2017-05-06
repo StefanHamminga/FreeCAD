@@ -29,6 +29,13 @@ __title__="FreeCAD Working Plane utility"
 __author__ = "Ken Cline"
 __url__ = "http://www.freecadweb.org"
 
+## @package WorkingPlane
+#  \ingroup DRAFT
+#  \brief This module handles the Working Plane and grid of the Draft module.
+#
+#  This module contains the plane class which provides a virtual plane in FreeCAD
+#  and a couple of utility functions
+
 '''
 This module provides a class called plane to assist in selecting and maintaining a working plane.
 '''
@@ -116,10 +123,12 @@ class plane:
         self.doc = FreeCAD.ActiveDocument
         self.axis = axis;
         self.axis.normalize()
-        if (DraftVecUtils.equals(axis, Vector(1,0,0))):
+        if axis.getAngle(Vector(1,0,0)) < 0.00001:
+            self.axis = Vector(1,0,0)
             self.u = Vector(0,1,0)
             self.v = Vector(0,0,1)
-        elif (DraftVecUtils.equals(axis, Vector(-1,0,0))):
+        elif axis.getAngle(Vector(-1,0,0)) < 0.00001:
+            self.axis = Vector(-1,0,0)
             self.u = Vector(0,-1,0)
             self.v = Vector(0,0,1)
         elif upvec:
@@ -233,6 +242,12 @@ class plane:
                 if not DraftVecUtils.equals(self.u.cross(self.v),self.axis):
                     self.u = q[2]
                     self.v = q[1]
+                if DraftVecUtils.equals(self.u,Vector(0,0,1)):
+                    # the X axis is vertical: rotate 90 degrees
+                    self.u,self.v = self.v.negative(),self.u
+                elif DraftVecUtils.equals(self.u,Vector(0,0,-1)):
+                    self.u,self.v = self.v,self.u.negative()
+                    
             self.weak = False
             return True
         else:
@@ -296,12 +311,14 @@ class plane:
                 0.0,0.0,0.0,1.0)
         return FreeCAD.Placement(m)
 
-    def setFromPlacement(self,pl):
-        "sets the working plane from a placement (rotaton ONLY)"
+    def setFromPlacement(self,pl,rebase=False):
+        "sets the working plane from a placement (rotaton ONLY, unless rebaee=True)"
         rot = FreeCAD.Placement(pl).Rotation
         self.u = rot.multVec(FreeCAD.Vector(1,0,0))
         self.v = rot.multVec(FreeCAD.Vector(0,1,0))
         self.axis = rot.multVec(FreeCAD.Vector(0,0,1))
+        if rebase:
+            self.position = pl.Base
         
     def inverse(self):
         "inverts the direction of the working plane"

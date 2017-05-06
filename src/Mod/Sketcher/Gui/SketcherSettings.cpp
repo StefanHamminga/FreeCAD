@@ -26,13 +26,19 @@
 #ifndef _PreComp_
 # include <QPainter>
 # include <QPixmap>
+# include <QMessageBox>
 #endif
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
+#include "ui_SketcherSettingsColors.h"
 #include "TaskSketcherGeneral.h"
+#include <Base/Console.h>
+#include <Base/Interpreter.h>
 #include <App/Application.h>
 #include <Gui/PrefWidgets.h>
+#include <Gui/Inventor/MarkerBitmaps.h>
+#include <Gui/Command.h>
 
 using namespace SketcherGui;
 
@@ -48,15 +54,7 @@ SketcherSettings::SketcherSettings(QWidget* parent)
     gridLayout->setMargin(0);
     form = new SketcherGeneralWidget(groupBox);
     gridLayout->addWidget(form, 0, 0, 1, 1);
-    ui->gridLayout_3->addWidget(groupBox, 2, 0, 1, 1);
-
-    // Don't need them at the moment
-    ui->label_16->hide();
-    ui->SketcherDatumWidth->hide();
-    ui->label_12->hide();
-    ui->DefaultSketcherVertexWidth->hide();
-    ui->label_13->hide();
-    ui->DefaultSketcherLineWidth->hide();
+    ui->gridLayout_3->addWidget(groupBox, 1, 0, 1, 1);
 
     QList < QPair<Qt::PenStyle, int> > styles;
     styles << qMakePair(Qt::SolidLine, 0xffff)
@@ -81,6 +79,8 @@ SketcherSettings::SketcherSettings(QWidget* parent)
 
         ui->comboBox->addItem(QIcon(px), QString(), QVariant(it->second));
     }
+
+    connect(ui->btnTVApply, SIGNAL(clicked(bool)), this, SLOT(onBtnTVApplyClicked(bool)));
 }
 
 /** 
@@ -93,6 +93,130 @@ SketcherSettings::~SketcherSettings()
 }
 
 void SketcherSettings::saveSettings()
+{
+    // Sketch editing
+    ui->EditSketcherFontSize->onSave();
+    ui->SegmentsPerGeometry->onSave();
+    ui->dialogOnDistanceConstraint->onSave();
+    ui->continueMode->onSave();
+    ui->constraintMode->onSave();
+    ui->checkBoxAdvancedSolverTaskBox->onSave();
+    ui->checkBoxTVHideDependent->onSave();
+    ui->checkBoxTVShowLinks->onSave();
+    ui->checkBoxTVShowSupport->onSave();
+    ui->checkBoxTVRestoreCamera->onSave();
+    form->saveSettings();
+
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int markerSize = ui->EditSketcherMarkerSize->itemData(ui->EditSketcherMarkerSize->currentIndex()).toInt();
+    hViewGrp->SetInt("EditSketcherMarkerSize", markerSize);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
+    int pattern = data.toInt();
+    hGrp->SetInt("GridLinePattern", pattern);
+}
+
+void SketcherSettings::loadSettings()
+{
+    // Sketch editing
+    ui->EditSketcherFontSize->onRestore();
+    ui->SegmentsPerGeometry->onRestore();
+    ui->dialogOnDistanceConstraint->onRestore();
+    ui->continueMode->onRestore();
+    ui->constraintMode->onRestore();
+    ui->checkBoxAdvancedSolverTaskBox->onRestore();
+    ui->checkBoxTVHideDependent->onRestore();
+    ui->checkBoxTVShowLinks->onRestore();
+    ui->checkBoxTVShowSupport->onRestore();
+    ui->checkBoxTVRestoreCamera->onRestore();
+    form->loadSettings();
+
+    std::list<int> sizes = Gui::Inventor::MarkerBitmaps::getSupportedSizes("CIRCLE_FILLED");
+    for (std::list<int>::iterator it = sizes.begin(); it != sizes.end(); ++it)
+        ui->EditSketcherMarkerSize->addItem(tr("%1 px").arg(*it), *it);
+    ParameterGrp::handle hViewGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    int markerSize = hViewGrp->GetInt("EditSketcherMarkerSize", 7);
+    int markerIndex = ui->EditSketcherMarkerSize->findData(QVariant(markerSize));
+    if (markerIndex < 0)
+        markerIndex = 1;
+    ui->EditSketcherMarkerSize->setCurrentIndex(markerIndex);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
+    int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
+    int index = ui->comboBox->findData(QVariant(pattern));
+    if (index <0) index = 1;
+    ui->comboBox->setCurrentIndex(index);
+}
+
+/**
+ * Sets the strings of the subwidgets using the current language.
+ */
+void SketcherSettings::changeEvent(QEvent *e)
+{
+    if (e->type() == QEvent::LanguageChange) {
+        ui->retranslateUi(this);
+    }
+    else {
+        QWidget::changeEvent(e);
+    }
+}
+
+void SketcherSettings::onBtnTVApplyClicked(bool)
+{
+    QString errMsg;
+    try{
+        Gui::Command::doCommand(Gui::Command::Gui,
+            "for name,doc in App.listDocuments().items():\n"
+            "    for sketch in doc.findObjects('Sketcher::SketchObject'):\n"
+            "        sketch.ViewObject.HideDependent = %s\n"
+            "        sketch.ViewObject.ShowLinks = %s\n"
+            "        sketch.ViewObject.ShowSupport = %s\n"
+            "        sketch.ViewObject.RestoreCamera = %s\n",
+            this->ui->checkBoxTVHideDependent->isChecked() ? "True": "False",
+            this->ui->checkBoxTVShowLinks->isChecked()     ? "True": "False",
+            this->ui->checkBoxTVShowSupport->isChecked()   ? "True": "False",
+            this->ui->checkBoxTVRestoreCamera->isChecked() ? "True": "False");
+    } catch (Base::PyException &e){
+        Base::Console().Error("SketcherSettings::onBtnTVApplyClicked:\n");
+        e.ReportException();
+        errMsg = QString::fromLatin1(e.what());
+    } catch (...) {
+        errMsg = tr("Unexpected C++ exception");
+    }
+    if(errMsg.length()>0){
+        QMessageBox::warning(this, tr("Sketcher"),errMsg);
+    }
+}
+
+
+
+/* TRANSLATOR SketcherGui::SketcherSettingsColors */
+
+SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
+    : PreferencePage(parent), ui(new Ui_SketcherSettingsColors)
+{
+    ui->setupUi(this);
+
+    // Don't need them at the moment
+    ui->label_16->hide();
+    ui->SketcherDatumWidth->hide();
+    ui->label_12->hide();
+    ui->DefaultSketcherVertexWidth->hide();
+    ui->label_13->hide();
+    ui->DefaultSketcherLineWidth->hide();
+}
+
+/**
+ *  Destroys the object and frees any allocated resources
+ */
+SketcherSettingsColors::~SketcherSettingsColors()
+{
+    // no need to delete child widgets, Qt does it all for us
+    delete ui;
+}
+
+void SketcherSettingsColors::saveSettings()
 {
     // Sketcher
     ui->SketchEdgeColor->onSave();
@@ -112,21 +236,9 @@ void SketcherSettings::saveSettings()
     ui->DefaultSketcherLineWidth->onSave();
 
     ui->CursorTextColor->onSave();
-
-    // Sketch editing
-    ui->EditSketcherFontSize->onSave();
-    ui->dialogOnDistanceConstraint->onSave();
-    ui->continueMode->onSave();
-    ui->checkBoxAdvancedSolverTaskBox->onSave();
-    form->saveSettings();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
-    QVariant data = ui->comboBox->itemData(ui->comboBox->currentIndex());
-    int pattern = data.toInt();
-    hGrp->SetInt("GridLinePattern", pattern);
 }
 
-void SketcherSettings::loadSettings()
+void SketcherSettingsColors::loadSettings()
 {
     // Sketcher
     ui->SketchEdgeColor->onRestore();
@@ -146,25 +258,12 @@ void SketcherSettings::loadSettings()
     ui->DefaultSketcherLineWidth->onRestore();
 
     ui->CursorTextColor->onRestore();
-
-    // Sketch editing
-    ui->EditSketcherFontSize->onRestore();
-    ui->dialogOnDistanceConstraint->onRestore();
-    ui->continueMode->onRestore();
-    ui->checkBoxAdvancedSolverTaskBox->onRestore();
-    form->loadSettings();
-
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Part");
-    int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
-    int index = ui->comboBox->findData(QVariant(pattern));
-    if (index <0) index = 1;
-    ui->comboBox->setCurrentIndex(index);
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettings::changeEvent(QEvent *e)
+void SketcherSettingsColors::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

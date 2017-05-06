@@ -32,6 +32,7 @@
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
 #include <Base/Exception.h>
+#include "Application.h"
 
 using namespace App;
 
@@ -110,6 +111,14 @@ void Property::touch()
     StatusBits.set(0);
 }
 
+void Property::setReadOnly(bool readOnly)
+{
+    unsigned long status = this->getStatus();
+    this->setStatus(App::Property::ReadOnly, readOnly);
+    if (status != this->getStatus())
+        App::GetApplication().signalChangePropertyEditor(*this);
+}
+
 void Property::hasSetValue(void)
 {
     if (father)
@@ -126,11 +135,11 @@ void Property::aboutToSetValue(void)
 void Property::verifyPath(const ObjectIdentifier &p) const
 {
     if (p.numSubComponents() != 1)
-        throw Base::Exception("Invalid property path: single component expected");
+        throw Base::ValueError("Invalid property path: single component expected");
     if (!p.getPropertyComponent(0).isSimple())
-        throw Base::Exception("Invalid property path: simple component expected");
+        throw Base::ValueError("Invalid property path: simple component expected");
     if (p.getPropertyComponent(0).getName() != getName())
-        throw Base::Exception("Invalid property path: name mismatch");
+        throw Base::ValueError("Invalid property path: name mismatch");
 }
 
 Property *Property::Copy(void) const 

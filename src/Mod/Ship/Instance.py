@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -24,8 +24,6 @@
 import time
 from math import *
 from PySide import QtGui, QtCore
-from pivy.coin import *
-from pivy import coin
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Base, Vector
@@ -46,8 +44,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "True if it is a valid ship instance, False otherwise",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyBool",
                         "IsShip",
                         "Ship",
@@ -56,8 +53,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Ship length [m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyLength",
                         "Length",
                         "Ship",
@@ -65,8 +61,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Ship breadth [m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyLength",
                         "Breadth",
                         "Ship",
@@ -74,8 +69,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Ship draft [m]",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyLength",
                         "Draft",
                         "Ship",
@@ -85,8 +79,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Set of external faces of the ship hull",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("Part::PropertyPartShape",
                         "ExternalFaces",
                         "Ship",
@@ -94,8 +87,7 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Set of weight instances",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyStringList",
                         "Weights",
                         "Ship",
@@ -103,12 +95,19 @@ class Ship:
         tooltip = str(QtGui.QApplication.translate(
             "Ship",
             "Set of tank instances",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         obj.addProperty("App::PropertyStringList",
                         "Tanks",
                         "Ship",
                         tooltip).Tanks = []
+        tooltip = str(QtGui.QApplication.translate(
+            "Ship",
+            "Set of load conditions",
+            None))
+        obj.addProperty("App::PropertyStringList",
+                        "LoadConditions",
+                        "Ship",
+                        tooltip).LoadConditions = []
 
         obj.Proxy = self
 
@@ -121,6 +120,91 @@ class Ship:
         """
         if prop == "Length" or prop == "Breadth" or prop == "Draft":
             pass
+
+    def cleanWeights(self, fp):
+        """Reanalyse the weights list looking for duplicated opbjects, or
+        removed ones.
+        """
+        if not len(fp.Weights):
+            return
+        # Filter out the duplicated elements
+        filtered_list = []
+        [filtered_list.append(x) for x in fp.Weights if x not in filtered_list]
+        if cmp(fp.Weights, filtered_list):
+            fp.Weights = filtered_list
+        # Filter out the removed/non-valid objects
+        object_names = []
+        for obj in fp.Document.Objects:
+            object_names.append(obj.Name)
+        filtered_list = []
+        for obj_name in fp.Weights:
+            if obj_name in object_names:
+                for obj in fp.Document.Objects:
+                    if obj.Name == obj_name:
+                        try:
+                            if obj.IsWeight: filtered_list.append(obj_name)
+                        except:
+                            pass
+                        break
+        if cmp(fp.Weights, filtered_list):
+            fp.Weights = filtered_list
+
+    def cleanTanks(self, fp):
+        """Reanalyse the weights list looking for duplicated opbjects, or
+        removed ones.
+        """
+        if not len(fp.Tanks):
+            return
+        # Filter out the duplicated elements
+        filtered_list = []
+        [filtered_list.append(x) for x in fp.Tanks if x not in filtered_list]
+        if cmp(fp.Tanks, filtered_list):
+            fp.Tanks = filtered_list
+        # Filter out the removed/non-valid objects
+        object_names = []
+        for obj in fp.Document.Objects:
+            object_names.append(obj.Name)
+        filtered_list = []
+        for obj_name in fp.Tanks:
+            if obj_name in object_names:
+                for obj in fp.Document.Objects:
+                    if obj.Name == obj_name:
+                        try:
+                            if obj.IsTank: filtered_list.append(obj_name)
+                        except:
+                            pass
+                        break
+        if cmp(fp.Tanks, filtered_list):
+            fp.Tanks = filtered_list
+
+    def cleanLoadConditions(self, fp):
+        """Reanalyse the weights list looking for duplicated opbjects, or
+        removed ones.
+        """
+        if not len(fp.LoadConditions):
+            return
+        # Filter out the duplicated elements
+        filtered_list = []
+        [filtered_list.append(x) for x in fp.LoadConditions if x not in filtered_list]
+        if cmp(fp.LoadConditions, filtered_list):
+            fp.LoadConditions = filtered_list
+        # Filter out the removed/non-valid objects
+        object_names = []
+        for obj in fp.Document.Objects:
+            object_names.append(obj.Name)
+        filtered_list = []
+        for obj_name in fp.LoadConditions:
+            if obj_name in object_names:
+                for obj in fp.Document.Objects:
+                    if obj.Name == obj_name:
+                        try:
+                            if obj.TypeId == 'Spreadsheet::Sheet':
+                                filtered_list.append(obj_name)
+                        except:
+                            pass
+                        break
+        if cmp(fp.LoadConditions, filtered_list):
+            fp.LoadConditions = filtered_list
 
     def execute(self, fp):
         """Detects the entity recomputations.
@@ -240,6 +324,16 @@ class ViewProviderShip:
                 objs.append(t_obj)
             except:
                 del obj.Tanks[i - bad_linked]
+                bad_linked += 1
+
+        # Claim the loading conditions
+        bad_linked = 0
+        for i, t in enumerate(obj.LoadConditions):
+            try:
+                t_obj = FreeCAD.ActiveDocument.getObject(t)
+                objs.append(t_obj)
+            except:
+                del obj.LoadConditions[i - bad_linked]
                 bad_linked += 1
 
         return objs

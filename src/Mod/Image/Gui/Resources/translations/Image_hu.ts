@@ -4,7 +4,7 @@
 <context>
     <name>CmdCreateImagePlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+93"/>
+        <location filename="../../Command.cpp" line="+97"/>
         <source>Image</source>
         <translation>Kép</translation>
     </message>
@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Create a planar image in the 3D space</source>
-        <translation>hozzon létre egy síkbeli képet a 3D-s térben</translation>
+        <translation>Hozzon létre egy síkbeli képet a 3D-s térben</translation>
     </message>
     <message>
         <source>create a planar image in the 3D space</source>
@@ -26,7 +26,7 @@
 <context>
     <name>CmdImageOpen</name>
     <message>
-        <location line="-44"/>
+        <location line="-46"/>
         <source>Image</source>
         <translation>Kép</translation>
     </message>
@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>A képnéző által meghatározhatatlan típusú színtér</translation>
     </message>
@@ -59,43 +59,43 @@
     <message>
         <location filename="../../ImageOrientationDialog.ui" line="+14"/>
         <source>Choose orientation</source>
-        <translation type="unfinished">Válasszon orientáció</translation>
+        <translation>Válasszon orientáció</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Kép sík</translation>
+        <translation>Kép sík</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">XY-sík</translation>
+        <translation>XY-sík</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>XZ-Plane</source>
-        <translation type="unfinished">XZ-sík</translation>
+        <translation>XZ-sík</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>YZ-Plane</source>
-        <translation type="unfinished">YZ-sík</translation>
+        <translation>YZ-sík</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Reverse direction</source>
-        <translation type="unfinished">Fordított irányban</translation>
+        <translation>Fordított irányban</translation>
     </message>
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Eltolás:</translation>
+        <translation>Eltolás:</translation>
     </message>
 </context>
 <context>
     <name>ImageGui::ImageView</name>
     <message>
-        <location filename="../../ImageView.cpp" line="+77"/>
+        <location filename="../../ImageView.cpp" line="+104"/>
         <source>&amp;Fit image</source>
         <translation>Kép kitöltse a képernyőt &amp;F</translation>
     </message>
@@ -136,12 +136,12 @@
         <translation>Szabvány</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Kész ...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>szürke</translation>
     </message>
@@ -180,32 +180,40 @@
         <translation type="obsolete">Képek (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+18"/>
-        <location line="+41"/>
+        <location filename="../../Command.cpp" line="+20"/>
+        <location line="+43"/>
         <source>Choose an image file to open</source>
         <translation>Egy képfájl kiválasztása megnyitásra</translation>
     </message>
     <message>
-        <location line="-48"/>
-        <location line="+41"/>
+        <location line="-50"/>
+        <location line="+43"/>
         <source>Images</source>
         <translation>Képek</translation>
     </message>
     <message>
-        <location line="-36"/>
-        <location line="+41"/>
+        <location line="-38"/>
+        <location line="+43"/>
         <source>All files</source>
         <translation>Összes fájl</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Hiba a kép megnyitásakor</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">Hiba a kép megnyitásakor</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>Nem sikerült betölteni a kiválasztott képet</translation>
+        <translation type="obsolete">Nem sikerült betölteni a kiválasztott képet</translation>
     </message>
 </context>
 <context>

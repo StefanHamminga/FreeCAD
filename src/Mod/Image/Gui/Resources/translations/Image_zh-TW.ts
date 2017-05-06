@@ -4,7 +4,7 @@
 <context>
     <name>CmdCreateImagePlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+93"/>
+        <location filename="../../Command.cpp" line="+97"/>
         <source>Image</source>
         <translation>影像</translation>
     </message>
@@ -26,7 +26,7 @@
 <context>
     <name>CmdImageOpen</name>
     <message>
-        <location line="-44"/>
+        <location line="-46"/>
         <source>Image</source>
         <translation>影像</translation>
     </message>
@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>未定義色彩供圖片使用</translation>
     </message>
@@ -64,7 +64,7 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">影像平面</translation>
+        <translation>影像平面</translation>
     </message>
     <message>
         <location line="+6"/>
@@ -95,9 +95,9 @@
 <context>
     <name>ImageGui::ImageView</name>
     <message>
-        <location filename="../../ImageView.cpp" line="+77"/>
+        <location filename="../../ImageView.cpp" line="+104"/>
         <source>&amp;Fit image</source>
-        <translation>&amp;符合圖片尺寸</translation>
+        <translation>符合圖片尺寸(&amp;F)</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -107,7 +107,7 @@
     <message>
         <location line="+4"/>
         <source>&amp;1:1 scale</source>
-        <translation>&amp;1:1比例</translation>
+        <translation>&amp;1:1 比例</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -136,12 +136,12 @@
         <translation>標準</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>準備...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>灰色</translation>
     </message>
@@ -180,32 +180,40 @@
         <translation type="obsolete">影像（*.PNG *.JPG *.XPM *.BMP）</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+18"/>
-        <location line="+41"/>
+        <location filename="../../Command.cpp" line="+20"/>
+        <location line="+43"/>
         <source>Choose an image file to open</source>
         <translation>選擇要打開的影像檔</translation>
     </message>
     <message>
-        <location line="-48"/>
-        <location line="+41"/>
+        <location line="-50"/>
+        <location line="+43"/>
         <source>Images</source>
         <translation>影像</translation>
     </message>
     <message>
-        <location line="-36"/>
-        <location line="+41"/>
+        <location line="-38"/>
+        <location line="+43"/>
         <source>All files</source>
         <translation>所有檔案</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>開啟影像錯誤</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">開啟影像錯誤</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>無法載入選擇影像</translation>
+        <translation type="obsolete">無法載入選擇影像</translation>
     </message>
 </context>
 <context>

@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -46,17 +49,34 @@ void loadStartResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef StartGui_Import_methods[];
+namespace StartGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("StartGui")
+    {
+        initialize("This module is the StartGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace StartGui
 
 
 /* Python entry */
-extern "C" {
-void StartGuiExport initStartGui()
+PyMOD_INIT_FUNC(StartGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // load dependent module
@@ -65,7 +85,7 @@ void StartGuiExport initStartGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
     catch (Py::Exception& e) {
         Py::Object o = Py::type(e);
@@ -81,7 +101,7 @@ void StartGuiExport initStartGui()
         PyErr_Print();
     }
 
-    (void) Py_InitModule("StartGui", StartGui_Import_methods);   /* mod name, table ptr */
+    PyObject* mod = StartGui::initModule();
     Base::Console().Log("Loading GUI of Start module... done\n");
 
     // instantiating the commands
@@ -90,6 +110,5 @@ void StartGuiExport initStartGui()
 
      // add resources and reloads the translators
     loadStartResource();
+    PyMOD_Return(mod);
 }
-
-} // extern "C" {

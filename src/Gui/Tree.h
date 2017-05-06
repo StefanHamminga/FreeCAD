@@ -37,6 +37,8 @@ namespace Gui {
 
 class ViewProviderDocumentObject;
 class DocumentObjectItem;
+typedef std::set<DocumentObjectItem*> DocumentObjectItems;
+typedef std::shared_ptr<DocumentObjectItems> DocumentObjectItemsPtr;
 class DocumentItem;
 
 /// highlight modes for the tree items
@@ -44,7 +46,8 @@ enum HighlightMode {    Underlined,
                         Italic    ,
                         Overlined ,
                         Bold      ,
-                        Blue      
+                        Blue      ,
+                        LightBlue
 };
 
 /// highlight modes for the tree items
@@ -100,6 +103,8 @@ protected Q_SLOTS:
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
+    void onSkipRecompute(bool on);
+    void onMarkRecompute();
 
 private Q_SLOTS:
     void onItemSelectionChanged(void);
@@ -121,6 +126,8 @@ private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
     QAction* finishEditingAction;
+    QAction* skipRecomputeAction;
+    QAction* markRecomputeAction;
     QTreeWidgetItem* contextItem;
 
     QTreeWidgetItem* rootItem;
@@ -131,7 +138,7 @@ private:
 };
 
 /** The link between the tree and a document.
- * Every document in the application gets its associated DocumentItem which controls 
+ * Every document in the application gets its associated DocumentItem which controls
  * the visibility and the functions of the document.
  * \author Jürgen Riegel
  */
@@ -149,6 +156,7 @@ public:
     void selectItems(void);
     void testStatus(void);
     void setData(int column, int role, const QVariant & value);
+    void populateItem(DocumentObjectItem *item, bool refresh = false);
 
 protected:
     /** Adds a view provider to the document item.
@@ -166,11 +174,14 @@ protected:
     void slotResetEdit       (const Gui::ViewProviderDocumentObject&);
     void slotHighlightObject (const Gui::ViewProviderDocumentObject&,const Gui::HighlightMode&,bool);
     void slotExpandObject    (const Gui::ViewProviderDocumentObject&,const Gui::TreeItemMode&);
-    std::vector<DocumentObjectItem*> getAllParents(DocumentObjectItem*) const;
 
+    bool createNewItem(const Gui::ViewProviderDocumentObject&, 
+                    QTreeWidgetItem *parent=0, int index=-1, 
+                    DocumentObjectItemsPtr ptrs = DocumentObjectItemsPtr());
+        
 private:
     const Gui::Document* pDocument;
-    std::map<std::string,DocumentObjectItem*> ObjectMap;
+    std::map<std::string,DocumentObjectItemsPtr> ObjectMap;
 
     typedef boost::BOOST_SIGNALS_NAMESPACE::connection Connection;
     Connection connectNewObject;
@@ -185,14 +196,15 @@ private:
 };
 
 /** The link between the tree and a document object.
- * Every object in the document gets its associated DocumentObjectItem which controls 
+ * Every object in the document gets its associated DocumentObjectItem which controls
  * the visibility and the functions of the object.
  * @author Werner Mayer
  */
 class DocumentObjectItem : public QTreeWidgetItem
 {
 public:
-    DocumentObjectItem(Gui::ViewProviderDocumentObject* pcViewProvider, QTreeWidgetItem * parent);
+    DocumentObjectItem(Gui::ViewProviderDocumentObject* pcViewProvider, 
+                       DocumentObjectItemsPtr selves);
     ~DocumentObjectItem();
 
     Gui::ViewProviderDocumentObject* object() const;
@@ -215,7 +227,11 @@ private:
     Connection connectTool;
     Connection connectStat;
 
+    DocumentObjectItemsPtr myselves;
+    bool populated;
+
     friend class TreeWidget;
+    friend class DocumentItem;
 };
 
 /**

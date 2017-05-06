@@ -34,6 +34,8 @@
 
 
 #include <Python.h>
+#include <CXX/Extensions.hxx>
+
 
 #ifdef FC_OS_MACOSX
 #undef toupper
@@ -87,6 +89,10 @@ public:
     SystemExitException(void);
     SystemExitException(const SystemExitException &inst);
     virtual ~SystemExitException() throw() {}
+    long getExitCode(void) const { return _exitCode;}
+
+protected:
+    long _exitCode;
 };
 
 /** If the application starts we release immediately the global interpreter lock
@@ -155,6 +161,8 @@ public:
     //@{
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     std::string runString(const char *psCmd);
+    /// Run a statement on the python interpreter and return back the result object.
+    Py::Object runStringObject(const char *sCmd);
     /// Run a statement on the python interpreter and gives back a string with the representation of the result.
     void runInteractiveString(const char *psCmd);
     /// Run file (script) on the python interpreter
@@ -177,7 +185,7 @@ public:
     /* Loads a module
      */
     bool loadModule(const char* psModName);
-    /// Add an addtional pyhton path
+    /// Add an additional python path
     void addPythonPath(const char* Path);
     static void addType(PyTypeObject* Type,PyObject* Module, const char * Name);
     //@}
@@ -186,9 +194,9 @@ public:
      */
     //@{
     /** Register a cleanup function to be called by finalize(). The cleanup function will be called with no 
-     * arguments and should return no value. At most 32 cleanup functions can be registered.When the registration 
+     * arguments and should return no value. At most 32 cleanup functions can be registered. When the registration 
      * is successful 0 is returned; on failure -1 is returned. The cleanup function registered last is called 
-     * first. Each cleanup function will be called at most once. Since Python's internal finallization will have 
+     * first. Each cleanup function will be called at most once. Since Python's internal finalization will have 
      * completed before the cleanup function, no Python APIs should be called by \a func. 
      */
     int cleanup(void (*func)(void));

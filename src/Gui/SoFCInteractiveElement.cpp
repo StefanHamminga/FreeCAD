@@ -35,7 +35,7 @@ void SoFCInteractiveElement::initClass(void)
   SO_ENABLE(SoGLRenderAction, SoFCInteractiveElement);
 }
 
-void SoFCInteractiveElement::init(SoState * state)
+void SoFCInteractiveElement::init(SoState * /*state*/)
 {
   this->interactiveMode = false;
 }
@@ -87,14 +87,14 @@ SoGLWidgetElement::~SoGLWidgetElement()
 {
 }
 
-void SoGLWidgetElement::set(SoState * state, QGLWidget * window)
+void SoGLWidgetElement::set(SoState * state, QtGLWidget * window)
 {
   SoGLWidgetElement * elem = static_cast<SoGLWidgetElement *>
         (SoElement::getElement(state, classStackIndex));
   elem->window = window;
 }
 
-void SoGLWidgetElement::get(SoState * state, QGLWidget *& window)
+void SoGLWidgetElement::get(SoState * state, QtGLWidget *& window)
 {
     const SoGLWidgetElement* that =  static_cast<const SoGLWidgetElement *>
         (SoElement::getConstElement(state, classStackIndex));
@@ -111,9 +111,9 @@ void SoGLWidgetElement::pop(SoState * state, const SoElement * prevTopElement)
     inherited::pop(state, prevTopElement);
 }
 
-SbBool SoGLWidgetElement::matches(const SoElement * element) const
+SbBool SoGLWidgetElement::matches(const SoElement * /*element*/) const
 {
-    return TRUE;
+    return true;
 }
 
 SoElement * SoGLWidgetElement::copyMatchInfo(void) const
@@ -166,9 +166,9 @@ void SoGLRenderActionElement::pop(SoState * state, const SoElement * prevTopElem
     inherited::pop(state, prevTopElement);
 }
 
-SbBool SoGLRenderActionElement::matches(const SoElement * element) const
+SbBool SoGLRenderActionElement::matches(const SoElement * /*element*/) const
 {
-    return TRUE;
+    return true;
 }
 
 SoElement * SoGLRenderActionElement::copyMatchInfo(void) const
@@ -213,4 +213,59 @@ void SoGLWidgetNode::doAction(SoAction * action)
 void SoGLWidgetNode::GLRender(SoGLRenderAction * action)
 {
     SoGLWidgetNode::doAction(action);
+}
+
+// ---------------------------------
+
+SO_ELEMENT_SOURCE(SoGLVBOActivatedElement);
+
+void SoGLVBOActivatedElement::initClass(void)
+{
+  SO_ELEMENT_INIT_CLASS(SoGLVBOActivatedElement, inherited);
+  SO_ENABLE(SoGLRenderAction, SoGLVBOActivatedElement);
+  SO_ENABLE(SoHandleEventAction, SoGLVBOActivatedElement);
+}
+
+void SoGLVBOActivatedElement::init(SoState * state)
+{
+  inherited::init(state);
+  this->active = false;
+}
+
+SoGLVBOActivatedElement::~SoGLVBOActivatedElement()
+{
+}
+
+void SoGLVBOActivatedElement::set(SoState * state, SbBool active)
+{
+  SoGLVBOActivatedElement * elem = static_cast<SoGLVBOActivatedElement *>
+        (SoElement::getElement(state, classStackIndex));
+  elem->active = active;
+}
+
+void SoGLVBOActivatedElement::get(SoState * state, SbBool& active)
+{
+    const SoGLVBOActivatedElement* self =  static_cast<const SoGLVBOActivatedElement *>
+        (SoElement::getConstElement(state, classStackIndex));
+    active = self->active;
+}
+
+void SoGLVBOActivatedElement::push(SoState * state)
+{
+    inherited::push(state);
+}
+
+void SoGLVBOActivatedElement::pop(SoState * state, const SoElement * prevTopElement)
+{
+    inherited::pop(state, prevTopElement);
+}
+
+SbBool SoGLVBOActivatedElement::matches(const SoElement * /*element*/) const
+{
+    return true;
+}
+
+SoElement * SoGLVBOActivatedElement::copyMatchInfo(void) const
+{
+    return 0;
 }

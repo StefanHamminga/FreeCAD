@@ -39,29 +39,30 @@
 void CreateImportCommands(void);
 
 
-/* registration table  */
-extern struct PyMethodDef ImportGui_Import_methods[];
+namespace ImportGui {
+extern PyObject* initModule();
+}
 
-extern "C" {
-void ImportGuiExport initImportGui()
+PyMOD_INIT_FUNC(ImportGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
-    (void) Py_InitModule("ImportGui", ImportGui_Import_methods);   /* mod name, table ptr */
-    Base::Console().Log("Loading GUI of Import module... done\n");
 
     try {
         Base::Interpreter().loadModule("PartGui");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
+
+    PyObject* mod = ImportGui::initModule();
+    Base::Console().Log("Loading GUI of Import module... done\n");
 
     CreateImportCommands();
     ImportGui::Workbench::init();
-}
 
-} // extern "C" {
+    PyMOD_Return(mod);
+}

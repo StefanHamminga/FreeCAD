@@ -44,7 +44,6 @@
 #endif
 
 
-#include <strstream>
 #include <Base/Console.h>
 #include <Base/Writer.h>
 #include <Base/Reader.h>
@@ -88,13 +87,13 @@ void PropertyPartShape::setValue(const TopoShape& sh)
 void PropertyPartShape::setValue(const TopoDS_Shape& sh)
 {
     aboutToSetValue();
-    _Shape._Shape = sh;
+    _Shape.setShape(sh);
     hasSetValue();
 }
 
 const TopoDS_Shape& PropertyPartShape::getValue(void)const 
 {
-    return _Shape._Shape;
+    return _Shape.getShape();
 }
 
 const TopoShape& PropertyPartShape::getShape() const
@@ -110,12 +109,12 @@ const Data::ComplexGeoData* PropertyPartShape::getComplexData() const
 Base::BoundBox3d PropertyPartShape::getBoundingBox() const
 {
     Base::BoundBox3d box;
-    if (_Shape._Shape.IsNull())
+    if (_Shape.getShape().IsNull())
         return box;
     try {
         // If the shape is empty an exception may be thrown
         Bnd_Box bounds;
-        BRepBndLib::Add(_Shape._Shape, bounds);
+        BRepBndLib::Add(_Shape.getShape(), bounds);
         bounds.SetGap(0.0);
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
@@ -133,13 +132,6 @@ Base::BoundBox3d PropertyPartShape::getBoundingBox() const
     return box;
 }
 
-void PropertyPartShape::getFaces(std::vector<Base::Vector3d> &aPoints,
-                                 std::vector<Data::ComplexGeoData::Facet> &aTopo,
-                                 float accuracy, uint16_t flags) const
-{
-    _Shape.getFaces(aPoints, aTopo, accuracy, flags);
-}
-
 void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 {
     aboutToSetValue();
@@ -150,7 +142,7 @@ void PropertyPartShape::transformGeometry(const Base::Matrix4D &rclTrf)
 PyObject *PropertyPartShape::getPyObject(void)
 {
     Base::PyObjectBase* prop;
-    const TopoDS_Shape& sh = _Shape._Shape;
+    const TopoDS_Shape& sh = _Shape.getShape();
     if (sh.IsNull()) {
         prop = new TopoShapePy(new TopoShape(sh));
     }
@@ -210,9 +202,9 @@ App::Property *PropertyPartShape::Copy(void) const
 {
     PropertyPartShape *prop = new PropertyPartShape();
     prop->_Shape = this->_Shape;
-    if (!_Shape._Shape.IsNull()) {
-        BRepBuilderAPI_Copy copy(_Shape._Shape);
-        prop->_Shape._Shape = copy.Shape();
+    if (!_Shape.getShape().IsNull()) {
+        BRepBuilderAPI_Copy copy(_Shape.getShape());
+        prop->_Shape.setShape(copy.Shape());
     }
 
     return prop;
@@ -276,22 +268,22 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
 {
     // If the shape is empty we simply store nothing. The file size will be 0 which
     // can be checked when reading in the data.
-    if (_Shape._Shape.IsNull())
+    if (_Shape.getShape().IsNull())
         return;
     // NOTE: Cleaning the triangulation may cause problems on some algorithms like BOP
     // Before writing to the project we clean all triangulation data to save memory
-    BRepBuilderAPI_Copy copy(_Shape._Shape);
+    BRepBuilderAPI_Copy copy(_Shape.getShape());
     const TopoDS_Shape& myShape = copy.Shape();
     BRepTools::Clean(myShape); // remove triangulation
 
     if (writer.getMode("BinaryBrep")) {
         TopoShape shape;
-        shape._Shape = myShape;
+        shape.setShape(myShape);
         shape.exportBinary(writer.Stream());
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", false);
+            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
             // create a temporary file and copy the content to the zip stream
             // once the tmp. filename is known use always the same because otherwise
@@ -319,20 +311,21 @@ void PropertyPartShape::SaveDocFile (Base::Writer &writer) const
             }
 
             Base::ifstream file(fi, std::ios::in | std::ios::binary);
-            if (file){
-                unsigned long ulSize = 0; 
+            if (file) {
+                //unsigned long ulSize = 0; 
                 std::streambuf* buf = file.rdbuf();
-                if (buf) {
-                    unsigned long ulCurr;
-                    ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
-                    ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
-                    buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
-                }
+                //if (buf) {
+                //    unsigned long ulCurr;
+                //    ulCurr = buf->pubseekoff(0, std::ios::cur, std::ios::in);
+                //    ulSize = buf->pubseekoff(0, std::ios::end, std::ios::in);
+                //    buf->pubseekoff(ulCurr, std::ios::beg, std::ios::in);
+                //}
 
                 // read in the ASCII file and write back to the stream
-                std::strstreambuf sbuf(ulSize);
-                file >> &sbuf;
-                writer.Stream() << &sbuf;
+                //std::strstreambuf sbuf(ulSize);
+                //file >> &sbuf;
+                //writer.Stream() << &sbuf;
+                writer.Stream() << buf;
             }
 
             file.close();
@@ -355,7 +348,7 @@ void PropertyPartShape::RestoreDocFile(Base::Reader &reader)
     }
     else {
         bool direct = App::GetApplication().GetParameterGroupByPath
-            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", false);
+            ("User parameter:BaseApp/Preferences/Mod/Part/General")->GetBool("DirectAccess", true);
         if (!direct) {
             BRep_Builder builder;
             // create a temporary file and copy the content from the zip stream
@@ -438,23 +431,23 @@ PyObject *PropertyShapeHistory::getPyObject(void)
     return Py::new_reference_to(Py::None());
 }
 
-void PropertyShapeHistory::setPyObject(PyObject *value)
+void PropertyShapeHistory::setPyObject(PyObject *)
 {
 }
 
-void PropertyShapeHistory::Save (Base::Writer &writer) const
+void PropertyShapeHistory::Save (Base::Writer &) const
 {
 }
 
-void PropertyShapeHistory::Restore(Base::XMLReader &reader)
+void PropertyShapeHistory::Restore(Base::XMLReader &)
 {
 }
 
-void PropertyShapeHistory::SaveDocFile (Base::Writer &writer) const
+void PropertyShapeHistory::SaveDocFile (Base::Writer &) const
 {
 }
 
-void PropertyShapeHistory::RestoreDocFile(Base::Reader &reader)
+void PropertyShapeHistory::RestoreDocFile(Base::Reader &)
 {
 }
 
@@ -508,7 +501,11 @@ PyObject *PropertyFilletEdges::getPyObject(void)
     int index = 0;
     for (it = _lValueList.begin(); it != _lValueList.end(); ++it) {
         Py::Tuple ent(3);
+#if PY_MAJOR_VERSION >= 3
+        ent.setItem(0, Py::Long(it->edgeid));
+#else
         ent.setItem(0, Py::Int(it->edgeid));
+#endif
         ent.setItem(1, Py::Float(it->radius1));
         ent.setItem(2, Py::Float(it->radius2));
         list[index++] = ent;
@@ -525,7 +522,11 @@ void PropertyFilletEdges::setPyObject(PyObject *value)
     for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
         FilletElement fe;
         Py::Tuple ent(*it);
+#if PY_MAJOR_VERSION >= 3
+        fe.edgeid = (int)Py::Long(ent.getItem(0));
+#else
         fe.edgeid = (int)Py::Int(ent.getItem(0));
+#endif
         fe.radius1 = (double)Py::Float(ent.getItem(1));
         fe.radius2 = (double)Py::Float(ent.getItem(2));
         values.push_back(fe);

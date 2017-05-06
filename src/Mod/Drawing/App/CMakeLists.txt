@@ -11,12 +11,12 @@ include_directories(
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_QTCORE_INCLUDE_DIR}
 )
 link_directories(${OCC_LIBRARY_DIR})
 
 set(Drawing_LIBS
     Part
+    Spreadsheet
     FreeCADApp
 )
 
@@ -37,6 +37,8 @@ SET(Features_SRCS
     FeatureClip.h
     PageGroup.cpp
     PageGroup.h
+    FeatureViewSpreadsheet.cpp
+    FeatureViewSpreadsheet.h
 )
 
 SET(Drawing_SRCS
@@ -89,7 +91,6 @@ target_link_libraries(Drawing ${Drawing_LIBS})
 
 SET(Drawing_Scripts
     Init.py
-    DrawingAlgos.py
 )
 
 fc_target_copy_resource(Drawing 

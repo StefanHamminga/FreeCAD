@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) Jürgen Riegel          (juergen.riegel@web.de) 2002     *
+ *   Copyright (c) Juergen Riegel          (juergen.riegel@web.de) 2002    *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -52,4 +52,9 @@ void GeoFeature::transformPlacement(const Base::Placement &transform)
     Base::Placement plm = this->Placement.getValue();
     plm = transform * plm;
     this->Placement.setValue(plm);
+}
+
+const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
+{
+    return nullptr;
 }

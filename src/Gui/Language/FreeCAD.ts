@@ -57,6 +57,37 @@
     </message>
 </context>
 <context>
+    <name>App::Property</name>
+    <message>
+        <source>The displayed size of the origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Visual size of the feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&lt;empty&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdTestConsoleOutput</name>
     <message>
         <source>Standard-Test</source>
@@ -133,29 +164,21 @@
     </message>
 </context>
 <context>
-    <name>DlgUnitCalculator</name>
+    <name>DlgExpressionInput</name>
     <message>
-        <source>Units calculator</source>
+        <source>Formula editor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>as:</source>
+        <source>Result:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>=&gt;</source>
+        <source>&amp;Discard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Close</source>
+        <source>Ok</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -306,6 +329,25 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
 </context>
 <context>
+    <name>Gui::DAG::Model</name>
+    <message>
+        <source>Rename</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rename object</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finish editing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Finish editing object</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Gui::Dialog::AboutApplication</name>
     <message>
         <source>About</source>
@@ -332,10 +374,6 @@ while doing a left or right click and move the mouse up or down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>License...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Copy to clipboard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -345,6 +383,18 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>Word size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD would be nowhere without their efforts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>License</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -510,6 +560,21 @@ while doing a left or right click and move the mouse up or down</source>
     </message>
     <message>
         <source>%1 at %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::Dialog::DlgCheckableMessageBox</name>
+    <message>
+        <source>Dialog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TextLabel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CheckBox</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -713,6 +778,10 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
         <source></source>
         <translation></translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1166,27 +1235,39 @@ Please define another shortcut.</source>
         <source>Style sheet:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Python console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable word wrap</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgGeneralImp</name>
     <message>
-        <source>Default (%1 x %1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Small (%1 x %1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Large (%1 x %1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Extra large (%1 x %1)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>No style sheet</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Small (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Medium (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Large (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Extra large (%1px)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Custom (%1px)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1219,10 +1300,6 @@ Please define another shortcut.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Macro destination:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Execute</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1240,6 +1317,18 @@ Please define another shortcut.</source>
     </message>
     <message>
         <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>System macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User macros location:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1280,6 +1369,10 @@ This file already exists.</source>
     </message>
     <message>
         <source>Creation of file &apos;%1&apos; failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Read-only</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1402,10 +1495,6 @@ This file already exists.</source>
 <context>
     <name>Gui::Dialog::DlgOnlineHelpImp</name>
     <message>
-        <source>HTML files (*.html *.htm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Access denied</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1413,6 +1502,10 @@ This file already exists.</source>
         <source>Access denied to &apos;%1&apos;
 
 Specify another directory, please.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>HTML files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1485,6 +1578,18 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
         <source>Wrong parameter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Clear user settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to clear all your user settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>If you agree all your settings will be cleared.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1566,10 +1671,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Project file (*.fcstd)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Destination</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1579,10 +1680,6 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Create project</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Document.xml</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1609,6 +1706,10 @@ Specify another directory, please.</source>
         <source>No destination is defined.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Project file</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgPropertyLink</name>
@@ -1626,6 +1727,14 @@ Specify another directory, please.</source>
     </message>
     <message>
         <source>Please select an object from the list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A search pattern to filter the results above</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1758,14 +1867,6 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Orthographic rendering</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Perspective rendering</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source></source>
         <translation></translation>
     </message>
@@ -1833,13 +1934,21 @@ Specify another directory, please.</source>
         <source>MSAA 8x</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Or&amp;thographic rendering</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Perspective renderin&amp;g</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use OpenGL Vertex Buffer Object (experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettings3DViewImp</name>
-    <message>
-        <source>%1 navigation</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Anti-aliasing</source>
         <translation type="unfinished"></translation>
@@ -2356,6 +2465,14 @@ Specify another directory, please.</source>
         <source>Insert comment</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Transparent</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add watermark</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsMacro</name>
@@ -2450,6 +2567,14 @@ Specify another directory, please.</source>
         <source>Imperial decimal (in/lb)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message utf8="true">
+        <source>Building Euro (cm/m²/m³)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Building US (ft-in/sqft/cuft)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgSettingsViewColor</name>
@@ -2485,55 +2610,54 @@ Specify another directory, please.</source>
         <source>Simple color</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Pick radius (px):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sets the area of confusion for picking elements in 3D view. Larger value make it easier to pick stuff, but will make some small features impossible to select.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::DlgTipOfTheDay</name>
-    <message>
-        <source>Tip of the day</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&lt;b&gt;&lt;font face=&quot;Times New Roman&quot;&gt;&lt;font size=&quot;+3&quot;&gt;Did you know...&lt;/font&gt;&lt;/font&gt;&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Show tips at start up</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+S</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Next Tip</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+N</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Alt+C</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source></source>
         <translation></translation>
     </message>
 </context>
 <context>
-    <name>Gui::Dialog::DlgTipOfTheDayImp</name>
+    <name>Gui::Dialog::DlgUnitCalculator</name>
     <message>
-        <source>Download failed: %1
-</source>
+        <source>Units calculator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>If you want to learn more about FreeCAD you must go to %1 or press the Help item in the Help menu.</source>
+        <source>as:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>=&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quantity:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Units:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2662,47 +2786,40 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Finish</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>Gui::Dialog::DownloadDialog</name>
     <message>
-        <source>Download</source>
+        <source>Cleanup...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cancel</source>
+        <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Close</source>
+        <source>Cleanup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>There already exists a file called %1 in the current directory. Overwrite?</source>
+        <source>Are you sure you want to delete the selected transient directories?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to save the file %1: %2.</source>
+        <source>When deleting the selected transient directory you won&apos;t be able to recover any files afterwards.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Downloading %1.</source>
+        <source>Are you sure you want to delete all transient directories?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Download canceled.</source>
+        <source>When deleting all transient directory you won&apos;t be able to recover any files afterwards.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Download failed: %1.</source>
+        <source>Finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Downloaded %1 to current directory.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%1 at %2</source>
+        <source>Transient directories deleted.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2846,13 +2963,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
 </context>
 <context>
-    <name>Gui::Dialog::LicenseDialog</name>
-    <message>
-        <source>Copyright</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Gui::Dialog::MouseButtons</name>
     <message>
         <source>Mouse buttons</source>
@@ -2923,10 +3033,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Export parameter to file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>XML (*.FCParam)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3079,6 +3185,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Euler angles (XY&apos;Z&apos;&apos;)</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Use center of mass</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::Dialog::PrintModel</name>
@@ -3206,45 +3316,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
 </context>
 <context>
-    <name>Gui::DockWnd::HelpView</name>
-    <message>
-        <source>Previous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Open file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All HTML files (*.html *.htm)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>External browser</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No external browser found. Specify in preferences, please</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Starting of %1 failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>Gui::DockWnd::PropertyDockView</name>
     <message>
         <source>Property View</source>
@@ -3282,10 +3353,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Plain Text Files (*.txt *.log)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Go to end</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3295,6 +3362,10 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
     </message>
     <message>
         <source>Redirect Python errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Plain Text Files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3367,59 +3438,12 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Reveals this object and its subelements in the python console.</source>
         <translation type="unfinished"></translation>
     </message>
-</context>
-<context>
-    <name>Gui::DockWnd::TextBrowser</name>
     <message>
-        <source>Could not open file.</source>
+        <source>Mark to recompute</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>You tried to access the address %1 which is currently unavailable. Please make sure that the URL exists and try reloading the page.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Connecting to %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sending to %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reading from %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Download failed: %1.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Previous</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Forward</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Home</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Refresh</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select all</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No description for</source>
+        <source>Mark this object to be recomputed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3456,15 +3480,7 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>FreeCAD macro (*.FCMacro);;Python (*.py)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export PDF</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PDF file (*.pdf)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3485,6 +3501,14 @@ Do you want to save your changes?</source>
     </message>
     <message>
         <source>Formatted</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeCAD macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF file</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3566,31 +3590,31 @@ Do you want to save your changes?</source>
 <context>
     <name>Gui::GraphvizView</name>
     <message>
-        <source>PNG format (*.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Bitmap format (*.bmp)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GIF format (*.gif)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>JPG format (*.jpg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SVG format (*.svg)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PDF format (*.pdf)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Export graph</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PNG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bitmap format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GIF format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>JPG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SVG format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PDF format</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3683,6 +3707,14 @@ Do you want to save your changes?</source>
         <source>Macros</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Macro file doesn&apos;t exist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No such macro file: &apos;%1&apos;</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::MainWindow</name>
@@ -3720,11 +3752,11 @@ Do you want to copy them, too?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/index.php?title=OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
+        <source>Don&apos;t show again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Don&apos;t show again</source>
+        <source>See &lt;a href=&quot;http://www.freecadweb.org/wiki/OpenGL_on_MacOS&quot;&gt; the wiki&lt;/a&gt; for more information</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3811,6 +3843,25 @@ How do you want to proceed?</source>
     </message>
     <message>
         <source>No point was found on model</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::MayaGestureNavigationStyle</name>
+    <message>
+        <source>Tap. Or click left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag screen with two fingers. Or press ALT + middle mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Drag the screen with one finger. Or press ALT + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pinch (put two fingers on the screen and drag them apart/to each other). Or scroll middle mouse button. Or press ALT + right mouse button. Or PgUp/PgDown on keyboard.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3963,15 +4014,7 @@ Do you want to exit without saving your data?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Macro Files (*.FCMacro *.py)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Insert file name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3996,6 +4039,14 @@ Do you want to exit without saving your data?</source>
     </message>
     <message>
         <source>Clear console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Macro Files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>All Files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4120,6 +4171,21 @@ Do you want to specify another directory?</source>
     <name>Gui::TaskBoxPosition</name>
     <message>
         <source>Position</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Gui::TaskCSysDragger</name>
+    <message>
+        <source>Increments</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation Increment: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation Increment: </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4251,6 +4317,26 @@ Do you want to specify another directory?</source>
         <source>Activate document %1</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Skip recomputes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enable or disable recomputations of document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark to recompute</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mark this object to be recomputed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>%1, Internal name: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>Gui::View3DInventor</name>
@@ -4259,7 +4345,15 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>PDF file (*.pdf)</source>
+        <source>PDF file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Opening file failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4267,6 +4361,37 @@ Do you want to specify another directory?</source>
     <name>Gui::WorkbenchGroup</name>
     <message>
         <source>Select the &apos;%1&apos; workbench</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MAC_APPLICATION_MENU</name>
+    <message>
+        <source>Services</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hide Others</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preferences...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Quit %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>About %1</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4405,6 +4530,10 @@ Do you want to specify another directory?</source>
         <source>Display properties</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>DAG View</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
@@ -4489,10 +4618,6 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Frozen views (*.cam)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Restore views</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4507,18 +4632,6 @@ Do you want to continue?</source>
     </message>
     <message>
         <source>Cannot open file &apos;%1&apos;.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Docked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Undocked</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4727,20 +4840,11 @@ Be aware the point where you click matters.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>%1 navigation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Move annotation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Transform</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The document is in editing mode and thus cannot be closed for the moment.
-You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4757,6 +4861,61 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Save a copy of the document under new filename...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Frozen views</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Saving document failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete macro</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Not allowed to delete system-wide macros</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> %1.%2.%3 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Translation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rotation: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete group content?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The %1 is not empty, delete its content as well?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SelectionFilter</name>
+    <message>
+        <source>Not allowed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Selection not allowed by filter</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5089,11 +5248,11 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Vie&amp;ws</source>
+        <source>Panels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Toggles this window</source>
+        <source>List of available dock panels</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5828,6 +5987,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdCmdSelectVisibleObjects</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select visible objects</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select visible objects in the active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdCmdSetAppearance</name>
     <message>
         <source>Standard-View</source>
@@ -6536,6 +6710,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
 </context>
 <context>
+    <name>StdViewDock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Docked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StdViewDockUndockFullscreen</name>
     <message>
         <source>Standard-View</source>
@@ -6543,6 +6732,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Document window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdViewFullscreen</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fullscreen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6562,6 +6766,21 @@ You either have to finish or cancel the editing in the task panel.</source>
     </message>
     <message>
         <source>Creates a screenshot of the active view</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdViewUndock</name>
+    <message>
+        <source>Standard-View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Undocked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Display the active view either in fullscreen, in undocked or docked mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6594,8 +6813,11 @@ You either have to finish or cancel the editing in the task panel.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>This object is referenced by other objects and thus these objects might get broken.
-Are you sure to continue?</source>
+        <source>The following, referencing objects might break.
+
+Are you sure you want to continue?
+
+</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6639,6 +6861,22 @@ Are you sure to continue?</source>
     </message>
     <message>
         <source>Points mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Hidden line mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No shading</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No shading mode</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6689,7 +6927,11 @@ Do you want to specify its installation path if it&apos;s already installed?</so
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure?</source>
+        <source>Revert document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you want to continue?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

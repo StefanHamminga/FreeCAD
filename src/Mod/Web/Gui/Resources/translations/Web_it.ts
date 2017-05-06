@@ -4,105 +4,105 @@
 <context>
     <name>CmdWebBrowserBack</name>
     <message>
-        <location filename="../../Command.cpp" line="75"/>
-        <source>Web</source>
-        <translation type="unfinished">Web</translation>
-    </message>
-    <message>
         <location filename="../../Command.cpp" line="76"/>
-        <source>Previous page</source>
-        <translation type="unfinished">Pagina precedente</translation>
+        <source>Web</source>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="77"/>
+        <source>Previous page</source>
+        <translation>Pagina precedente</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="78"/>
         <source>Go back to the previous page</source>
-        <translation type="unfinished">Torna alla pagina precedente</translation>
+        <translation>Torna alla pagina precedente</translation>
     </message>
 </context>
 <context>
     <name>CmdWebBrowserNext</name>
     <message>
-        <location filename="../../Command.cpp" line="103"/>
-        <source>Web</source>
-        <translation type="unfinished">Web</translation>
-    </message>
-    <message>
-        <location filename="../../Command.cpp" line="104"/>
-        <source>Next page</source>
-        <translation type="unfinished">Pagina successiva</translation>
-    </message>
-    <message>
         <location filename="../../Command.cpp" line="105"/>
+        <source>Web</source>
+        <translation>Web</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="106"/>
+        <source>Next page</source>
+        <translation>Pagina successiva</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="107"/>
         <source>Go to the next page</source>
-        <translation type="unfinished">Vai alla pagina successiva</translation>
+        <translation>Va alla pagina successiva</translation>
     </message>
 </context>
 <context>
     <name>CmdWebBrowserRefresh</name>
     <message>
-        <location filename="../../Command.cpp" line="131"/>
+        <location filename="../../Command.cpp" line="134"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="132"/>
-        <location filename="../../Command.cpp" line="133"/>
+        <location filename="../../Command.cpp" line="135"/>
+        <location filename="../../Command.cpp" line="136"/>
         <source>Refresh web page</source>
-        <translation type="unfinished">Aggiorna la pagina web</translation>
+        <translation>Aggiorna la pagina web</translation>
     </message>
 </context>
 <context>
     <name>CmdWebBrowserStop</name>
     <message>
-        <location filename="../../Command.cpp" line="158"/>
+        <location filename="../../Command.cpp" line="162"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="159"/>
+        <location filename="../../Command.cpp" line="163"/>
         <source>Stop loading</source>
-        <translation type="unfinished">Interrompi il caricamento</translation>
+        <translation>Interrompi il caricamento</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="160"/>
+        <location filename="../../Command.cpp" line="164"/>
         <source>Stop the current loading</source>
-        <translation type="unfinished">Interrompi il caricamento corrente</translation>
+        <translation>Interrompe il caricamento corrente</translation>
     </message>
 </context>
 <context>
     <name>CmdWebBrowserZoomIn</name>
     <message>
-        <location filename="../../Command.cpp" line="187"/>
+        <location filename="../../Command.cpp" line="192"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="188"/>
+        <location filename="../../Command.cpp" line="193"/>
         <source>Zoom in</source>
-        <translation type="unfinished">Ingrandisci</translation>
+        <translation>Ingrandisci</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="189"/>
+        <location filename="../../Command.cpp" line="194"/>
         <source>Zoom into the page</source>
-        <translation type="unfinished">Ingrandisci la pagina</translation>
+        <translation>Ingrandisce la pagina</translation>
     </message>
 </context>
 <context>
     <name>CmdWebBrowserZoomOut</name>
     <message>
-        <location filename="../../Command.cpp" line="215"/>
+        <location filename="../../Command.cpp" line="221"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="216"/>
+        <location filename="../../Command.cpp" line="222"/>
         <source>Zoom out</source>
-        <translation type="unfinished">Riduci</translation>
+        <translation>Riduci</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="217"/>
+        <location filename="../../Command.cpp" line="223"/>
         <source>Zoom out of the page</source>
-        <translation type="unfinished">Riduci la pagina</translation>
+        <translation>Riduce la pagina</translation>
     </message>
 </context>
 <context>
@@ -110,51 +110,57 @@
     <message>
         <location filename="../../Command.cpp" line="50"/>
         <source>Web</source>
-        <translation type="unfinished">Web</translation>
+        <translation>Web</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="51"/>
         <source>Open website...</source>
-        <translation type="unfinished">Apri il sito web...</translation>
+        <translation>Apri il sito web...</translation>
     </message>
     <message>
         <location filename="../../Command.cpp" line="52"/>
         <source>Opens a website in FreeCAD</source>
-        <translation type="unfinished">Apri un sito Web in FreeCAD</translation>
+        <translation>Apre un sito Web in FreeCAD</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../AppWebGuiPy.cpp" line="49"/>
+        <location filename="../../AppWebGui.cpp" line="78"/>
+        <location filename="../../BrowserView.cpp" line="354"/>
         <source>Browser</source>
-        <translation type="unfinished">Browser</translation>
+        <translation>Browser</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="204"/>
+        <location filename="../../BrowserView.cpp" line="250"/>
         <source>File does not exist!</source>
-        <translation type="unfinished">Il file non esiste!</translation>
+        <translation>Il file non esiste!</translation>
     </message>
 </context>
 <context>
     <name>WebGui::BrowserView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="199"/>
+        <location filename="../../BrowserView.cpp" line="245"/>
         <source>Error</source>
-        <translation type="unfinished">Errore</translation>
+        <translation>Errore</translation>
     </message>
     <message>
-        <location filename="../../BrowserView.cpp" line="279"/>
+        <location filename="../../BrowserView.cpp" line="325"/>
         <source>Loading %1...</source>
-        <translation type="unfinished">Caricamento %1...</translation>
+        <translation>Caricamento %1...</translation>
     </message>
 </context>
 <context>
     <name>WebGui::WebView</name>
     <message>
-        <location filename="../../BrowserView.cpp" line="100"/>
+        <location filename="../../BrowserView.cpp" line="122"/>
         <source>Open in External Browser</source>
-        <translation type="unfinished">Apri nel Browser esterno</translation>
+        <translation>Apri nel Browser esterno</translation>
+    </message>
+    <message>
+        <location filename="../../BrowserView.cpp" line="126"/>
+        <source>Open in new window</source>
+        <translation>Apri in una nuova finestra</translation>
     </message>
 </context>
 <context>
@@ -162,7 +168,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="46"/>
         <source>Navigation</source>
-        <translation type="unfinished">Navigazione</translation>
+        <translation>Navigazione</translation>
     </message>
 </context>
 </TS>

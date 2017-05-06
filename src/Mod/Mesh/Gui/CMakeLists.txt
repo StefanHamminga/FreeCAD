@@ -4,7 +4,6 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
 
@@ -17,8 +16,11 @@ set(MeshGui_LIBS
 
 set(Mesh_MOC_HDRS
     DlgEvaluateMeshImp.h
+    DlgEvaluateSettings.h
     DlgRegularSolidImp.h
     DlgSettingsMeshView.h
+    DlgSettingsImportExportImp.h
+
     DlgSmoothing.h
     MeshEditor.h
     PropertyEditorMesh.h
@@ -30,25 +32,33 @@ SOURCE_GROUP("Moc" FILES ${Mesh_MOC_SRCS})
 
 set(Dialogs_UIC_SRCS
     DlgEvaluateMesh.ui
+    DlgEvaluateSettings.ui
     DlgRegularSolid.ui
     DlgSettingsMeshView.ui
+    DlgSettingsImportExport.ui
     DlgSmoothing.ui
     RemoveComponents.ui
     Segmentation.ui
     Selection.ui
 )
-qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
+
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
     DlgEvaluateMesh.ui
     DlgEvaluateMeshImp.cpp
     DlgEvaluateMeshImp.h
+    DlgEvaluateSettings.ui
+    DlgEvaluateSettings.cpp
+    DlgEvaluateSettings.h
     DlgRegularSolid.ui
     DlgRegularSolidImp.cpp
     DlgRegularSolidImp.h
     DlgSettingsMeshView.ui
     DlgSettingsMeshView.cpp
     DlgSettingsMeshView.h
+    DlgSettingsImportExport.ui
+    DlgSettingsImportExportImp.cpp
+    DlgSettingsImportExportImp.h
     DlgSmoothing.ui
     DlgSmoothing.cpp
     DlgSmoothing.h
@@ -74,7 +84,14 @@ SET(Inventor_SRCS
 )
 SOURCE_GROUP("Inventor" FILES ${Inventor_SRCS})
 
-qt4_add_resources(resource_SRCS Resources/Mesh.qrc)
+if (BUILD_QT5)
+    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
+    qt5_add_resources(resource_SRCS Resources/Mesh.qrc)
+else()
+    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
+    qt4_add_resources(resource_SRCS Resources/Mesh.qrc)
+endif()
+
 SET(resource_SRCS
     ${resource_SRCS}
     Resources/Mesh.qrc
@@ -128,16 +145,15 @@ fc_target_copy_resource(MeshGui
     ${CMAKE_BINARY_DIR}/Mod/Mesh
     InitGui.py)
 
+SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
+SET_PYTHON_PREFIX_SUFFIX(MeshGui)
+
+INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
 SET(MeshGuiIcon_SVG
-    Resources/icons/Tree_Mesh.svg
+    Resources/icons/MeshWorkbench.svg
 )
 
 fc_copy_sources(MeshGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Mesh" ${MeshGuiIcon_SVG})
 
 INSTALL(FILES ${MeshGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Mesh/Resources/icons")
-
-
-SET_BIN_DIR(MeshGui MeshGui /Mod/Mesh)
-SET_PYTHON_PREFIX_SUFFIX(MeshGui)
-
-INSTALL(TARGETS MeshGui DESTINATION ${CMAKE_INSTALL_LIBDIR})

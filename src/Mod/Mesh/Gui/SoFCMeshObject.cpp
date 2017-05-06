@@ -176,7 +176,7 @@ void SoSFMeshObject::initClass()
     SO_SFIELD_INIT_CLASS(SoSFMeshObject, SoSField);
 }
 
-// This reads the value of a field from a file. It returns FALSE if the value could not be read
+// This reads the value of a field from a file. It returns false if the value could not be read
 // successfully.
 SbBool SoSFMeshObject::readValue(SoInput *in)
 {
@@ -191,7 +191,7 @@ SbBool SoSFMeshObject::readValue(SoInput *in)
         // during initial scene graph import.
         this->valueChanged();
 
-        return TRUE;
+        return true;
     }
 
     int32_t countPt;
@@ -235,7 +235,7 @@ SbBool SoSFMeshObject::readValue(SoInput *in)
     // during initial scene graph import.
     this->valueChanged();
 
-    return TRUE;
+    return true;
 }
 
 // This writes the value of a field to a file.
@@ -368,7 +368,7 @@ void SoFCMeshPickNode::notify(SoNotList *list)
 }
 
 // Doc from superclass.
-void SoFCMeshPickNode::rayPick(SoRayPickAction * action)
+void SoFCMeshPickNode::rayPick(SoRayPickAction * /*action*/)
 {
 }
 
@@ -426,7 +426,7 @@ void SoFCMeshGridNode::initClass(void)
     SO_NODE_INIT_CLASS(SoFCMeshGridNode, SoNode, "Node");
 }
 
-void SoFCMeshGridNode::GLRender(SoGLRenderAction * action)
+void SoFCMeshGridNode::GLRender(SoGLRenderAction * /*action*/)
 {
     const SbVec3f& min = minGrid.getValue();
     const SbVec3f& max = maxGrid.getValue();
@@ -588,7 +588,10 @@ void SoFCMeshObjectShape::initClass()
     SO_NODE_INIT_CLASS(SoFCMeshObjectShape, SoShape, "Shape");
 }
 
-SoFCMeshObjectShape::SoFCMeshObjectShape() : renderTriangleLimit(100000), meshChanged(true)
+SoFCMeshObjectShape::SoFCMeshObjectShape()
+    : renderTriangleLimit(100000)
+    , meshChanged(true)
+    , selectBuf(0)
 {
     SO_NODE_CONSTRUCTOR(SoFCMeshObjectShape);
     setName(SoFCMeshObjectShape::getClassTypeId().getName());
@@ -626,9 +629,9 @@ void SoFCMeshObjectShape::GLRender(SoGLRenderAction *action)
         SbBool needNormals = !mb.isColorOnly()/* || tb.isFunction()*/;
         mb.sendFirst();  // make sure we have the correct material
     
-        SbBool ccw = TRUE;
+        SbBool ccw = true;
         if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE) 
-            ccw = FALSE;
+            ccw = false;
 
         if (mode == false || mesh->countFacets() <= this->renderTriangleLimit) {
             if (mbind != OVERALL)
@@ -679,7 +682,7 @@ SoFCMeshObjectShape::Binding SoFCMeshObjectShape::findMaterialBinding(SoState * 
 
 /**
  * Renders the triangles of the complete mesh.
- * FIXME: Do it the same way as Coin did to have only one implementation which is controled by defines
+ * FIXME: Do it the same way as Coin did to have only one implementation which is controlled by defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
 void SoFCMeshObjectShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBundle* mb,
@@ -708,16 +711,16 @@ void SoFCMeshObjectShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBun
                 n[2] = (v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x);
     
                 if(perFace)
-                mb->send(it-rFacets.begin(), TRUE);
+                mb->send(it-rFacets.begin(), true);
                 glNormal(n);
                 if(perVertex)
-                mb->send(it->_aulPoints[0], TRUE);
+                mb->send(it->_aulPoints[0], true);
                 glVertex(v0);
                 if(perVertex)
-                mb->send(it->_aulPoints[1], TRUE);
+                mb->send(it->_aulPoints[1], true);
                 glVertex(v1);
                 if(perVertex)
-                mb->send(it->_aulPoints[2], TRUE);
+                mb->send(it->_aulPoints[2], true);
                 glVertex(v2);
             }
         }
@@ -852,7 +855,7 @@ void SoFCMeshObjectShape::doAction(SoAction * action)
         // thus we search there for it.
         SoSearchAction sa;
         sa.setInterest(SoSearchAction::FIRST);
-        sa.setSearchingAll(FALSE);
+        sa.setSearchingAll(false);
         sa.setType(SoFCMeshObjectNode::getClassTypeId(), 1);
         sa.apply(node);
         SoPath * path = sa.getPath();
@@ -896,7 +899,12 @@ void SoFCMeshObjectShape::startSelection(SoAction * action, const Mesh::MeshObje
     //glGetDoublev(GL_PROJECTION_MATRIX ,mp);
     glPushMatrix();
     glLoadIdentity();
-    gluPickMatrix(x, y, w, h, viewport);
+    // See https://www.opengl.org/discussion_boards/showthread.php/184308-gluPickMatrix-Implementation?p=1259884&viewfull=1#post1259884
+    //gluPickMatrix(x, y, w, h, viewport);
+    if (w > 0 && h > 0) {
+        glTranslatef((viewport[2] - 2 * (x - viewport[0])) / w, (viewport[3] - 2 * (y - viewport[1])) / h, 0);
+        glScalef(viewport[2] / w, viewport[3] / h, 1.0);
+    }
     glMultMatrixf(/*mp*/this->projection);
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
@@ -961,8 +969,8 @@ void SoFCMeshObjectShape::renderSelectionGeometry(const Mesh::MeshObject* mesh)
 //static SbBool
 //SoFCMeshObjectShape_ray_intersect(SoRayPickAction * action, const SbBox3f & box)
 //{
-//    if (box.isEmpty()) return FALSE;
-//    return action->intersect(box, TRUE);
+//    if (box.isEmpty()) return false;
+//    return action->intersect(box, true);
 //}
 
 /**
@@ -1163,9 +1171,9 @@ void SoFCMeshSegmentShape::GLRender(SoGLRenderAction *action)
         SbBool needNormals = !mb.isColorOnly()/* || tb.isFunction()*/;
         mb.sendFirst();  // make sure we have the correct material
     
-        SbBool ccw = TRUE;
+        SbBool ccw = true;
         if (SoShapeHintsElement::getVertexOrdering(state) == SoShapeHintsElement::CLOCKWISE) 
-            ccw = FALSE;
+            ccw = false;
 
         if (mode == false || mesh->countFacets() <= this->renderTriangleLimit) {
             if (mbind != OVERALL)
@@ -1216,7 +1224,7 @@ SoFCMeshSegmentShape::Binding SoFCMeshSegmentShape::findMaterialBinding(SoState 
 
 /**
  * Renders the triangles of the complete mesh.
- * FIXME: Do it the same way as Coin did to have only one implementation which is controled by defines
+ * FIXME: Do it the same way as Coin did to have only one implementation which is controlled by defines
  * FIXME: Implement using different values of transparency for each vertex or face
  */
 void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBundle* mb,
@@ -1250,16 +1258,16 @@ void SoFCMeshSegmentShape::drawFaces(const Mesh::MeshObject * mesh, SoMaterialBu
                 n[2] = (v1.x-v0.x)*(v2.y-v0.y)-(v1.y-v0.y)*(v2.x-v0.x);
     
                 if(perFace)
-                mb->send(*it, TRUE);
+                mb->send(*it, true);
                 glNormal(n);
                 if(perVertex)
-                mb->send(f._aulPoints[0], TRUE);
+                mb->send(f._aulPoints[0], true);
                 glVertex(v0);
                 if(perVertex)
-                mb->send(f._aulPoints[1], TRUE);
+                mb->send(f._aulPoints[1], true);
                 glVertex(v1);
                 if(perVertex)
-                mb->send(f._aulPoints[2], TRUE);
+                mb->send(f._aulPoints[2], true);
                 glVertex(v2);
             }
         }
@@ -1556,7 +1564,7 @@ void SoFCMeshObjectBoundary::GLRender(SoGLRenderAction *action)
         if (!mesh) return;
 
         SoMaterialBundle mb(action);
-        SoTextureCoordinateBundle tb(action, TRUE, FALSE);
+        SoTextureCoordinateBundle tb(action, true, false);
         SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
         mb.sendFirst();  // make sure we have the correct material
 

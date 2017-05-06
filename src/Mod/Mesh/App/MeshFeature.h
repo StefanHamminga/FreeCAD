@@ -25,6 +25,7 @@
 #define MESH_FEATURE_H
 
 #include <App/GeoFeature.h>
+#include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
 
 #include "Core/MeshKernel.h"
@@ -76,11 +77,15 @@ public:
     virtual const char* getViewProviderName(void) const {
         return "MeshGui::ViewProviderMeshFaceSet";
     }
+    virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const {
+        return &Mesh;
+    }
 
     /// handles the MeshPy object
     virtual PyObject* getPyObject(void);
 };
 
+typedef App::FeatureCustomT<Feature> FeatureCustom;
 typedef App::FeaturePythonT<Feature> FeaturePython;
 
 } //namespace Mesh

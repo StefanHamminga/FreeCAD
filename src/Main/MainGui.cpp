@@ -58,7 +58,7 @@
 
 void PrintInitHelp(void);
 
-const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2015\n"\
+const char sBanner[] = "\xc2\xa9 Juergen Riegel, Werner Mayer, Yorik van Havre 2001-2017\n"\
 "  #####                 ####  ###   ####  \n" \
 "  #                    #      # #   #   # \n" \
 "  #     ##  #### ####  #     #   #  #   # \n" \
@@ -91,22 +91,25 @@ int main( int argc, char ** argv )
     // Make sure to setup the Qt locale system before setting LANG and LC_ALL to C.
     // which is needed to use the system locale settings.
     (void)QLocale::system();
+#if QT_VERSION < 0x050000
     // http://www.freecadweb.org/tracker/view.php?id=399
     // Because of setting LANG=C the Qt automagic to use the correct encoding
     // for file names is broken. This is a workaround to force the use of UTF-8 encoding
     QFile::setEncodingFunction(myEncoderFunc);
     QFile::setDecodingFunction(myDecoderFunc);
-    // Make sure that we use '.' as decimal point. See also
-    // http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=559846
+#endif
+    // See https://forum.freecadweb.org/viewtopic.php?f=18&t=20600
+    // See Gui::Application::runApplication()
     putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #elif defined(FC_OS_MACOSX)
     (void)QLocale::system();
-    putenv("LC_NUMERIC=C");
     putenv("PYTHONPATH=");
 #else
-    setlocale(LC_NUMERIC, "C");
     _putenv("PYTHONPATH=");
+    // https://forum.freecadweb.org/viewtopic.php?f=4&t=18288
+    // https://forum.freecadweb.org/viewtopic.php?f=3&t=20515
+    _putenv("PYTHONHOME=");
 #endif
 
 #if defined (FC_OS_WIN32)
@@ -130,7 +133,7 @@ int main( int argc, char ** argv )
     App::Application::Config()["ExeName"] = "FreeCAD";
     App::Application::Config()["ExeVendor"] = "FreeCAD";
     App::Application::Config()["AppDataSkipVendor"] = "true";
-    App::Application::Config()["MaintainerUrl"] = "http://www.freecadweb.org/wiki/index.php?title=Main_Page";
+    App::Application::Config()["MaintainerUrl"] = "http://www.freecadweb.org/wiki/Main_Page";
 
     // set the banner (for logging and console)
     App::Application::Config()["CopyrightInfo"] = sBanner;
@@ -175,16 +178,16 @@ int main( int argc, char ** argv )
     }
     catch (const Base::UnknownProgramOption& e) {
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-        QString msg = QString::fromAscii(e.what());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromLatin1(e.what());
         QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
         QMessageBox::critical(0, appName, s);
         exit(1);
     }
     catch (const Base::ProgramInformation& e) {
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
-        QString msg = QString::fromAscii(e.what());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
+        QString msg = QString::fromLatin1(e.what());
         QString s = QLatin1String("<pre>") + msg + QLatin1String("</pre>");
         QMessageBox::information(0, appName, s);
         exit(0);
@@ -192,13 +195,13 @@ int main( int argc, char ** argv )
     catch (const Base::Exception& e) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg;
         msg = QObject::tr("While initializing %1 the  following exception occurred: '%2'\n\n"
                           "Python is searching for its files in the following directories:\n%3\n\n"
                           "Python version information:\n%4\n")
                           .arg(appName).arg(QString::fromUtf8(e.what()))
-                          .arg(QString::fromUtf8(Py_GetPath())).arg(QString::fromAscii(Py_GetVersion()));
+                          .arg(QString::fromUtf8(Py_GetPath())).arg(QString::fromLatin1(Py_GetVersion()));
         const char* pythonhome = getenv("PYTHONHOME");
         if (pythonhome) {
             msg += QObject::tr("\nThe environment variable PYTHONHOME is set to '%1'.")
@@ -215,7 +218,7 @@ int main( int argc, char ** argv )
     catch (...) {
         // Popup an own dialog box instead of that one of Windows
         QApplication app(argc,argv);
-        QString appName = QString::fromAscii(App::Application::Config()["ExeName"].c_str());
+        QString appName = QString::fromLatin1(App::Application::Config()["ExeName"].c_str());
         QString msg = QObject::tr("Unknown runtime error occurred while initializing %1.\n\n"
                                   "Please contact the application's support team for more information.\n\n").arg(appName);
         QMessageBox::critical(0, QObject::tr("Initialization of %1 failed").arg(appName), msg);
@@ -236,14 +239,16 @@ int main( int argc, char ** argv )
         else
             App::Application::runApplication();
     }
-    catch (const Base::SystemExitException&) {
-        exit(0);
+    catch (const Base::SystemExitException& e) {
+        exit(e.getExitCode());
     }
     catch (const Base::Exception& e) {
-        Base::Console().Error("%s\n", e.what());
+        e.ReportException();
+        exit(1);
     }
     catch (...) {
         Base::Console().Error("Application unexpectedly terminated\n");
+        exit(1);
     }
 
     std::cout.rdbuf(oldcout);
@@ -328,7 +333,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
     MINIDUMP_EXCEPTION_INFORMATION stMDEI; 
     stMDEI.ThreadId = GetCurrentThreadId(); 
     stMDEI.ExceptionPointers = pEx; 
-    stMDEI.ClientPointers = TRUE; 
+    stMDEI.ClientPointers = true; 
     // try to create an miniDump: 
     if (s_pMDWD( 
       GetCurrentProcess(), 
@@ -340,7 +345,7 @@ static LONG __stdcall MyCrashHandlerExceptionFilter(EXCEPTION_POINTERS* pEx)
       NULL 
       )) 
     { 
-      bFailed = false;  // suceeded 
+      bFailed = false;  // succeeded 
     } 
     CloseHandle(hFile); 
   } 
@@ -367,7 +372,7 @@ void InitMiniDumpWriter(const std::string& filename)
     return;
   s_szMiniDumpFileName = filename;
 
-  // Initialize the member, so we do not load the dll after the exception has occured
+  // Initialize the member, so we do not load the dll after the exception has occurred
   // which might be not possible anymore...
   s_hDbgHelpMod = LoadLibrary(("dbghelp.dll"));
   if (s_hDbgHelpMod != NULL)

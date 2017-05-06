@@ -26,6 +26,9 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Gui/Application.h>
@@ -46,6 +49,7 @@ void CreateSketcherCommandsCreateGeo(void);
 void CreateSketcherCommandsConstraints(void);
 void CreateSketcherCommandsConstraintAccel(void);
 void CreateSketcherCommandsAlterGeo(void);
+void CreateSketcherCommandsBSpline(void);
 
 void loadSketcherResource()
 {
@@ -54,17 +58,34 @@ void loadSketcherResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef SketcherGui_Import_methods[];
 
+namespace SketcherGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("SketcherGui")
+    {
+        initialize("This module is the SketcherGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace SketcherGui
 
 /* Python entry */
-extern "C" {
-void SketcherGuiExport initSketcherGui()
+PyMOD_INIT_FUNC(SketcherGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
     try {
         Base::Interpreter().runString("import PartGui");
@@ -72,10 +93,10 @@ void SketcherGuiExport initSketcherGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
-    (void) Py_InitModule("SketcherGui", SketcherGui_Import_methods);   /* mod name, table ptr */
+    PyObject* mod = SketcherGui::initModule();
     Base::Console().Log("Loading GUI of Sketcher module... done\n");
 
     // instantiating the commands
@@ -84,6 +105,7 @@ void SketcherGuiExport initSketcherGui()
     CreateSketcherCommandsConstraints();
     CreateSketcherCommandsAlterGeo();
     CreateSketcherCommandsConstraintAccel();
+    CreateSketcherCommandsBSpline();
 
     SketcherGui::Workbench::init();
 
@@ -96,10 +118,11 @@ void SketcherGuiExport initSketcherGui()
     SketcherGui::SoZoomTranslation          ::initClass();
     SketcherGui::PropertyConstraintListItem ::init();
 
-    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>  ( QT_TRANSLATE_NOOP("QObject","Display") );
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettings>        ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsColors>  ( QT_TRANSLATE_NOOP("QObject","Sketcher") );
 
      // add resources and reloads the translators
     loadSketcherResource();
-}
 
-} // extern "C" {
+    PyMOD_Return(mod);
+}

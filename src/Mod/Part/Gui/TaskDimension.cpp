@@ -322,16 +322,16 @@ PartGui::DimensionLinear::DimensionLinear()
 {
     SO_KIT_CONSTRUCTOR(PartGui::DimensionLinear);
 
-    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoTransform, TRUE, topSeparator,"" , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, TRUE, topSeparator,"" , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(leftArrow, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(rightArrow, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(line, SoShapeKit, TRUE, annotate,"" ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, TRUE, annotate,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoTransform, true, topSeparator,"" , true);
+    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, true, topSeparator,"" , true);
+    SO_KIT_ADD_CATALOG_ENTRY(leftArrow, SoShapeKit, true, topSeparator,"" ,true);
+    SO_KIT_ADD_CATALOG_ENTRY(rightArrow, SoShapeKit, true, topSeparator,"" ,true);
+    SO_KIT_ADD_CATALOG_ENTRY(line, SoShapeKit, true, annotate,"" ,true);
+    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, true, annotate,"" ,true);
 
     SO_KIT_INIT_INSTANCE();
 
-    SO_NODE_ADD_FIELD(rotate, (1.0, 0.0, 0.0, 0.0));//postion orientation of the dimension.
+    SO_NODE_ADD_FIELD(rotate, (1.0, 0.0, 0.0, 0.0));//position orientation of the dimension.
     SO_NODE_ADD_FIELD(length, (1.0));//turns into dimension length
     SO_NODE_ADD_FIELD(origin, (0.0, 0.0, 0.0));//static
     SO_NODE_ADD_FIELD(text, ("test"));//dimension text
@@ -350,13 +350,13 @@ PartGui::DimensionLinear::~DimensionLinear()
 
 SbBool PartGui::DimensionLinear::affectsState() const
 {
-    return FALSE;
+    return false;
 }
 
 void PartGui::DimensionLinear::setupDimension()
 {
   //transformation
-  SoTransform *trans = static_cast<SoTransform *>(getPart("transformation", TRUE));
+  SoTransform *trans = static_cast<SoTransform *>(getPart("transformation", true));
   trans->translation.connectFrom(&point1);
   //build engine for vector subtraction and length.
   SoCalculator *hyp = new SoCalculator();
@@ -389,7 +389,7 @@ void PartGui::DimensionLinear::setupDimension()
   //have use local here to do the offset because the main is wired up to length of dimension.
   set("rightArrow.localTransform", "translation 0.0 -0.25 0.0"); //half cone height.
 
-  SoTransform *transform = static_cast<SoTransform *>(getPart("rightArrow.transform", FALSE));
+  SoTransform *transform = static_cast<SoTransform *>(getPart("rightArrow.transform", false));
   if (!transform)
       return;//what to do here?
   SoComposeVec3f *vec = new SoComposeVec3f;
@@ -420,7 +420,7 @@ void PartGui::DimensionLinear::setupDimension()
   setPart("line.material", material);
 
   //text
-  SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", TRUE));
+  SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", true));
   if (!textSep)
       return;
 
@@ -638,10 +638,10 @@ PartGui::VectorAdapter::VectorAdapter() : status(false), vector()
 PartGui::VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn) :
   status(false), vector(), origin(pickedPointIn)
 {
-  Handle_Geom_Surface surface = BRep_Tool::Surface(faceIn);
+  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
   if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface)))
   {
-    Handle_Geom_ElementarySurface eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
+    Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
     gp_Dir direction = eSurface->Axis().Direction();
     vector = direction;
     vector.Normalize();
@@ -708,7 +708,7 @@ PartGui::VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vecto
 
 void PartGui::VectorAdapter::projectOriginOntoVector(const gp_Vec &pickedPointIn)
 {
-  Handle_Geom_Curve heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
+  Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
   gp_Pnt tempPoint(pickedPointIn.XYZ());
   GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
   if (projection.NbPoints() < 1)
@@ -869,7 +869,7 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   if (vector1.IsParallel(vector2, Precision::Angular()))
   {
     //take first point project it onto second vector.
-    Handle_Geom_Curve heapLine2 = new Geom_Line(vector2Adapter);
+    Handle(Geom_Curve) heapLine2 = new Geom_Line(vector2Adapter);
     gp_Pnt tempPoint(vector1Adapter.getPickPoint().XYZ());
     
     GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine2);
@@ -926,8 +926,8 @@ void PartGui::goDimensionAngularNoTask(const VectorAdapter &vector1Adapter, cons
   }
   else
   {
-    Handle_Geom_Curve heapLine1 = new Geom_Line(vector1Adapter);
-    Handle_Geom_Curve heapLine2 = new Geom_Line(vector2Adapter);
+    Handle(Geom_Curve) heapLine1 = new Geom_Line(vector1Adapter);
+    Handle(Geom_Curve) heapLine2 = new Geom_Line(vector2Adapter);
     
     GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
     
@@ -1014,12 +1014,12 @@ PartGui::DimensionAngular::DimensionAngular()
 {
     SO_KIT_CONSTRUCTOR(PartGui::DimensionAngular);
 
-    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoMatrixTransform, TRUE, topSeparator,"" , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, TRUE, topSeparator,"" , TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(arrow1, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(arrow2, SoShapeKit, TRUE, topSeparator,"" ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(arcSep, SoSeparator, TRUE, annotate,"" ,TRUE);
-    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, TRUE, annotate,"" ,TRUE);
+    SO_KIT_ADD_CATALOG_ENTRY(transformation, SoMatrixTransform, true, topSeparator,"" , true);
+    SO_KIT_ADD_CATALOG_ENTRY(annotate, SoAnnotation, true, topSeparator,"" , true);
+    SO_KIT_ADD_CATALOG_ENTRY(arrow1, SoShapeKit, true, topSeparator,"" ,true);
+    SO_KIT_ADD_CATALOG_ENTRY(arrow2, SoShapeKit, true, topSeparator,"" ,true);
+    SO_KIT_ADD_CATALOG_ENTRY(arcSep, SoSeparator, true, annotate,"" ,true);
+    SO_KIT_ADD_CATALOG_ENTRY(textSep, SoSeparator, true, annotate,"" ,true);
 
     SO_KIT_INIT_INSTANCE();
 
@@ -1042,14 +1042,14 @@ PartGui::DimensionAngular::~DimensionAngular()
 
 SbBool PartGui::DimensionAngular::affectsState() const
 {
-    return FALSE;
+    return false;
 }
 
 
 void PartGui::DimensionAngular::setupDimension()
 {
   //transformation
-  SoMatrixTransform *trans = static_cast<SoMatrixTransform *>(getPart("transformation", TRUE));
+  SoMatrixTransform *trans = static_cast<SoMatrixTransform *>(getPart("transformation", true));
   trans->matrix.connectFrom(&matrix);
 
   //color
@@ -1110,14 +1110,14 @@ void PartGui::DimensionAngular::setupDimension()
   lineSet->numVertices.connectFrom(&arcEngine->pointCount);
   lineSet->startIndex.setValue(0);
   
-  SoSeparator *arcSep = static_cast<SoSeparator *>(getPart("arcSep", TRUE));
+  SoSeparator *arcSep = static_cast<SoSeparator *>(getPart("arcSep", true));
   if (!arcSep)
     return;
   arcSep->addChild(material);
   arcSep->addChild(lineSet);
 
   //text
-  SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", TRUE));
+  SoSeparator *textSep = static_cast<SoSeparator *>(getPart("textSep", true));
   if (!textSep)
       return;
 
@@ -1232,8 +1232,10 @@ void PartGui::ArcEngine::defaultValues()
   SO_ENGINE_OUTPUT(pointCount, SoSFInt32, setValue(2));
 }
 
-PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent):
-  QWidget(parent)
+PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent)
+  : QWidget(parent)
+  , stepActive(0)
+  , stepDone(0)
 {
   if (buttonCountIn < 1)
     return;

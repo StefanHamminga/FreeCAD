@@ -61,7 +61,7 @@ CmdRobotSetHomePos::CmdRobotSetHomePos()
 }
 
 
-void CmdRobotSetHomePos::activated(int iMsg)
+void CmdRobotSetHomePos::activated(int)
 {
    const char * SelFilter = 
         "SELECT Robot::RobotObject COUNT 1 ";
@@ -73,7 +73,7 @@ void CmdRobotSetHomePos::activated(int iMsg)
     }
     else {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("Select one Robot to set home postion"));
+            QObject::tr("Select one Robot to set home position"));
         return;
     }
 
@@ -110,7 +110,7 @@ CmdRobotRestoreHomePos::CmdRobotRestoreHomePos()
 }
 
 
-void CmdRobotRestoreHomePos::activated(int iMsg)
+void CmdRobotRestoreHomePos::activated(int)
 {
     const char * SelFilter = 
         "SELECT Robot::RobotObject COUNT 1 ";
@@ -164,7 +164,7 @@ CmdRobotConstraintAxle::CmdRobotConstraintAxle()
 }
 
 
-void CmdRobotConstraintAxle::activated(int iMsg)
+void CmdRobotConstraintAxle::activated(int)
 {
     std::string FeatName = getUniqueObjectName("Robot");
     std::string RobotPath = "Mod/Robot/Lib/Kuka/kr500_1.wrl";
@@ -205,7 +205,7 @@ CmdRobotSimulate::CmdRobotSimulate()
 }
 
 
-void CmdRobotSimulate::activated(int iMsg)
+void CmdRobotSimulate::activated(int)
 {
 #if 1
     const char * SelFilter = 

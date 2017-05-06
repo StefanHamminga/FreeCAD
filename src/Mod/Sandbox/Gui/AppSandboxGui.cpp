@@ -23,8 +23,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_math.hxx>
 # include <Python.h>
+# include <Standard_math.hxx>
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoBaseColor.h>
 # include <Inventor/nodes/SoSeparator.h>
@@ -153,7 +153,7 @@ private:
                 args.setItem(3,Py::Vector(Base::Vector3d(0,0,1)));
                 args.setItem(4,Py::Float(radius));
               //args.setItem(5,Py::Int((int)0));
-                args.setItem(5,Py::Int((int)1));
+                args.setItem(5,Py::Long((long)1));
                 Py::Tuple ret(method.apply(args));
                 Py::Vector S1(ret.getItem(0));
                 Py::Vector S2(ret.getItem(1));
@@ -187,23 +187,24 @@ private:
     double radius;
 };
 
-class SandboxModuleGui : public Py::ExtensionModule<SandboxModuleGui>
+namespace SandboxGui {
+class Module : public Py::ExtensionModule<Module>
 {
 
 public:
-    SandboxModuleGui() : Py::ExtensionModule<SandboxModuleGui>("SandboxGui")
+    Module() : Py::ExtensionModule<Module>("SandboxGui")
     {
-        add_varargs_method("interactiveFilletArc",&SandboxModuleGui::interactiveFilletArc,
+        add_varargs_method("interactiveFilletArc",&Module::interactiveFilletArc,
             "Interactive fillet arc");
-        add_varargs_method("xmlReader",&SandboxModuleGui::xmlReader,
+        add_varargs_method("xmlReader",&Module::xmlReader,
             "Read XML");
         initialize("This module is the SandboxGui module"); // register with Python
     }
     
-    virtual ~SandboxModuleGui() {}
+    virtual ~Module() {}
 
 private:
-    Py::Object interactiveFilletArc(const Py::Tuple& args)
+    Py::Object interactiveFilletArc(const Py::Tuple& /*args*/)
     {
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
@@ -238,14 +239,19 @@ private:
     }
 };
 
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace SandboxGui
 
 /* Python entry */
-extern "C" {
-void SandboxGuiExport initSandboxGui()
+PyMOD_INIT_FUNC(SandboxGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // Load Python modules this module depends on
@@ -254,7 +260,7 @@ void SandboxGuiExport initSandboxGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
     // instanciating the commands
@@ -264,8 +270,7 @@ void SandboxGuiExport initSandboxGui()
 
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new SandboxModuleGui;
+    PyObject* mod = SandboxGui::initModule();
     Base::Console().Log("Loading GUI of Sandbox module... done\n");
+    PyMOD_Return(mod);
 }
-
-} // extern "C"

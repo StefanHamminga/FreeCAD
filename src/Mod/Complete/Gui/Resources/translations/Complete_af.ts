@@ -37,12 +37,12 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>Dr&amp;awing</translation>
+        <translation type="unfinished">Dr&amp;awing</translation>
     </message>
     <message>
         <location line="-1"/>
         <source>S&amp;ketch</source>
-        <translation>S&amp;ketch</translation>
+        <translation type="unfinished">S&amp;ketch</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -62,16 +62,20 @@
     <message>
         <location line="+1"/>
         <source>Primitives</source>
-        <translation>Primitives</translation>
+        <translation type="unfinished">Primitives</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Parametric</source>
         <translation type="obsolete">Parametries</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Voorwerpvoorkoms</translation>
+        <translation type="obsolete">Voorwerpvoorkoms</translation>
     </message>
     <message>
         <location line="+1"/>

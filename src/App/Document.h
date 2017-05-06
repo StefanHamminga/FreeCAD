@@ -30,14 +30,13 @@
 
 #include "PropertyContainer.h"
 #include "PropertyStandard.h"
+#include "PropertyLinks.h"
 
 #include <map>
 #include <vector>
 #include <stack>
 
 #include <boost/signals.hpp>
-#include <boost/graph/adjacency_list.hpp>
-
 
 namespace Base {
     class Writer;
@@ -45,6 +44,7 @@ namespace Base {
 
 namespace App
 {
+    class TransactionalObject;
     class DocumentObject;
     class DocumentObjectExecReturn;
     class Document;
@@ -62,6 +62,12 @@ class AppExport Document : public App::PropertyContainer
     PROPERTY_HEADER(App::Document);
 
 public:
+    enum Status {
+        SkipRecompute = 0,
+        KeepTrailingDigits = 1,
+        Closable = 2,
+    };
+
     /** @name Properties */
     //@{
     /// holds the long name of the document (utf-8 coded)
@@ -81,20 +87,24 @@ public:
     /// Id e.g. Part number
     PropertyString Id;
     /// unique identifier of the document
-    PropertyUUID   Uid;
+    PropertyUUID Uid;
     /** License string
       * Holds the short license string for the Item, e.g. CC-BY
-      * for the Creative Commons license suit. 
+      * for the Creative Commons license suit.
       */
-    App::PropertyString  License;
-    /// License descripton/contract URL
-    App::PropertyString  LicenseURL;
-    /// Meta descriptons
-    App::PropertyMap     Meta;
-    /// Meta descriptons
-    App::PropertyMap     Material;
+    App::PropertyString License;
+    /// License description/contract URL
+    App::PropertyString LicenseURL;
+    /// Meta descriptions
+    App::PropertyMap Meta;
+    /// Material descriptions, used and defined in the Material module.
+    App::PropertyMap Material;
     /// read-only name of the temp dir created wen the document is opened
     PropertyString TransientDir;
+    /// Tip object of the document (if any)
+    PropertyLink Tip;
+    /// Tip object of the document (if any)
+    PropertyString TipName;
     //@}
 
     /** @name Signals of the document */
@@ -110,13 +120,17 @@ public:
     boost::signal<void (const App::DocumentObject&)> signalRelabelObject;
     /// signal on activated Object
     boost::signal<void (const App::DocumentObject&)> signalActivatedObject;
+    /// signal on created object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionAppend;
+    /// signal on removed object
+    boost::signal<void (const App::DocumentObject&, Transaction*)> signalTransactionRemove;
     /// signal on undo
     boost::signal<void (const App::Document&)> signalUndo;
     /// signal on redo
     boost::signal<void (const App::Document&)> signalRedo;
     /** signal on load/save document
      * this signal is given when the document gets streamed.
-     * you can use this hook to write additional information in 
+     * you can use this hook to write additional information in
      * the file (like the Gui::Document it does).
      */
     boost::signal<void (Base::Writer   &)> signalSaveDocument;
@@ -161,10 +175,25 @@ public:
 
     /** @name Object handling  */
     //@{
-    /// Add a feature of sType with sName (ASCII) to this document and set it active. Unicode names are set through the Label propery
-    DocumentObject *addObject(const char* sType, const char* pObjectName=0);
+    /** Add a feature of sType with sName (ASCII) to this document and set it active.
+     * Unicode names are set through the Label propery.
+     * @param sType       the type of created object
+     * @param pObjectName if nonNULL use that name otherwise generate a new uniq name based on the \a sType
+     * @param isNew       if false don't call the \c DocumentObject::setupObject() callback (default is true)
+     */
+    DocumentObject *addObject(const char* sType, const char* pObjectName=0, bool isNew=true);
     /// Remove a feature out of the document
     void remObject(const char* sName);
+    /** Add an existing feature with sName (ASCII) to this document and set it active.
+     * Unicode names are set through the Label property.
+     * This is an overloaded function of the function above and can be used to create
+     * a feature outside and add it to the document afterwards.
+     * \note The passed feature must not yet be added to a document, otherwise an exception
+     * is raisedd.
+     */
+    void addObject(DocumentObject*, const char* pObjectName=0);
+    
+
     /** Copy an object from another document to this document
      * If \a recursive is true then all objects this object depends on
      * are copied as well. By default \a recursive is false.
@@ -182,6 +211,8 @@ public:
     DocumentObject *getActiveObject(void) const;
     /// Returns a Object of this document
     DocumentObject *getObject(const char *Name) const;
+    /// Returns true if the DocumentObject is contained in this document
+    bool isIn(const DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
     const char *getObjectName(DocumentObject *pFeat) const;
     /// Returns a Name of an Object or 0
@@ -191,6 +222,7 @@ public:
     /// Returns a list of all Objects
     std::vector<DocumentObject*> getObjects() const;
     std::vector<DocumentObject*> getObjectsOfType(const Base::Type& typeId) const;
+    std::vector<DocumentObject*> getObjectsWithExtension(const Base::Type& typeId) const;
     std::vector<DocumentObject*> findObjects(const Base::Type& typeId, const char* objname) const;
     /// Returns an array with the correct types already.
     template<typename T> inline std::vector<T*> getObjectsOfType() const;
@@ -212,30 +244,34 @@ public:
     void setClosable(bool);
     /// check whether the document can be closed
     bool isClosable() const;
-    /// Recompute all touched features
-    void recompute();
+    /// Recompute all touched features and return the amount of recalculated features
+    int recompute();
     /// Recompute only one feature
     void recomputeFeature(DocumentObject* Feat);
     /// get the error log from the recompute run
     const std::vector<App::DocumentObjectExecReturn*> &getRecomputeLog(void)const{return _RecomputeLog;}
     /// get the text of the error of a spezified object
     const char* getErrorDescription(const App::DocumentObject*) const;
+    /// return the status bits
+    bool testStatus(Status pos) const;
+    /// set the status bits
+    void setStatus(Status pos, bool on);
     //@}
 
 
     /** @name methods for the UNDO REDO and Transaction handling */
     //@{
     /// switch the level of Undo/Redo
-    void setUndoMode(int iMode);  
+    void setUndoMode(int iMode);
     /// switch the level of Undo/Redo
-    int getUndoMode(void) const;  
+    int getUndoMode(void) const;
     /// switch the tranaction mode
     void setTransactionMode(int iMode);
     /// Open a new command Undo/Redo, an UTF-8 name can be specified
     void openTransaction(const char* name=0);
     // Commit the Command transaction. Do nothing If there is no Command transaction open.
     void commitTransaction();
-    /// Abort the  actually running transaction. 
+    /// Abort the  actually running transaction.
     void abortTransaction();
     /// Check if a transaction is open
     bool hasPendingTransaction() const;
@@ -273,10 +309,15 @@ public:
     std::vector<App::DocumentObject*> getInList(const DocumentObject* me) const;
     /// Get a complete list of all objects the given objects depend on. The list
     /// also contains the given objects!
+    /// deprecated! Use In- and OutList mimic in the DocumentObject instead!
     std::vector<App::DocumentObject*> getDependencyList
         (const std::vector<App::DocumentObject*>&) const;
     // set Changed
     //void setChanged(DocumentObject* change);
+    /// get a list of topological sorted objects (https://en.wikipedia.org/wiki/Topological_sorting)
+    std::vector<App::DocumentObject*> topologicalSort() const;
+    /// get all root objects (objects no other one reference too)
+    std::vector<App::DocumentObject*> getRootObjects() const;
     //@}
 
     /// Function called to signal that an object identifier has been renamed
@@ -286,11 +327,12 @@ public:
 
     friend class Application;
     /// because of transaction handling
+    friend class TransactionalObject;
     friend class DocumentObject;
     friend class Transaction;
-    friend class TransactionObject;
+    friend class TransactionDocumentObject;
 
-    /// Destruction 
+    /// Destruction
     virtual ~Document();
 
 protected:
@@ -307,12 +349,13 @@ protected:
 
     void onChanged(const Property* prop);
     /// callback from the Document objects before property will be changed
-    void onBeforeChangeProperty(const DocumentObject *Who, const Property *What);
+    void onBeforeChangeProperty(const TransactionalObject *Who, const Property *What);
     /// callback from the Document objects after property was changed
     void onChangedProperty(const DocumentObject *Who, const Property *What);
     /// helper which Recompute only this feature
     bool _recomputeFeature(DocumentObject* Feat);
     void _clearRedos();
+
     /// refresh the internal dependency graph
     void _rebuildDependencyList(void);
     std::string getTransientDirectoryName(const std::string& uuid, const std::string& filename) const;

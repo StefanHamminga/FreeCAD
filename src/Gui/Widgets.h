@@ -33,6 +33,7 @@
 #include <QPlainTextEdit>
 #include <QBasicTimer>
 #include <QTime>
+#include <QToolButton>
 
 namespace Gui {
 class PrefCheckBox;
@@ -134,6 +135,33 @@ private:
 
 // ------------------------------------------------------------------------------
 
+/**
+ * The ClearLineEdit class adds a clear button at the right side.
+ * http://stackoverflow.com/questions/21232224/qlineedit-with-custom-button
+ */
+class GuiExport ClearLineEdit : public QLineEdit
+{
+  Q_OBJECT
+
+public:
+    ClearLineEdit (QWidget * parent=0);
+
+protected:
+    void resizeEvent(QResizeEvent *);
+
+private Q_SLOTS:
+    void updateClearButton(const QString &text);
+
+private:
+#if QT_VERSION >= 0x050200
+    QAction *clearAction;
+#else
+    QToolButton *clearButton;
+#endif
+};
+
+// ------------------------------------------------------------------------------
+
 typedef QPair<QString, bool> CheckListItem;
 
 /**
@@ -147,7 +175,7 @@ class GuiExport CheckListDialog : public QDialog
   Q_OBJECT
 
 public:
-  CheckListDialog( QWidget* parent = 0, Qt::WFlags fl = 0 );
+  CheckListDialog( QWidget* parent = 0, Qt::WindowFlags fl = 0 );
   ~CheckListDialog();
 
   void setCheckableItems( const QStringList& items );
@@ -191,6 +219,9 @@ public:
     void setModal(bool);
     bool isModal() const;
 
+    void setAutoChangeColor(bool);
+    bool autoChangeColor() const;
+
 public Q_SLOTS:
     void onChooseColor();
 
@@ -225,7 +256,7 @@ class GuiExport UrlLabel : public QLabel
   Q_PROPERTY( QString  url    READ url   WRITE setUrl)
 
 public:
-  UrlLabel ( QWidget * parent = 0, Qt::WFlags f = 0 );
+  UrlLabel ( QWidget * parent = 0, Qt::WindowFlags f = 0 );
   virtual ~UrlLabel();
 
   QString url() const;
@@ -397,6 +428,7 @@ public:
 public Q_SLOTS:
     virtual void setText(const QString &);
     virtual void setButtonText (const QString &);
+    virtual void validateText (const QString &);
 
 Q_SIGNALS:
     void textChanged(const QString &);

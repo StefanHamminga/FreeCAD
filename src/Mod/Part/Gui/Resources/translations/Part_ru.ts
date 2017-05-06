@@ -2,6 +2,891 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ru" sourcelanguage="en">
 <context>
+    <name>Attacher</name>
+    <message>
+        <location filename="../../AttacherTexts.cpp" line="+273"/>
+        <source>Any</source>
+        <comment>Attacher reference type</comment>
+        <translation>Любой</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Vertex</source>
+        <comment>Attacher reference type</comment>
+        <translation>Вершина</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Edge</source>
+        <comment>Attacher reference type</comment>
+        <translation>Ребро</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Face</source>
+        <comment>Attacher reference type</comment>
+        <translation>Поверхность</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Line</source>
+        <comment>Attacher reference type</comment>
+        <translation>Линия</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Curve</source>
+        <comment>Attacher reference type</comment>
+        <translation>Кривая</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Circle</source>
+        <comment>Attacher reference type</comment>
+        <translation>Окружность</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Conic</source>
+        <comment>Attacher reference type</comment>
+        <translation>Конус</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Ellipse</source>
+        <comment>Attacher reference type</comment>
+        <translation>Эллипс</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Parabola</source>
+        <comment>Attacher reference type</comment>
+        <translation>Парабола</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Hyperbola</source>
+        <comment>Attacher reference type</comment>
+        <translation>Гипербола</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Plane</source>
+        <comment>Attacher reference type</comment>
+        <translation>Плоскость</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Sphere</source>
+        <comment>Attacher reference type</comment>
+        <translation>Сфера</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Revolve</source>
+        <comment>Attacher reference type</comment>
+        <translation>Вращение</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cylinder</source>
+        <comment>Attacher reference type</comment>
+        <translation>Цилиндр</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Torus</source>
+        <comment>Attacher reference type</comment>
+        <translation>Тор</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Cone</source>
+        <comment>Attacher reference type</comment>
+        <translation>Конус</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object</source>
+        <comment>Attacher reference type</comment>
+        <translation>Объект</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Solid</source>
+        <comment>Attacher reference type</comment>
+        <translation>Твердотельная модель</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Wire</source>
+        <comment>Attacher reference type</comment>
+        <translation>Связь</translation>
+    </message>
+</context>
+<context>
+    <name>Attacher0D</name>
+    <message>
+        <location line="-65"/>
+        <source>Deactivated</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation type="unfinished">Deactivated</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation>Привязка отключена. Точки могут быть перемещены изменением свойств расположения.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s origin</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Начало объекта</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Point is put at object&apos;s Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished">Point is put at object&apos;s Placement.Position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Focus1</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Фокус1</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Focus of ellipse, parabola, hyperbola.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation>Фокус эллипса, параболы, гиперболы.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Focus2</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Фокус2</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Second focus of ellipse and hyperbola.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation>Второй фокус эллипса и гиперболы.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>On edge</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>На грани</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished">Point is put on edge, MapPathParametr controls where. Additionally, vertex can be linked in for making a projection.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Center of curvature</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Центр кривизны</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Center of osculating circle of an edge. Optinal vertex link defines where.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished">Center of osculating circle of an edge. Optinal vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Center of mass</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Центр масс</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Center of mass of all references (equal densities are assumed).</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished">Center of mass of all references (equal densities are assumed).</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Intersection</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Пересечение</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Not implemented</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation>Не реализовано</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Vertex</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Вершина</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Put Datum point coincident with another vertex.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation type="unfinished">Put Datum point coincident with another vertex.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Proximity point 1</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Ближайшая точка 1</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Point on first reference that is closest to second reference.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation>Точка на первом ориентире, ближайшая ко второму ориентиру.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Proximity point 2</source>
+        <comment>AttachmentPoint mode caption</comment>
+        <translation>Ближайшая точка 2</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Point on second reference that is closest to first reference.</source>
+        <comment>AttachmentPoint mode tooltip</comment>
+        <translation>Точка на втором ориентире, ближайшая к первому ориентиру.</translation>
+    </message>
+</context>
+<context>
+    <name>Attacher1D</name>
+    <message>
+        <location line="-97"/>
+        <source>Deactivated</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">Deactivated</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Attachment is disabled. Line can be moved by editing Placement property.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s X</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>X</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+6"/>
+        <source>Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line is aligned along local X axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Object&apos;s Y</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Y</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line is aligned along local Y axis of object. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s Z</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Z</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Axis of curvature</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Ось кривизны</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Directrix1</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">Directrix1</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Directrix line for ellipse, parabola, hyperbola.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation>Директриса для эллипса, параболы и гиперболы.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Directrix2</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">Directrix2</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Second directrix line for ellipse and hyperbola.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation>Вторая директриса для эллипса и гиперболы.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Asymptote1</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Асимптота1</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Asymptote of a hyperbola.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation>Асимптота гиперболы.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Asymptote2</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Асимптота2</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Second asymptote of hyperbola.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation>Вторая асимптота гиперболы.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tangent</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Тангенс</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line tangent to an edge. Optional vertex link defines where.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line tangent to an edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Normal</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Обычные</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Align to N vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Binormal</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">Binormal</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Align to B vector of Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tangent to surface (U)</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Касательная к поверхности (U)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <source>Tangent to surface, along U parameter. Vertex link defines where.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Tangent to surface, along U parameter. Vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="-1"/>
+        <source>Tangent to surface (V)</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Касательная к поверхности (V)</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Through two points</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Через две точки</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line that passes through two vertices.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation>Линия проходящая через две вершины.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Intersection</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation>Пересечение</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Not implemented.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation>Не реализовано.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Proximity line</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">Proximity line</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line that spans the shortest distance between shapes.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line that spans the shortest distance between shapes.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>1st principal axis</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">1st principal axis</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line follows first principal axis of inertia.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line follows first principal axis of inertia.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>2nd principal axis</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">2nd principal axis</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line follows second principal axis of inertia.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line follows second principal axis of inertia.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>3rd principal axis</source>
+        <comment>AttachmentLine mode caption</comment>
+        <translation type="unfinished">3rd principal axis</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Line follows third principal axis of inertia.</source>
+        <comment>AttachmentLine mode tooltip</comment>
+        <translation type="unfinished">Line follows third principal axis of inertia.</translation>
+    </message>
+</context>
+<context>
+    <name>Attacher2D</name>
+    <message>
+        <location line="-115"/>
+        <source>Deactivated</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation type="unfinished">Deactivated</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Attachment is disabled. Plane can be moved by editing Placement property.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Attachment is disabled. Plane can be moved by editing Placement property.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Translate origin</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>Перевести начало</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s XY</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>XY объекта</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane is aligned to XY local plane of linked object.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane is aligned to XY local plane of linked object.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s XZ</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>XZ объекта</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane is aligned to XZ local plane of linked object.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane is aligned to XZ local plane of linked object.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s  YZ</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>YZ объекта</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane is aligned to YZ local plane of linked object.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane is aligned to YZ local plane of linked object.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Plane face</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>Плоская грань</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane is aligned to coincide planar face.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane is aligned to coincide planar face.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Tangent to surface</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>Касательно к поверхности</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane is made tangent to surface at vertex.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane is made tangent to surface at vertex.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Normal to edge</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>Нормально к ребру</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane is made tangent to edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane is made tangent to edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Frenet NB</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation type="unfinished">Frenet NB</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Frenet TN</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation type="unfinished">Frenet TN</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Frenet TB</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation type="unfinished">Frenet TB</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Concentric</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>Концентрично</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Align to plane to osculating circle of an edge. Origin is aligned to point of curvature. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Revolution Section</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation type="unfinished">Revolution Section</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane is prependicular to edge, and Y axis is matched with axis of osculating circle. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Plane by 3 points</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>Плоскость по 3 точкам</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align plane to pass through three vertices.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation>Выравнять плоскость по трём вершинам.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Normal to 3 points</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation>Нормаль к 3 точкам</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane will pass through first two vertices, and perpendicular to plane that passes through three vertices.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation>Плоскость будет проходить через первые две вершины перпендикулярно плоскости через три вершины.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Folding</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation type="unfinished">Folding</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. Plane will be aligned to folding the first edge.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Inertia 2-3</source>
+        <comment>AttachmentPlane mode caption</comment>
+        <translation type="unfinished">Inertia 2-3</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Plane constructed on second and third principal axes of inertia (passes through center of mass).</source>
+        <comment>AttachmentPlane mode tooltip</comment>
+        <translation type="unfinished">Plane constructed on second and third principal axes of inertia (passes through center of mass).</translation>
+    </message>
+</context>
+<context>
+    <name>Attacher3D</name>
+    <message>
+        <location line="-106"/>
+        <source>Deactivated</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Deactivated</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Attachment is disabled. CS can be moved by editing Placement property.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Attachment is disabled. CS can be moved by editing Placement property.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Translate origin</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation>Перевести начало</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Origin is aligned to match Vertex. Orientation is controlled by Placement property.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Origin is aligned to match Vertex. Orientation is controlled by Placement property.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s  X Y Z</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation>X Y Z объекта</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Placement is made equal to Placement of linked object.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Placement is made equal to Placement of linked object.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s  X Z-Y</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation>X Z-Y объекта</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local X, Z, -Y, respectively.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local X, Z, -Y, respectively.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Object&apos;s  Y Z X</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation>Y Z X объекта</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local Y, Z, X, respectively.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">X&apos;, Y&apos;, Z&apos; axes are matched with object&apos;s local Y, Z, X, respectively.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>XY on plane</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">XY on plane</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>X&apos; Y&apos; plane is aligned to coincide planar face.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">X&apos; Y&apos; plane is aligned to coincide planar face.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>XY tangent to surface</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">XY tangent to surface</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>X&apos; Y&apos; plane is made tangent to surface at vertex.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">X&apos; Y&apos; plane is made tangent to surface at vertex.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Z tangent to edge</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Z tangent to edge</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Z&apos; axis is aligned to be tangent to edge. Optional vertex link defines where.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Z&apos; axis is aligned to be tangent to edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Frenet NBT</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Frenet NBT</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+3"/>
+        <location line="+3"/>
+        <source>Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Align to Frenet-Serret coordinate system of curved edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="-4"/>
+        <source>Frenet TNB</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Frenet TNB</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Frenet TBN</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Frenet TBN</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Concentric</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation>Концентрично</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align XY plane to osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Align XY plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Revolution Section</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Revolution Section</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align Y&apos; axis to match axis of osculating circle of an edge. Optional vertex link defines where.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Align Y&apos; axis to match axis of osculating circle of an edge. Optional vertex link defines where.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>XY plane by 3 points</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation>Плоскость XY по 3 точкам</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align XY plane to pass through three vertices.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Align XY plane to pass through three vertices.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>XZ plane by 3 points</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation>Плоскость XZ по 3 точкам</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Align XZ plane to pass through 3 points; X axis will pass through two first points.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Align XZ plane to pass through 3 points; X axis will pass through two first points.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Folding</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Folding</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY plane will be aligned to folding the first edge.</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Inertial CS</source>
+        <comment>Attachment3D mode caption</comment>
+        <translation type="unfinished">Inertial CS</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Inertial coordinate system, constructed on principal axes of inertia and center of mass.</source>
+        <comment>Attachment3D mode tooltip</comment>
+        <translation type="unfinished">Inertial coordinate system, constructed on principal axes of inertia and center of mass.</translation>
+    </message>
+</context>
+<context>
     <name>BlockDefinition</name>
     <message>
         <location filename="../../DlgBlock.ui" line="+14"/>
@@ -131,7 +1016,7 @@
 <context>
     <name>CmdCheckGeometry</name>
     <message>
-        <location filename="../../Command.cpp" line="+1597"/>
+        <location filename="../../Command.cpp" line="+1982"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -149,7 +1034,7 @@
 <context>
     <name>CmdColorPerFace</name>
     <message>
-        <location line="+31"/>
+        <location line="+32"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -167,91 +1052,91 @@
 <context>
     <name>CmdMeasureAngular</name>
     <message>
-        <location line="+62"/>
+        <location line="+64"/>
         <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
+        <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Angular</source>
-        <translation type="unfinished">Измерить угол</translation>
+        <translation>Измерить угол</translation>
     </message>
 </context>
 <context>
     <name>CmdMeasureClearAll</name>
     <message>
-        <location line="+26"/>
+        <location line="+27"/>
         <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
+        <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Clear All</source>
-        <translation type="unfinished">Очистить все</translation>
+        <translation>Очистить все</translation>
     </message>
 </context>
 <context>
     <name>CmdMeasureLinear</name>
     <message>
-        <location line="-58"/>
+        <location line="-60"/>
         <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
+        <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Measure Linear</source>
-        <translation type="unfinished">Измерить длину</translation>
+        <translation>Измерить длину</translation>
     </message>
 </context>
 <context>
     <name>CmdMeasureToggle3d</name>
     <message>
-        <location line="+116"/>
+        <location line="+120"/>
         <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
+        <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Переключить  3d</translation>
+        <translation>Переключить  3d</translation>
     </message>
 </context>
 <context>
     <name>CmdMeasureToggleAll</name>
     <message>
-        <location line="-36"/>
+        <location line="-37"/>
         <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
+        <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle All</source>
-        <translation type="unfinished">Скрыть/Показать всё</translation>
+        <translation>Переключить всё</translation>
     </message>
 </context>
 <context>
     <name>CmdMeasureToggleDelta</name>
     <message>
-        <location line="+60"/>
+        <location line="+62"/>
         <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
+        <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+1"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Переключить Дельту</translation>
+        <translation>Переключить Дельту</translation>
     </message>
 </context>
 <context>
     <name>CmdPartBoolean</name>
     <message>
-        <location line="-840"/>
+        <location line="-1054"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -263,27 +1148,27 @@
     <message>
         <location line="+1"/>
         <source>Run a boolean operation with two shapes selected</source>
-        <translation>Выполнить булеву операцию с двумя выбранными формами</translation>
+        <translation>Булева операция с двумя выбранными формами</translation>
     </message>
 </context>
 <context>
     <name>CmdPartBox</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="+86"/>
+        <location filename="../../CommandParametric.cpp" line="+87"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+10"/>
+        <location line="+11"/>
         <location line="+5"/>
         <source>Cube</source>
-        <translation type="unfinished">Куб</translation>
+        <translation>Куб</translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-15"/>
         <source>Create a cube solid</source>
-        <translation type="unfinished">Создать твердотельный куб</translation>
+        <translation>Создать твердотельный куб</translation>
     </message>
     <message>
         <source>Box</source>
@@ -297,7 +1182,7 @@
 <context>
     <name>CmdPartBox2</name>
     <message>
-        <location filename="../../Command.cpp" line="-848"/>
+        <location filename="../../Command.cpp" line="-1021"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -333,7 +1218,7 @@
 <context>
     <name>CmdPartBuilder</name>
     <message>
-        <location line="+1007"/>
+        <location line="+1237"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -351,7 +1236,7 @@
 <context>
     <name>CmdPartChamfer</name>
     <message>
-        <location line="-95"/>
+        <location line="-98"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -369,7 +1254,7 @@
 <context>
     <name>CmdPartCommon</name>
     <message>
-        <location line="-748"/>
+        <location line="-972"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -387,55 +1272,91 @@
 <context>
     <name>CmdPartCompJoinFeatures</name>
     <message>
-        <location line="+163"/>
-        <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Join objects...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Join walled objects</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>CmdPartCompound</name>
-    <message>
-        <location line="+92"/>
-        <source>Part</source>
-        <translation type="unfinished">Деталь</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Make compound</source>
-        <translation type="unfinished">Составить многогранник</translation>
-    </message>
-    <message>
-        <location line="+1"/>
-        <source>Make a compound of several shapes</source>
-        <translation type="unfinished">Составить многогранник из нескольких фигур</translation>
-    </message>
-</context>
-<context>
-    <name>CmdPartCone</name>
-    <message>
-        <location filename="../../CommandParametric.cpp" line="+78"/>
+        <location line="+203"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+10"/>
+        <source>Join objects...</source>
+        <translation>Объединить объекты...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Join walled objects</source>
+        <translation type="unfinished">Join walled objects</translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartCompOffset</name>
+    <message>
+        <location line="+1044"/>
+        <source>Part</source>
+        <translation>Деталь</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Offset:</source>
+        <translation>Смещение:</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Tools to offset shapes (construct parallel shapes)</source>
+        <translation type="unfinished">Tools to offset shapes (construct parallel shapes)</translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartCompSplitFeatures</name>
+    <message>
+        <location line="-941"/>
+        <source>Part</source>
+        <translation>Деталь</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Split objects...</source>
+        <translation>Разделить объекты...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Shape splitting tools. Compsolid creation tools. OCC 6.9.0 or later is required.</source>
+        <translation>Инструменты разделения фигур. Инструменты создания Compsolid. Требуется OCC версии не менее 6.9.0.</translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartCompound</name>
+    <message>
+        <location line="+107"/>
+        <source>Part</source>
+        <translation>Деталь</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Make compound</source>
+        <translation>Составить многогранник</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Make a compound of several shapes</source>
+        <translation>Составить многогранник из нескольких фигур</translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartCone</name>
+    <message>
+        <location filename="../../CommandParametric.cpp" line="+80"/>
+        <source>Part</source>
+        <translation>Деталь</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+11"/>
         <location line="+5"/>
         <source>Cone</source>
         <translation>Конус</translation>
     </message>
     <message>
-        <location line="-14"/>
+        <location line="-15"/>
         <source>Create a cone solid</source>
         <translation>Создать твердотельный конус</translation>
     </message>
@@ -443,7 +1364,7 @@
 <context>
     <name>CmdPartCrossSections</name>
     <message>
-        <location filename="../../Command.cpp" line="+539"/>
+        <location filename="../../Command.cpp" line="+603"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -461,7 +1382,7 @@
 <context>
     <name>CmdPartCut</name>
     <message>
-        <location line="-879"/>
+        <location line="-1106"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -473,13 +1394,13 @@
     <message>
         <location line="+1"/>
         <source>Make a cut of two shapes</source>
-        <translation>Выполнить обрезку двух фигур</translation>
+        <translation>Обрезать две фигуры</translation>
     </message>
 </context>
 <context>
     <name>CmdPartCylinder</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="-122"/>
+        <location filename="../../CommandParametric.cpp" line="-125"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -490,7 +1411,7 @@
     </message>
     <message>
         <location line="-1"/>
-        <location line="+10"/>
+        <location line="+11"/>
         <location line="+5"/>
         <source>Cylinder</source>
         <translation>Цилиндр</translation>
@@ -499,7 +1420,7 @@
 <context>
     <name>CmdPartExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+488"/>
+        <location filename="../../Command.cpp" line="+654"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -517,7 +1438,7 @@
 <context>
     <name>CmdPartExtrude</name>
     <message>
-        <location line="+250"/>
+        <location line="+256"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -535,7 +1456,7 @@
 <context>
     <name>CmdPartFillet</name>
     <message>
-        <location line="+52"/>
+        <location line="+104"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -553,7 +1474,7 @@
 <context>
     <name>CmdPartFuse</name>
     <message>
-        <location line="-639"/>
+        <location line="-842"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -571,7 +1492,7 @@
 <context>
     <name>CmdPartImport</name>
     <message>
-        <location line="+270"/>
+        <location line="+414"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -589,7 +1510,7 @@
 <context>
     <name>CmdPartImportCurveNet</name>
     <message>
-        <location line="+104"/>
+        <location line="+106"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -607,7 +1528,7 @@
 <context>
     <name>CmdPartLoft</name>
     <message>
-        <location line="+407"/>
+        <location line="+469"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -627,9 +1548,35 @@
     </message>
 </context>
 <context>
+    <name>CmdPartMakeFace</name>
+    <message>
+        <location line="-233"/>
+        <source>Part</source>
+        <translation>Деталь</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Make face from wires</source>
+        <translation>Создать грань из ломаных</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Part_MakeFace: Make face from set of wires (e.g., from a sketch).</source>
+        <translation type="unfinished">Part_MakeFace: Make face from set of wires (e.g., from a sketch).</translation>
+    </message>
+    <message>
+        <source>Make face from sketch</source>
+        <translation type="obsolete">Создать грань из эскиза</translation>
+    </message>
+    <message>
+        <source>Make face from selected sketches</source>
+        <translation type="obsolete">Создать грань из выбранных эскизов</translation>
+    </message>
+</context>
+<context>
     <name>CmdPartMakeSolid</name>
     <message>
-        <location line="-365"/>
+        <location line="-193"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -647,7 +1594,7 @@
 <context>
     <name>CmdPartMirror</name>
     <message>
-        <location line="+267"/>
+        <location line="+323"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -665,25 +1612,51 @@
 <context>
     <name>CmdPartOffset</name>
     <message>
-        <location line="+148"/>
+        <location line="+153"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
     <message>
         <location line="+1"/>
-        <source>Offset...</source>
-        <translation>Смещение...</translation>
+        <source>3D Offset...</source>
+        <translation>Смещение 3D...</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Part_Offset: Utility to offset in 3D</source>
+        <translation type="unfinished">Part_Offset: Utility to offset in 3D</translation>
+    </message>
+    <message>
+        <source>Offset...</source>
+        <translation type="obsolete">Смещение...</translation>
+    </message>
+    <message>
         <source>Utility to offset</source>
-        <translation>Утилита смещения</translation>
+        <translation type="obsolete">Утилита смещения</translation>
+    </message>
+</context>
+<context>
+    <name>CmdPartOffset2D</name>
+    <message>
+        <location line="+48"/>
+        <source>Part</source>
+        <translation>Деталь</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>2D Offset...</source>
+        <translation>2D смещение...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Part_Offset2D: Utility to offset planar shapes</source>
+        <translation type="unfinished">Part_Offset2D: Utility to offset planar shapes</translation>
     </message>
 </context>
 <context>
     <name>CmdPartPickCurveNet</name>
     <message>
-        <location line="-1181"/>
+        <location line="-1465"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -701,7 +1674,7 @@
 <context>
     <name>CmdPartPrimitives</name>
     <message>
-        <location line="+124"/>
+        <location line="+126"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -719,7 +1692,7 @@
 <context>
     <name>CmdPartRefineShape</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="+214"/>
+        <location filename="../../CommandSimple.cpp" line="+217"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -737,7 +1710,7 @@
 <context>
     <name>CmdPartReverseShape</name>
     <message>
-        <location filename="../../Command.cpp" line="+710"/>
+        <location filename="../../Command.cpp" line="+881"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -755,7 +1728,7 @@
 <context>
     <name>CmdPartRevolve</name>
     <message>
-        <location line="+108"/>
+        <location line="+161"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -773,7 +1746,7 @@
 <context>
     <name>CmdPartRuledSurface</name>
     <message>
-        <location line="+449"/>
+        <location line="+603"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -785,7 +1758,7 @@
     <message>
         <location line="+1"/>
         <source>Create a ruled surface from either two Edges or two wires</source>
-        <translation type="unfinished">Создать поверхность из двух ребер или двух ломанных</translation>
+        <translation>Создать поверхность из двух ребер или двух ломанных</translation>
     </message>
     <message>
         <source>Create a ruled surface from two curves</source>
@@ -795,7 +1768,7 @@
 <context>
     <name>CmdPartSection</name>
     <message>
-        <location line="-835"/>
+        <location line="-1048"/>
         <source>Make a section of two shapes</source>
         <translation>Сделать сечение из двух форм</translation>
     </message>
@@ -813,7 +1786,7 @@
 <context>
     <name>CmdPartShapeFromMesh</name>
     <message>
-        <location filename="../../CommandSimple.cpp" line="-109"/>
+        <location filename="../../CommandSimple.cpp" line="-111"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -831,7 +1804,7 @@
 <context>
     <name>CmdPartSimpleCopy</name>
     <message>
-        <location line="+61"/>
+        <location line="+62"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -849,7 +1822,7 @@
 <context>
     <name>CmdPartSimpleCylinder</name>
     <message>
-        <location line="-115"/>
+        <location line="-117"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -867,7 +1840,7 @@
 <context>
     <name>CmdPartSphere</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="+66"/>
+        <location filename="../../CommandParametric.cpp" line="+67"/>
         <source>Create a sphere solid</source>
         <translation>Создать твердотельную сферу</translation>
     </message>
@@ -878,7 +1851,7 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+10"/>
+        <location line="+11"/>
         <location line="+5"/>
         <source>Sphere</source>
         <translation>Сфера</translation>
@@ -887,7 +1860,7 @@
 <context>
     <name>CmdPartSweep</name>
     <message>
-        <location filename="../../Command.cpp" line="+586"/>
+        <location filename="../../Command.cpp" line="+652"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -905,7 +1878,7 @@
 <context>
     <name>CmdPartThickness</name>
     <message>
-        <location line="+73"/>
+        <location line="+218"/>
         <source>Part</source>
         <translation>Деталь</translation>
     </message>
@@ -920,7 +1893,7 @@
         <translation>Утилита смены толщины</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <location line="+20"/>
         <source>Wrong selection</source>
         <translation>Неправильный выбор</translation>
@@ -939,7 +1912,7 @@
 <context>
     <name>CmdPartTorus</name>
     <message>
-        <location filename="../../CommandParametric.cpp" line="+66"/>
+        <location filename="../../CommandParametric.cpp" line="+67"/>
         <source>Create a torus solid</source>
         <translation>Создать твердотельный тор</translation>
     </message>
@@ -950,7 +1923,7 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+10"/>
+        <location line="+11"/>
         <location line="+5"/>
         <source>Torus</source>
         <translation>Тор</translation>
@@ -983,6 +1956,89 @@
     <message>
         <source>Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</source>
         <translation type="obsolete">Setting a too small deviation causes the tessellation to take longerand thus freezes or slows down the GUI.</translation>
+    </message>
+</context>
+<context>
+    <name>PartDesignGui::TaskDatumParameters</name>
+    <message>
+        <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Selection accepted</source>
+        <translation>Выбор принят</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Reference 1</source>
+        <translation>Ориентир 1</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Reference 2</source>
+        <translation>Ориентир 2</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Reference 3</source>
+        <translation>Ориентир 3</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Reference 4</source>
+        <translation>Ориентир 4</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Attachment mode:</source>
+        <translation>Режим привязки:</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+        <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Extra placement:</source>
+        <translation type="unfinished">Extra placement:</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>X:</source>
+        <translation>X:</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Y:</source>
+        <translation>Y:</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Z:</source>
+        <translation>Z:</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Yaw:</source>
+        <translation>Рыскание:</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Pitch:</source>
+        <translation>Шаг:</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Roll:</source>
+        <translation>Крен:</translation>
+    </message>
+    <message>
+        <location line="+92"/>
+        <source>Flip sides</source>
+        <translation>Поменять стороны</translation>
     </message>
 </context>
 <context>
@@ -1081,7 +2137,7 @@
         <translation>Пересечение</translation>
     </message>
     <message>
-        <location filename="../../DlgBooleanOperation.cpp" line="+386"/>
+        <location filename="../../DlgBooleanOperation.cpp" line="+388"/>
         <source>Cannot perform a boolean operation with the same shape</source>
         <translation>Невозможно выполнить булеву операцию с той же формой</translation>
     </message>
@@ -1153,7 +2209,7 @@
 <context>
     <name>PartGui::DlgChamferEdges</name>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="+964"/>
+        <location filename="../../DlgFilletEdges.cpp" line="+1034"/>
         <source>Chamfer Edges</source>
         <translation>Притупить ребра фаской</translation>
     </message>
@@ -1171,37 +2227,126 @@
         <translation>Направление</translation>
     </message>
     <message>
-        <location line="+123"/>
+        <location line="+6"/>
+        <source>If checked, direction of extrusion is reversed.</source>
+        <translation>Если включено, обратить направление выдавливания.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Reversed</source>
+        <translation>В обратную сторону</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Specify direction manually using X,Y,Z values.</source>
+        <translation>Указать направление вручную, используя значения X, Y, Z.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Custom direction:</source>
+        <translation type="unfinished">Custom direction:</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Extrude perpendicularly to plane of input shape.</source>
+        <translation type="unfinished">Extrude perpendicularly to plane of input shape.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Along normal</source>
         <translation>Вдоль нормали</translation>
     </message>
     <message>
-        <location line="-34"/>
         <source>Length:</source>
-        <translation>Длина:</translation>
+        <translation type="obsolete">Длина:</translation>
     </message>
     <message>
-        <location line="+41"/>
         <source>3D view</source>
-        <translation>3D вид</translation>
+        <translation type="obsolete">3D вид</translation>
     </message>
     <message>
-        <location line="+20"/>
         <source>Note:This option works for planes only</source>
-        <translation>Примечание: Эта опция работает только для плоскостей</translation>
+        <translation type="obsolete">Примечание: Эта опция работает только для плоскостей</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+283"/>
         <source>Create solid</source>
         <translation>Создать твердое тело</translation>
     </message>
     <message>
-        <location line="+9"/>
+        <location line="-62"/>
         <source>Taper outward angle</source>
         <translation>Внешний угол конусности</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="-211"/>
+        <source>Click to start selecting an edge in 3d view.</source>
+        <translation type="unfinished">Click to start selecting an edge in 3d view.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../../DlgExtrusion.cpp" line="+198"/>
+        <source>Select</source>
+        <translation>Выбрать</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</source>
+        <translation type="unfinished">Set direction to match a direction of straight edge. Hint: to account for length of the edge too, set both lengths to zero.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Along edge:</source>
+        <translation type="unfinished">Along edge:</translation>
+    </message>
+    <message>
+        <location line="+98"/>
+        <source>Length</source>
+        <translation>Длина</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Along:</source>
+        <translation>Вдоль:</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</source>
+        <translation type="unfinished">Length to extrude along direction (can be negative). If both lengths are zero, magnitude of direction is used.</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Against:</source>
+        <translation type="unfinished">Against:</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Length to extrude against direction (can be negative).</source>
+        <translation type="unfinished">Length to extrude against direction (can be negative).</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Distribute extrusion length equally to both sides.</source>
+        <translation type="unfinished">Distribute extrusion length equally to both sides.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Symmetric</source>
+        <translation>Симметрично</translation>
+    </message>
+    <message>
+        <location line="+25"/>
+        <location line="+25"/>
+        <source>Apply slope (draft) to extrusion side faces.</source>
+        <translation>Применить наклон (эскиз) к боковым граням выдавливания.</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>If checked, extruding closed wires will give solids, not shells.</source>
+        <translation type="unfinished">If checked, extruding closed wires will give solids, not shells.</translation>
+    </message>
+    <message>
+        <location line="+33"/>
         <source>Shape</source>
         <translation>Форма</translation>
     </message>
@@ -1210,41 +2355,94 @@
         <translation>*</translation>
     </message>
     <message>
-        <location line="-199"/>
+        <location line="-269"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+46"/>
         <source>Z:</source>
         <translation>Z:</translation>
     </message>
     <message>
-        <location line="-26"/>
+        <location line="-23"/>
         <source>Y:</source>
         <translation>Y:</translation>
     </message>
     <message>
-        <location filename="../../DlgExtrusion.cpp" line="+149"/>
         <source>Select a shape for extrusion, first.</source>
-        <translation>Сначала выберите фигуру для экструзии.</translation>
+        <translation type="obsolete">Сначала выберите фигуру для экструзии.</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location filename="../../DlgExtrusion.cpp" line="-26"/>
+        <source>Selecting...</source>
+        <translation>Выбор...</translation>
+    </message>
+    <message>
+        <location line="+241"/>
         <source>The document &apos;%1&apos; doesn&apos;t exist.</source>
-        <translation>The document &apos;%1&apos; doesn&apos;t exist.</translation>
+        <translation type="unfinished">The document &apos;%1&apos; doesn&apos;t exist.</translation>
     </message>
     <message>
-        <location line="+85"/>
+        <location line="+48"/>
+        <location line="+5"/>
+        <source>Creating Extrusion failed.
+
+%1</source>
+        <translation>Ошибка при создании выдавливания.
+
+%1</translation>
+    </message>
+    <message>
+        <location line="+67"/>
+        <source>Object not found: %1</source>
+        <translation>Объект не найден: %1</translation>
+    </message>
+    <message>
+        <location line="+62"/>
+        <source>No shapes selected for extrusion. Select some, first.</source>
+        <translation>Не выбраны фигуры для выдавливания.</translation>
+    </message>
+    <message>
+        <location line="+21"/>
+        <source>Revolution axis link is invalid.
+
+%1</source>
+        <translation type="unfinished">Revolution axis link is invalid.
+
+%1</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Direction mode is to use an edge, but no edge is linked.</source>
+        <translation type="unfinished">Direction mode is to use an edge, but no edge is linked.</translation>
+    </message>
+    <message>
+        <location line="+23"/>
+        <source>Can&apos;t determine normal vector of shape to be extruded. Please use other mode. 
+
+(%1)</source>
+        <translation type="unfinished">Can&apos;t determine normal vector of shape to be extruded. Please use other mode. 
+
+(%1)</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Extrusion direction is zero-length. It must be non-zero.</source>
+        <translation>Нулевая длина направления выдавливания.</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Total extrusion length is zero (length1 == -length2). It must be nonzero.</source>
+        <translation>Нулевая общая длина выдавливания (длина1 = -длина2).</translation>
+    </message>
+    <message>
         <source>Succeeded</source>
-        <translation type="unfinished">Succeeded</translation>
+        <translation type="obsolete">Удалось</translation>
     </message>
     <message>
-        <location line="+4"/>
-        <location line="+5"/>
-        <location line="+5"/>
         <source>Failed</source>
-        <translation type="unfinished">Не удалось</translation>
+        <translation type="obsolete">Не удалось</translation>
     </message>
 </context>
 <context>
@@ -1260,22 +2458,27 @@
         <translation>Параметр скругления</translation>
     </message>
     <message>
-        <location line="+45"/>
+        <location line="+91"/>
         <source>Radius:</source>
         <translation>Радиус:</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="-69"/>
         <source>Select faces</source>
-        <translation type="unfinished">Выберете грани</translation>
+        <translation>Выберете грани</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="-16"/>
+        <source>Selection</source>
+        <translation>Выделение</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Select edges</source>
-        <translation type="unfinished">Выберете ребра</translation>
+        <translation>Выберете ребра</translation>
     </message>
     <message>
-        <location line="-104"/>
+        <location line="+47"/>
         <source>Fillet type:</source>
         <translation>Тип ленты:</translation>
     </message>
@@ -1290,7 +2493,7 @@
         <translation>Переменный радиус</translation>
     </message>
     <message>
-        <location line="-57"/>
+        <location line="-103"/>
         <source>Shape</source>
         <translation>Форма</translation>
     </message>
@@ -1305,35 +2508,35 @@
         <translation>Нет выбора</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-728"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-769"/>
         <source>Length:</source>
-        <translation type="unfinished">Длина:</translation>
+        <translation>Длина:</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constant Length</source>
-        <translation type="unfinished">Постоянная длинна</translation>
+        <translation>Постоянная длинна</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Variable Length</source>
-        <translation type="unfinished">Переменная длина</translation>
+        <translation>Переменная длина</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Edges to chamfer</source>
-        <translation type="unfinished">Ребра для выполнения фаски</translation>
+        <translation>Ребра для выполнения фаски</translation>
     </message>
     <message>
         <location line="+1"/>
-        <location line="+520"/>
+        <location line="+561"/>
         <source>Start length</source>
-        <translation type="unfinished">Начальная длина</translation>
+        <translation>Начальная длина</translation>
     </message>
     <message>
-        <location line="-519"/>
+        <location line="-560"/>
         <source>End length</source>
-        <translation type="unfinished">Конечная длина</translation>
+        <translation>Конечная длина</translation>
     </message>
     <message>
         <location line="+3"/>
@@ -1342,19 +2545,19 @@
     </message>
     <message>
         <location line="+1"/>
-        <location line="+517"/>
+        <location line="+558"/>
         <source>Start radius</source>
         <translation>Начальный радиус</translation>
     </message>
     <message>
-        <location line="-516"/>
+        <location line="-557"/>
         <source>End radius</source>
         <translation>Конечный радиус</translation>
     </message>
     <message>
-        <location line="+506"/>
+        <location line="+547"/>
         <source>Length</source>
-        <translation type="unfinished">Длина</translation>
+        <translation>Длина</translation>
     </message>
     <message>
         <location line="+2"/>
@@ -1374,17 +2577,17 @@ Please check one or more edge entities first.</source>
 Пожалуйста, выберите обьект для сглаживания.</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.ui" line="+101"/>
+        <location filename="../../DlgFilletEdges.ui" line="+40"/>
         <source>All</source>
         <translation>Все</translation>
     </message>
     <message>
-        <location line="-84"/>
+        <location line="+7"/>
         <source>None</source>
         <translation>Ничего</translation>
     </message>
     <message>
-        <location filename="../../DlgFilletEdges.cpp" line="-246"/>
+        <location filename="../../DlgFilletEdges.cpp" line="-248"/>
         <location line="+60"/>
         <source>Edge%1</source>
         <translation>Грань%1</translation>
@@ -1406,81 +2609,81 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportIges.ui" line="+14"/>
         <source>IGES</source>
-        <translation type="unfinished">IGES</translation>
+        <translation>IGES</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Экспорт</translation>
+        <translation>Экспорт</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Units for export of IGES</source>
-        <translation type="unfinished">Units for export of IGES</translation>
+        <translation>Единицы для экспорта  IGE</translation>
     </message>
     <message>
         <location line="+21"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Миллиметр</translation>
+        <translation>Миллиметр</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Метр</translation>
+        <translation>Метр</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Дюйм</translation>
+        <translation>Дюйм</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Write solids and shells as</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Write solids and shells as</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Groups of Trimmed Surfaces (type 144)</source>
-        <translation type="unfinished"></translation>
+        <translation>Группы подогнанных поверхностей (тип 144)</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Solids (type 186) and Shells (type 514) / B-REP mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Solids (type 186) and Shells (type 514) / B-REP mode</translation>
     </message>
     <message>
         <source>Enable B-REP mode</source>
-        <translation type="obsolete">Enable B-REP mode</translation>
+        <translation type="obsolete">Включить режим B-REP</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Import</source>
-        <translation type="unfinished">импорт</translation>
+        <translation>импорт</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Skip blank entities</source>
-        <translation type="unfinished">Skip blank entities</translation>
+        <translation>Пропускать пустые сущностей</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished">Header</translation>
+        <translation>Заголовок</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished">Компания</translation>
+        <translation>Компания</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished">Продукт</translation>
+        <translation>Продукт</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Author</source>
-        <translation type="unfinished">Автор</translation>
+        <translation>Автор</translation>
     </message>
 </context>
 <context>
@@ -1488,57 +2691,62 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgImportExportStep.ui" line="+14"/>
         <source>STEP</source>
-        <translation type="unfinished">STEP</translation>
+        <translation>STEP</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Export</source>
-        <translation type="unfinished">Экспорт</translation>
+        <translation>Экспорт</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+38"/>
         <source>Units for export of STEP</source>
-        <translation type="unfinished">Units for export of STEP</translation>
+        <translation>Единицы для экспорта STEP</translation>
     </message>
     <message>
-        <location line="+21"/>
+        <location line="-31"/>
         <source>Millimeter</source>
-        <translation type="unfinished">Миллиметр</translation>
+        <translation>Миллиметр</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Meter</source>
-        <translation type="unfinished">Метр</translation>
+        <translation>Метр</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Inch</source>
-        <translation type="unfinished">Дюйм</translation>
+        <translation>Дюйм</translation>
     </message>
     <message>
-        <location line="+8"/>
+        <location line="+28"/>
         <source>Scheme</source>
-        <translation type="unfinished">Scheme</translation>
+        <translation>Схема</translation>
     </message>
     <message>
-        <location line="+29"/>
+        <location line="+26"/>
+        <source>Write out curves in parametric space of surface</source>
+        <translation type="unfinished">Write out curves in parametric space of surface</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Header</source>
-        <translation type="unfinished">Header</translation>
+        <translation>Заголовок</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Company</source>
-        <translation type="unfinished">Компания</translation>
+        <translation>Компания</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Author</source>
-        <translation type="unfinished">Автор</translation>
+        <translation>Автор</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Product</source>
-        <translation type="unfinished">Продукт</translation>
+        <translation>Продукт</translation>
     </message>
 </context>
 <context>
@@ -1549,7 +2757,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Определение параллелепипеда</translation>
     </message>
     <message>
-        <location line="+62"/>
+        <location line="+71"/>
         <source>X:</source>
         <translation>X:</translation>
     </message>
@@ -1577,7 +2785,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Размер:</translation>
     </message>
     <message>
-        <location line="+42"/>
+        <location line="+51"/>
         <source>Height:</source>
         <translation>Высота:</translation>
     </message>
@@ -1592,12 +2800,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Длина:</translation>
     </message>
     <message>
-        <location line="-136"/>
+        <location line="-154"/>
         <source>Position:</source>
         <translation>Расположение:</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location line="+58"/>
         <source>Direction:</source>
         <translation>Направление:</translation>
     </message>
@@ -1610,7 +2818,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Определение цилиндра</translation>
     </message>
     <message>
-        <location line="+86"/>
+        <location line="+95"/>
         <source>Parameter</source>
         <translation>Параметр</translation>
     </message>
@@ -1625,7 +2833,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Радиус:</translation>
     </message>
     <message>
-        <location line="-99"/>
+        <location line="-108"/>
         <source>Position:</source>
         <translation>Расположение:</translation>
     </message>
@@ -1691,9 +2899,18 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::DlgPartImportIgesImp</name>
     <message>
-        <location filename="../../DlgPartImportIgesImp.cpp" line="+69"/>
         <source>IGES (*.igs *.iges);;All Files (*.*)</source>
-        <translation>IGES (*.igs *.iges);;Все файлы (*.*)</translation>
+        <translation type="obsolete">IGES (*.igs *.iges);;Все файлы (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../../DlgPartImportIgesImp.cpp" line="+71"/>
+        <source>IGES</source>
+        <translation>IGES</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>All Files</source>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -1729,9 +2946,18 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::DlgPartImportStepImp</name>
     <message>
-        <location filename="../../DlgPartImportStepImp.cpp" line="+68"/>
         <source>STEP (*.stp *.step);;All Files (*.*)</source>
-        <translation>STEP (*.stp *.step);;Все файлы (*.*)</translation>
+        <translation type="obsolete">STEP (*.stp *.step);;Все файлы (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../../DlgPartImportStepImp.cpp" line="+70"/>
+        <source>STEP</source>
+        <translation>STEP</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>All Files</source>
+        <translation>Все файлы</translation>
     </message>
 </context>
 <context>
@@ -1811,7 +3037,7 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+91"/>
-        <location filename="../../DlgPrimitives.cpp" line="+519"/>
+        <location filename="../../DlgPrimitives.cpp" line="+540"/>
         <source>Wedge</source>
         <translation>Клин</translation>
     </message>
@@ -1901,13 +3127,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+16"/>
         <source>Prism</source>
-        <translation type="unfinished">Призма</translation>
+        <translation>Призма</translation>
     </message>
     <message>
         <location line="+27"/>
         <location filename="../../DlgPrimitives.cpp" line="+67"/>
         <source>Spiral</source>
-        <translation type="unfinished">Спираль</translation>
+        <translation>Спираль</translation>
     </message>
     <message>
         <location line="+18"/>
@@ -1930,7 +3156,7 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+9"/>
         <location filename="../../DlgPrimitives.cpp" line="+14"/>
         <source>Regular polygon</source>
-        <translation type="unfinished">Правильный многоугольник</translation>
+        <translation>Правильный многоугольник</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -1992,28 +3218,28 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="-377"/>
         <location line="+191"/>
         <source>U parameter:</source>
-        <translation type="unfinished">U parameter:</translation>
+        <translation>Параметр U:</translation>
     </message>
     <message>
         <location line="-184"/>
         <source>V parameters:</source>
-        <translation type="unfinished">V parameters:</translation>
+        <translation>Параметры V:</translation>
     </message>
     <message>
         <location line="+137"/>
         <source>Radius 3:</source>
-        <translation type="unfinished">Radius 3:</translation>
+        <translation>Радиус 3:</translation>
     </message>
     <message>
         <location line="+70"/>
         <location line="+90"/>
         <source>V parameter:</source>
-        <translation type="unfinished">V parameter:</translation>
+        <translation>Параметр V:</translation>
     </message>
     <message>
         <location line="-23"/>
         <source>U Parameter:</source>
-        <translation type="unfinished">U Parameter:</translation>
+        <translation>Параметр U:</translation>
     </message>
     <message>
         <source>U parametric:</source>
@@ -2027,13 +3253,13 @@ Please select a valid shape in the drop-down box first.</source>
         <location line="+150"/>
         <location line="+882"/>
         <source>Polygon:</source>
-        <translation type="unfinished">Многоугольник:</translation>
+        <translation>Многоугольник:</translation>
     </message>
     <message>
         <location line="-862"/>
         <location line="+882"/>
         <source>Circumradius:</source>
-        <translation type="unfinished">Радиус:</translation>
+        <translation>Радиус:</translation>
     </message>
     <message>
         <location line="-831"/>
@@ -2078,12 +3304,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+88"/>
         <source>Growth:</source>
-        <translation type="unfinished">Приращение (шаг):</translation>
+        <translation>Приращение (шаг):</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rotations:</source>
-        <translation type="unfinished">Число оборотов:</translation>
+        <translation>Число оборотов:</translation>
     </message>
     <message>
         <location line="+58"/>
@@ -2123,7 +3349,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Начальная точка</translation>
     </message>
     <message>
-        <location filename="../../DlgPrimitives.cpp" line="+193"/>
+        <location filename="../../DlgPrimitives.cpp" line="+192"/>
         <source>&amp;Create</source>
         <translation>&amp;Создать</translation>
     </message>
@@ -2140,7 +3366,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">Alt+O</translation>
     </message>
     <message>
-        <location line="-488"/>
+        <location line="-487"/>
         <location line="+299"/>
         <location line="+8"/>
         <source>Create %1</source>
@@ -2170,54 +3396,156 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::DlgRevolution</name>
     <message>
-        <location filename="../../DlgRevolution.ui" line="+14"/>
+        <location filename="../../DlgRevolution.ui" line="+20"/>
         <source>Revolve</source>
         <translation>Вращение</translation>
     </message>
     <message>
+        <source>If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</source>
+        <translation type="obsolete">If checked, revolving wires will produce solids. If not, revolving a wire yeilds a shell.</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>If checked, revolving wires will produce solids. If not, revolving a wire yields a shell.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+79"/>
+        <source>Revolution axis</source>
+        <translation>Ось вращения</translation>
+    </message>
+    <message>
+        <location line="+8"/>
+        <source>Center X:</source>
+        <translation>Центр X:</translation>
+    </message>
+    <message>
         <location line="+20"/>
+        <source>Center Y:</source>
+        <translation>Центр Y:</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Center Z:</source>
+        <translation>Центр Z:</translation>
+    </message>
+    <message>
+        <location line="+42"/>
+        <location line="+41"/>
+        <source>Click to set this as axis</source>
+        <translation>Щелкните для установки осью вращения</translation>
+    </message>
+    <message>
+        <location line="-38"/>
+        <source>Dir. X:</source>
+        <translation>Напр. X:</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Dir. Y:</source>
+        <translation>Напр. Y:</translation>
+    </message>
+    <message>
+        <location line="+38"/>
+        <source>Dir. Z:</source>
+        <translation>Напр. Z:</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <location filename="../../DlgRevolution.cpp" line="+440"/>
+        <source>Select reference</source>
+        <translation>Выберите ориентир</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
+        <translation>Если включено, вращение будет расширено вперёд и назад на половину угла.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Symmetric angle</source>
+        <translation>Симметричный угол</translation>
+    </message>
+    <message>
         <source>Y:</source>
-        <translation>Y:</translation>
+        <translation type="obsolete">Y:</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>X:</source>
-        <translation>X:</translation>
+        <translation type="obsolete">X:</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="-257"/>
         <source>Angle:</source>
         <translation>Угол:</translation>
     </message>
     <message>
-        <location line="+16"/>
         <source>Z:</source>
-        <translation>Z:</translation>
+        <translation type="obsolete">Z:</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>Axis:</source>
-        <translation>Ось:</translation>
+        <translation type="obsolete">Ось:</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="-19"/>
         <source>Shape</source>
         <translation>Форма</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Select line in 3D view</source>
-        <translation>Выберите линию в режиме 3D</translation>
+        <translation type="obsolete">Выберите линию в режиме 3D</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-17"/>
         <source>Create Solid</source>
-        <translation type="unfinished">Создать твердое тело</translation>
+        <translation>Создать твердое тело</translation>
     </message>
     <message>
-        <location filename="../../DlgRevolution.cpp" line="+176"/>
+        <location filename="../../DlgRevolution.cpp" line="-268"/>
+        <source>Object not found: %1</source>
+        <translation>Объект не найден: %1</translation>
+    </message>
+    <message>
+        <location line="+81"/>
         <source>Select a shape for revolution, first.</source>
         <translation>Сначала выберите фигуру для революции.</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <location line="+5"/>
+        <location line="+5"/>
+        <source>Revolution axis link is invalid.
+
+%1</source>
+        <translation type="unfinished">Revolution axis link is invalid.
+
+%1</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Revolution axis direction is zero-length. It must be non-zero.</source>
+        <translation type="unfinished">Revolution axis direction is zero-length. It must be non-zero.</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Revolution angle span is zero. It must be non-zero.</source>
+        <translation type="unfinished">Revolution angle span is zero. It must be non-zero.</translation>
+    </message>
+    <message>
+        <location line="+122"/>
+        <location line="+4"/>
+        <source>Creating Revolve failed.
+
+%1</source>
+        <translation type="unfinished">Creating Revolve failed.
+
+%1</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Selecting... (line or arc)</source>
+        <translation>Выбор... (линия или дуга)</translation>
     </message>
 </context>
 <context>
@@ -2255,12 +3583,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+61"/>
         <source>Maximum angular deflection</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальное угловое смещение</translation>
     </message>
     <message utf8="true">
         <location line="+7"/>
         <source> °</source>
-        <translation type="unfinished"></translation>
+        <translation>°</translation>
     </message>
     <message>
         <source>&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;/head&gt;&lt;body style=&quot; white-space: pre-wrap; font-family:MS Shell Dlg 2; font-size:7.8pt; font-weight:400; font-style:normal; text-decoration:none;&quot;&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Flat shading/Phong shading&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;With flat shading the surface normals are not defined per vertex that leads to a unreal appearance for curved surfaces while using Phong shading leads to a smoother appearance. &lt;/p&gt;&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;/p&gt;&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;If this option is unset Phong shading is used, if it is set flat shading is used.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
@@ -2349,17 +3677,17 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+13"/>
         <source>Automatically refine model after sketch-based operation</source>
-        <translation type="unfinished">Автоматически поправить модель после операций над эскизом</translation>
+        <translation>Автоматически поправить модель после операций над эскизом</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Object naming</source>
-        <translation type="unfinished">Правила именования объектов</translation>
+        <translation>Правила именования объектов</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Add name of base object</source>
-        <translation type="unfinished">Добавить имя базового объекта</translation>
+        <translation>Добавить имя базового объекта</translation>
     </message>
     <message>
         <location line="-48"/>
@@ -2372,86 +3700,86 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location filename="../../DlgSettingsObjectColor.ui" line="+14"/>
         <source>Part colors</source>
-        <translation type="unfinished">Цвета в Part</translation>
+        <translation>Цвета в Part</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Default Part colors</source>
-        <translation type="unfinished">Цвета Деталей по умолчанию</translation>
+        <translation>Цвета Деталей по умолчанию</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default shape color</source>
-        <translation type="unfinished">Цвет формы по умолчанию</translation>
+        <translation>Цвет формы по умолчанию</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The default color for new shapes</source>
-        <translation type="unfinished">Цвет по умолчанию для новой формы</translation>
+        <translation>Цвет по умолчанию для новой формы</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Default line color</source>
-        <translation type="unfinished">Цвет линии по умолчанию</translation>
+        <translation>Цвет линии по умолчанию</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line color for new shapes</source>
-        <translation type="unfinished">Цвет линий по умолчанию для новой формы</translation>
+        <translation>Цвет линий по умолчанию для новой формы</translation>
     </message>
     <message>
         <location line="-42"/>
         <source>Default line width</source>
-        <translation type="unfinished">Ширина линии по умолчанию</translation>
+        <translation>Ширина линии по умолчанию</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+68"/>
         <source>The default line thickness for new shapes</source>
-        <translation type="unfinished">Толщина линии по умолчанию для новой формы</translation>
+        <translation>Толщина линии по умолчанию для новой формы</translation>
     </message>
     <message>
         <location line="-65"/>
         <location line="+68"/>
         <source>px</source>
-        <translation type="unfinished">px</translation>
+        <translation>px</translation>
     </message>
     <message>
         <location line="-43"/>
         <source>Default vertex color</source>
-        <translation type="unfinished">Цвет вершины по умолчанию</translation>
+        <translation>Цвет вершины по умолчанию</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Default vertex size</source>
-        <translation type="unfinished">Размер вершины</translation>
+        <translation>Размер вершины</translation>
     </message>
     <message>
         <location line="+35"/>
         <source>Bounding box color</source>
-        <translation type="unfinished">Цвет охватывающей рамки</translation>
+        <translation>Цвет охватывающей рамки</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of bounding boxes in the 3D view</source>
-        <translation type="unfinished">Цвет охватывающей рамки в 3D виде</translation>
+        <translation>Цвет охватывающей рамки в 3D виде</translation>
     </message>
     <message>
         <location line="+38"/>
         <source>Annotations</source>
-        <translation type="unfinished"></translation>
+        <translation>Аннотации</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Default text color</source>
-        <translation type="unfinished"></translation>
+        <translation>Цвет текста по умолчанию</translation>
     </message>
 </context>
 <context>
     <name>PartGui::FaceColors</name>
     <message>
-        <location filename="../../TaskFaceColors.cpp" line="+394"/>
+        <location filename="../../TaskFaceColors.cpp" line="+395"/>
         <source>Face colors</source>
         <translation>Цвета поверхности</translation>
     </message>
@@ -2486,10 +3814,10 @@ Please select a valid shape in the drop-down box first.</source>
         <translation type="obsolete">Вершина/проволока</translation>
     </message>
     <message>
-        <location filename="../../TaskLoft.cpp" line="+73"/>
+        <location filename="../../TaskLoft.cpp" line="+75"/>
         <location line="+145"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Точка/Ребро/Ломаная/грань</translation>
+        <translation>Точка/Ребро/Ломаная/грань</translation>
     </message>
     <message>
         <location line="-144"/>
@@ -2505,12 +3833,12 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+0"/>
         <source>At least two vertices, edges, wires or faces are required.</source>
-        <translation type="unfinished">Необходимы две вершины, линии или грани.</translation>
+        <translation>Необходимы две вершины, линии или грани.</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Input error</source>
-        <translation type="unfinished">Ошибка ввода</translation>
+        <translation>Ошибка ввода</translation>
     </message>
     <message>
         <source>At least two vertices, edges or wires are required.</source>
@@ -2555,26 +3883,30 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
     <message>
         <location line="+8"/>
-        <source>Base point:</source>
-        <translation>Базовая точка:</translation>
+        <source>Base point</source>
+        <translation>Базовая точка</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <source>Base point:</source>
+        <translation type="obsolete">Базовая точка:</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>x</source>
         <translation>x</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>y</source>
         <translation>у</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+23"/>
         <source>z</source>
         <translation>z</translation>
     </message>
     <message>
-        <location filename="../../Mirroring.cpp" line="+121"/>
+        <location filename="../../Mirroring.cpp" line="+123"/>
         <source>Select a shape for mirroring, first.</source>
         <translation>Сначала выберите фигуру для зеркального отображения.</translation>
     </message>
@@ -2587,7 +3919,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::OffsetWidget</name>
     <message>
-        <location filename="../../TaskOffset.cpp" line="+165"/>
+        <location filename="../../TaskOffset.cpp" line="+204"/>
         <source>Input error</source>
         <translation>Ошибка ввода</translation>
     </message>
@@ -2595,7 +3927,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::ResultModel</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="+338"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+340"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
@@ -2613,17 +3945,17 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::ShapeBuilderWidget</name>
     <message>
-        <location filename="../../TaskShapeBuilder.cpp" line="+171"/>
+        <location filename="../../TaskShapeBuilder.cpp" line="+172"/>
         <location line="+19"/>
         <location line="+28"/>
         <location line="+52"/>
         <location line="+52"/>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Wrong selection</source>
         <translation>Неправильный выбор</translation>
     </message>
     <message>
-        <location line="-204"/>
+        <location line="-214"/>
         <location line="+19"/>
         <source>Select two vertices</source>
         <translation>Выберите две вершины</translation>
@@ -2635,7 +3967,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+28"/>
         <source>Select three or more vertices</source>
-        <translation type="unfinished">Выберите три или более вершины</translation>
+        <translation>Выберите три или более вершины</translation>
     </message>
     <message>
         <location line="+52"/>
@@ -2648,32 +3980,32 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Выберите две или более грани</translation>
     </message>
     <message>
-        <location line="+53"/>
+        <location line="+63"/>
         <source>Select only one part object</source>
         <translation>Выбрать только одну деталь объекта</translation>
     </message>
     <message>
-        <location line="+40"/>
+        <location line="+52"/>
         <source>Select two vertices to create an edge</source>
         <translation>Выберите две вершины для создания ребра</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a list of vertices</source>
-        <translation type="unfinished">Выберите список вершин</translation>
+        <translation>Выберите список вершин</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select a closed set of edges</source>
         <translation>Выберите ребра, образующие замкнутый контур</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>Select adjacent faces</source>
         <translation>Выберите смежные грани</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+7"/>
         <source>All shape types can be selected</source>
         <translation>Можно выбрать все типы фигур</translation>
     </message>
@@ -2681,7 +4013,7 @@ Please select a valid shape in the drop-down box first.</source>
 <context>
     <name>PartGui::SweepWidget</name>
     <message>
-        <location filename="../../TaskSweep.cpp" line="+414"/>
+        <location filename="../../TaskSweep.cpp" line="+416"/>
         <source>Vertex/Wire</source>
         <translation>Вершина/проволока</translation>
     </message>
@@ -2694,7 +4026,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="-281"/>
         <source>Vertex/Edge/Wire/Face</source>
-        <translation type="unfinished">Точка/Ребро/Ломаная/грань</translation>
+        <translation>Точка/Ребро/Ломаная/грань</translation>
     </message>
     <message>
         <location line="+129"/>
@@ -2725,47 +4057,208 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">Неправильный выбор</translation>
+        <translation>Неправильный выбор</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>&apos;%1&apos; cannot be used as profile and path.</source>
-        <translation type="unfinished">&apos;%1&apos; не может использоваться в качестве профиля и пути.</translation>
+        <translation>&apos;%1&apos; не может использоваться в качестве профиля и пути.</translation>
     </message>
     <message>
         <location line="+37"/>
         <source>Input error</source>
-        <translation type="unfinished">Ошибка ввода</translation>
+        <translation>Ошибка ввода</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Done</source>
-        <translation type="unfinished">Готово</translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Select one or more connected edges in the 3d view and press &apos;Done&apos;</source>
-        <translation type="unfinished">Select one or more connected edges in the 3d view and press &apos;Done&apos;</translation>
+        <translation>Выберите один или несколько подключенных краев в 3d и нажмите «OK»</translation>
     </message>
     <message>
         <location line="+24"/>
         <location line="+8"/>
         <source>The selected sweep path is invalid.</source>
-        <translation type="unfinished">The selected sweep path is invalid.</translation>
+        <translation>Недопустимый путь траектории сдвига.</translation>
+    </message>
+</context>
+<context>
+    <name>PartGui::TaskAttacher</name>
+    <message>
+        <location filename="../../TaskAttacher.ui" line="+14"/>
+        <source>Form</source>
+        <translation>Форма</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Selection accepted</source>
+        <translation>Выбор принят</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Reference 1</source>
+        <translation>Ориентир 1</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Reference 2</source>
+        <translation>Ориентир 2</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Reference 3</source>
+        <translation>Ориентир 3</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>Reference 4</source>
+        <translation>Ориентир 4</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Attachment mode:</source>
+        <translation>Режим привязки:</translation>
+    </message>
+    <message>
+        <location line="+20"/>
+        <source>Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</source>
+        <translation type="unfinished">Mirror of superPlacement property. Extra placement is expressed in local space of object being attached.</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location filename="../../TaskAttacher.cpp" line="+297"/>
+        <source>Extra placement:</source>
+        <translation type="unfinished">Extra placement:</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>X:</source>
+        <translation>X:</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Y:</source>
+        <translation>Y:</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Z:</source>
+        <translation>Z:</translation>
+    </message>
+    <message>
+        <location line="+29"/>
+        <source>Yaw:</source>
+        <translation>Рыскание:</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Pitch:</source>
+        <translation>Шаг:</translation>
+    </message>
+    <message>
+        <location line="+13"/>
+        <source>Roll:</source>
+        <translation>Крен:</translation>
+    </message>
+    <message>
+        <location line="+92"/>
+        <source>Flip sides</source>
+        <translation>Поменять стороны</translation>
+    </message>
+    <message>
+        <location filename="../../TaskAttacher.cpp" line="-17"/>
+        <source>OCC error: %1</source>
+        <translation type="unfinished">OCC error: %1</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>unknown error</source>
+        <translation>неизвестная ошибка</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Attachment mode failed: %1</source>
+        <translation type="unfinished">Attachment mode failed: %1</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Not attached</source>
+        <translation type="unfinished">Not attached</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Attached with mode %1</source>
+        <translation type="unfinished">Attached with mode %1</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Extra placement (inactive - not attached):</source>
+        <translation type="unfinished">Extra placement (inactive - not attached):</translation>
+    </message>
+    <message>
+        <location line="+272"/>
+        <source>Face</source>
+        <translation>Поверхность</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Edge</source>
+        <translation>Ребро</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Vertex</source>
+        <translation>Вершина</translation>
+    </message>
+    <message>
+        <location line="+58"/>
+        <source>Selecting...</source>
+        <translation>Выбор...</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Reference%1</source>
+        <translation>Ориентир%1</translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Not editable because rotation part of superplacement is bound by expressions.</source>
+        <translation type="unfinished">Not editable because rotation part of superplacement is bound by expressions.</translation>
+    </message>
+    <message>
+        <location line="+55"/>
+        <source>Reference combinations:
+</source>
+        <translation type="unfinished">Reference combinations:
+</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>%1 (add %2)</source>
+        <translation>%1 (и %2)</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>%1 (add more references)</source>
+        <translation>%1 (и более ориентиров)</translation>
     </message>
 </context>
 <context>
     <name>PartGui::TaskCheckGeometryDialog</name>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="+548"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+567"/>
         <source>Shape Content</source>
-        <translation type="unfinished">Вместимость фигуры</translation>
+        <translation>Вместимость фигуры</translation>
     </message>
 </context>
 <context>
     <name>PartGui::TaskCheckGeometryResults</name>
     <message>
-        <location line="-511"/>
+        <location line="-530"/>
         <source>Check Geometry</source>
         <translation>Проверка геометрии</translation>
     </message>
@@ -2934,6 +4427,14 @@ Please select a valid shape in the drop-down box first.</source>
     </message>
 </context>
 <context>
+    <name>PartGui::TaskDlgAttacher</name>
+    <message>
+        <location filename="../../TaskAttacher.cpp" line="+200"/>
+        <source>Datum dialog: Input error</source>
+        <translation type="unfinished">Datum dialog: Input error</translation>
+    </message>
+</context>
+<context>
     <name>PartGui::TaskFaceColors</name>
     <message>
         <location filename="../../TaskFaceColors.ui" line="+14"/>
@@ -2958,7 +4459,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Box selection</source>
-        <translation type="unfinished">Выделить область</translation>
+        <translation>Выделить область</translation>
     </message>
 </context>
 <context>
@@ -3017,7 +4518,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+20"/>
         <source>Closed</source>
-        <translation type="unfinished">Замкнуть</translation>
+        <translation>Замкнуть</translation>
     </message>
 </context>
 <context>
@@ -3029,7 +4530,7 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Смещение</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+14"/>
         <source>Mode</source>
         <translation>Режим</translation>
     </message>
@@ -3106,7 +4607,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+7"/>
         <source>Face from vertices</source>
-        <translation type="unfinished">Грань из вершин</translation>
+        <translation>Грань из вершин</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -3129,7 +4630,12 @@ Please select a valid shape in the drop-down box first.</source>
         <translation>Твердое тело из оболочки</translation>
     </message>
     <message>
-        <location line="+43"/>
+        <location line="+21"/>
+        <source>Refine shape</source>
+        <translation>Уточнить форму</translation>
+    </message>
+    <message>
+        <location line="+32"/>
         <source>Create</source>
         <translation>Запаковать</translation>
     </message>
@@ -3149,7 +4655,7 @@ Please select a valid shape in the drop-down box first.</source>
     <message>
         <location line="+9"/>
         <source>Sweep Path</source>
-        <translation type="unfinished">Sweep Path</translation>
+        <translation>Траектории сдвига</translation>
     </message>
     <message>
         <location line="+27"/>
@@ -3171,7 +4677,7 @@ in the 3D view for the sweep path.</source>
 <context>
     <name>PartGui::ThicknessWidget</name>
     <message>
-        <location filename="../../TaskThickness.cpp" line="+101"/>
+        <location filename="../../TaskThickness.cpp" line="+103"/>
         <location line="+165"/>
         <location line="+10"/>
         <source>Thickness</source>
@@ -3194,70 +4700,118 @@ in the 3D view for the sweep path.</source>
     </message>
 </context>
 <context>
+    <name>Part_FaceMaker</name>
+    <message>
+        <location filename="../../../App/FaceMaker.cpp" line="+172"/>
+        <source>Simple</source>
+        <translation type="unfinished">Simple</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
+        <translation type="unfinished">Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</translation>
+    </message>
+    <message>
+        <location filename="../../../App/FaceMakerBullseye.cpp" line="+69"/>
+        <source>Bull&apos;s-eye facemaker</source>
+        <translation type="unfinished">Bull&apos;s-eye facemaker</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Supports making planar faces with holes with islands.</source>
+        <translation type="unfinished">Supports making planar faces with holes with islands.</translation>
+    </message>
+    <message>
+        <location filename="../../../App/FaceMakerCheese.cpp" line="+248"/>
+        <source>Cheese facemaker</source>
+        <translation type="unfinished">Cheese facemaker</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Supports making planar faces with holes, but no islands inside holes.</source>
+        <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes.</translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeatureExtrusion.cpp" line="+507"/>
+        <source>Part Extrude facemaker</source>
+        <translation type="unfinished">Part Extrude facemaker</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>Supports making faces with holes, does not support nesting.</source>
+        <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-1069"/>
-        <location line="+77"/>
-        <location line="+82"/>
-        <location line="+176"/>
-        <location line="+50"/>
-        <location line="+908"/>
+        <location filename="../../Command.cpp" line="-1444"/>
+        <location line="+97"/>
+        <location line="+102"/>
+        <location line="+299"/>
+        <location line="+51"/>
+        <location line="+1121"/>
         <source>Wrong selection</source>
         <translation>Неправильный выбор</translation>
     </message>
     <message>
-        <location line="-1292"/>
-        <location line="+385"/>
+        <location line="-1669"/>
+        <location line="+549"/>
         <source>Select two shapes please.</source>
         <translation>Выберите две формы пожалуйста.</translation>
     </message>
     <message>
-        <location line="-375"/>
-        <location line="+82"/>
-        <location line="+82"/>
+        <location line="-539"/>
+        <location line="+102"/>
+        <location line="+102"/>
         <source>Non-solids selected</source>
-        <translation type="unfinished">Выбраны не твердотельные</translation>
+        <translation>Выбраны не твердотельные</translation>
     </message>
     <message>
-        <location line="-163"/>
-        <location line="+82"/>
-        <location line="+82"/>
+        <location line="-203"/>
+        <location line="+102"/>
+        <location line="+102"/>
         <source>The use of non-solids for boolean operations may lead to unexpected results.
 Do you want to continue?</source>
-        <translation type="unfinished">Использование твердых тел для булевых операций может привести к непредвиденным результатам. Вы хотите продолжить?</translation>
+        <translation>Использование твердых тел для булевых операций может привести к непредвиденным результатам. Вы хотите продолжить?</translation>
     </message>
     <message>
-        <location line="+160"/>
+        <location line="-118"/>
+        <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</source>
+        <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to compute common between.</translation>
+    </message>
+    <message>
+        <location line="+102"/>
+        <source>Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</source>
+        <translation type="unfinished">Select two shapes or more, please. Or, select one compound containing two or more shapes to be fused.</translation>
+    </message>
+    <message>
+        <location line="+299"/>
         <source>Select one shape or more, please.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите одну или более фигур.</translation>
     </message>
     <message>
-        <location line="+199"/>
         <source>All CAD Files (*.stp *.step *.igs *.iges *.brp *.brep)</source>
-        <translation>Все CAD-файлы (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
+        <translation type="obsolete">Все CAD-файлы (*.stp *.step *.igs *.iges *.brp *.brep)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>STEP (*.stp *.step)</source>
-        <translation>STEP (*.stp *.step)</translation>
+        <translation type="obsolete">STEP (*.stp *.step)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>IGES (*.igs *.iges)</source>
-        <translation>IGES (*.igs *.iges)</translation>
+        <translation type="obsolete">IGES (*.igs *.iges)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>BREP (*.brp *.brep)</source>
-        <translation>BREP (*.brp *.brep)</translation>
+        <translation type="obsolete">BREP (*.brp *.brep)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>All Files (*.*)</source>
-        <translation>Все файлы (*.*)</translation>
+        <translation type="obsolete">Все файлы (*.*)</translation>
     </message>
     <message>
-        <location filename="../../CommandSimple.cpp" line="+59"/>
+        <location filename="../../CommandSimple.cpp" line="+61"/>
         <source>Sewing Tolerance</source>
         <translation>Допуск на сшивку</translation>
     </message>
@@ -3267,12 +4821,12 @@ Do you want to continue?</source>
         <translation>Введите допустимость для шитья формы:</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderMirror.cpp" line="+77"/>
+        <location filename="../../ViewProviderMirror.cpp" line="+78"/>
         <source>Edit mirror plane</source>
         <translation>Редактировать плоскость зеркала</translation>
     </message>
     <message>
-        <location line="+300"/>
+        <location line="+304"/>
         <source>Edit chamfer edges</source>
         <translation>Редактировать фаску грани</translation>
     </message>
@@ -3282,7 +4836,7 @@ Do you want to continue?</source>
         <translation>Изменить смещение</translation>
     </message>
     <message>
-        <location line="+81"/>
+        <location line="+86"/>
         <source>Edit thickness</source>
         <translation>Изменить толщину</translation>
     </message>
@@ -3291,7 +4845,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Преобразовать</translation>
     </message>
     <message>
-        <location filename="../../AppPartGui.cpp" line="+160"/>
+        <location filename="../../AppPartGui.cpp" line="+201"/>
         <location line="+1"/>
         <source>Part design</source>
         <translation>Дизайн детали</translation>
@@ -3300,36 +4854,44 @@ Do you want to continue?</source>
         <location line="+1"/>
         <location line="+1"/>
         <source>Import-Export</source>
-        <translation type="unfinished">Импорт/экспорт</translation>
+        <translation>Импорт/экспорт</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Display</source>
-        <translation type="unfinished">Отображение</translation>
+        <translation>Отображение</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-461"/>
-        <location line="+82"/>
         <source>Select two shapes or more, please.</source>
-        <translation>Пожалуйста выберите несколько форм.</translation>
+        <translation type="obsolete">Пожалуйста выберите несколько форм.</translation>
     </message>
     <message>
-        <location line="+1134"/>
+        <location filename="../../Command.cpp" line="+204"/>
+        <source>All CAD Files</source>
+        <translation>Все CAD файлы</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>All Files</source>
+        <translation>Все файлы</translation>
+    </message>
+    <message>
+        <location line="+963"/>
         <source>You have to select either two edges or two wires.</source>
         <translation>Вы должны выбрать два ребра или две линии.</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderMirror.cpp" line="-325"/>
+        <location filename="../../ViewProviderMirror.cpp" line="-332"/>
         <source>Edit fillet edges</source>
         <translation>Изменение краев ленты</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderExt.cpp" line="+697"/>
+        <location filename="../../ViewProviderExt.cpp" line="+829"/>
         <source>Set colors...</source>
         <translation>Установите цвета ...</translation>
     </message>
     <message>
-        <location filename="../../TaskCheckGeometry.cpp" line="-305"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="-307"/>
         <source>Compound</source>
         <translation>Соединить</translation>
     </message>
@@ -3349,27 +4911,36 @@ Do you want to continue?</source>
         <translation>Оболочка</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../../TaskAttacher.cpp" line="-879"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
         <source>Face</source>
         <translation>Поверхность</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
         <source>Wire</source>
         <translation>Связь</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../../TaskAttacher.cpp" line="-9"/>
+        <location line="+33"/>
+        <source>No reference selected</source>
+        <translation type="unfinished">No reference selected</translation>
+    </message>
+    <message>
+        <location line="-21"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
         <source>Edge</source>
         <translation>Ребро</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="+3"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
         <source>Vertex</source>
         <translation>Вершина</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location filename="../../TaskCheckGeometry.cpp" line="+1"/>
         <source>Shape</source>
         <translation>Форма</translation>
     </message>
@@ -3556,95 +5127,105 @@ Do you want to continue?</source>
     <message>
         <location line="+12"/>
         <source>BOPAlgo CheckUnknown</source>
-        <translation type="unfinished">BOPAlgo ПроверитьНеизвестную</translation>
+        <translation>BOPAlgo ПроверитьНеизвестную</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo BadType</source>
-        <translation type="unfinished">BOPAlgo ЛожныйТип</translation>
+        <translation>BOPAlgo ЛожныйТип</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo SelfIntersect</source>
-        <translation type="unfinished">BOPAlgo Самопересечение</translation>
+        <translation>BOPAlgo Самопересечение</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo TooSmallEdge</source>
-        <translation type="unfinished">BOPAlgo ОченьМальнькаяГрань</translation>
+        <translation>BOPAlgo ОченьМальнькаяГрань</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NonRecoverableFace</source>
-        <translation type="unfinished">BOPAlgo НеВосстанавимаяПоверхность</translation>
+        <translation>BOPAlgo НеВосстанавимаяПоверхность</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfVertex</source>
-        <translation type="unfinished">BOPAlgo НесочетаемостьВершины</translation>
+        <translation>BOPAlgo НесочетаемостьВершины</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfEdge</source>
-        <translation type="unfinished">BOPAlgo НесочетаемостьГрани</translation>
+        <translation>BOPAlgo НесочетаемостьГрани</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo IncompatibilityOfFace</source>
-        <translation type="unfinished">BOPAlgo НесочетаемостьПоверхности</translation>
+        <translation>BOPAlgo НесочетаемостьПоверхности</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo OperationAborted</source>
-        <translation type="unfinished">BOPAlgo ОперацияПрервана</translation>
+        <translation>BOPAlgo ОперацияПрервана</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo GeomAbs_C0</source>
-        <translation type="unfinished">BOPAlgo GeomAbs_C0</translation>
+        <translation>BOPAlgo GeomAbs_C0</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>BOPAlgo_InvalidCurveOnSurface</source>
+        <translation type="unfinished">BOPAlgo_InvalidCurveOnSurface</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>BOPAlgo NotValid</source>
-        <translation type="unfinished">BOPAlgo Неприменимо</translation>
+        <translation>BOPAlgo Неприменимо</translation>
     </message>
     <message>
-        <location line="+284"/>
-        <location line="+162"/>
+        <location line="+285"/>
+        <location line="+181"/>
         <source>Invalid</source>
         <translation>Недопустимый</translation>
     </message>
     <message>
         <location filename="../../TaskDimension.cpp" line="+552"/>
-        <location line="+1040"/>
+        <location line="+1042"/>
         <source>Selections</source>
-        <translation type="unfinished">Выделения</translation>
+        <translation>Выделения</translation>
     </message>
     <message>
-        <location line="-1033"/>
-        <location line="+1040"/>
+        <location line="-1035"/>
+        <location line="+1042"/>
         <source>Control</source>
-        <translation type="unfinished">Управление</translation>
+        <translation>Управление</translation>
     </message>
     <message>
         <location line="-265"/>
         <source>Reset Dialog</source>
-        <translation type="unfinished">Сброс настроек диалогового окна</translation>
+        <translation>Сброс настроек диалогового окна</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Toggle 3d</source>
-        <translation type="unfinished">Переключить  3d</translation>
+        <translation>Переключить  3d</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Toggle Delta</source>
-        <translation type="unfinished">Переключить Дельту</translation>
+        <translation>Переключить Дельту</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Clear All</source>
-        <translation type="unfinished">Очистить все</translation>
+        <translation>Очистить все</translation>
+    </message>
+    <message>
+        <location filename="../../ViewProviderSpline.cpp" line="+80"/>
+        <source>Show control points</source>
+        <translation>Показать контрольные точки</translation>
     </message>
 </context>
 <context>

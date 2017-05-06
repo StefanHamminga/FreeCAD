@@ -4,7 +4,7 @@
 <context>
     <name>CmdCreateImagePlane</name>
     <message>
-        <location filename="../../Command.cpp" line="+93"/>
+        <location filename="../../Command.cpp" line="+97"/>
         <source>Image</source>
         <translation>Зображення</translation>
     </message>
@@ -26,7 +26,7 @@
 <context>
     <name>CmdImageOpen</name>
     <message>
-        <location line="-44"/>
+        <location line="-46"/>
         <source>Image</source>
         <translation>Зображення</translation>
     </message>
@@ -44,7 +44,7 @@
 <context>
     <name>ImageGui::GLImageBox</name>
     <message>
-        <location filename="../../GLImageBox.cpp" line="+327"/>
+        <location filename="../../GLImageBox.cpp" line="+331"/>
         <source>Undefined type of colour space for image viewing</source>
         <translation>Невизначений тип кольору простору для перегляду зображень</translation>
     </message>
@@ -64,12 +64,12 @@
     <message>
         <location line="+6"/>
         <source>Image plane</source>
-        <translation type="unfinished">Площина зображення</translation>
+        <translation>Площина зображення</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>XY-Plane</source>
-        <translation type="unfinished">Площина XY</translation>
+        <translation>Площина XY</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -89,13 +89,13 @@
     <message>
         <location line="+9"/>
         <source>Offset:</source>
-        <translation type="unfinished">Зміщення:</translation>
+        <translation>Зміщення:</translation>
     </message>
 </context>
 <context>
     <name>ImageGui::ImageView</name>
     <message>
-        <location filename="../../ImageView.cpp" line="+77"/>
+        <location filename="../../ImageView.cpp" line="+104"/>
         <source>&amp;Fit image</source>
         <translation>&amp;Вмістити зображення</translation>
     </message>
@@ -136,12 +136,12 @@
         <translation>Стандартно</translation>
     </message>
     <message>
-        <location line="+13"/>
+        <location line="+18"/>
         <source>Ready...</source>
         <translation>Готово...</translation>
     </message>
     <message>
-        <location line="+375"/>
+        <location line="+390"/>
         <source>grey</source>
         <translation>сірий</translation>
     </message>
@@ -180,32 +180,40 @@
         <translation type="obsolete">Зображення (*.png *.xpm *.jpg *.bmp)</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="+18"/>
-        <location line="+41"/>
+        <location filename="../../Command.cpp" line="+20"/>
+        <location line="+43"/>
         <source>Choose an image file to open</source>
         <translation>Оберіть файл зображення для відкриття</translation>
     </message>
     <message>
-        <location line="-48"/>
-        <location line="+41"/>
+        <location line="-50"/>
+        <location line="+43"/>
         <source>Images</source>
         <translation>Зображення</translation>
     </message>
     <message>
-        <location line="-36"/>
-        <location line="+41"/>
+        <location line="-38"/>
+        <location line="+43"/>
         <source>All files</source>
         <translation>Всі файли</translation>
     </message>
     <message>
         <location line="+8"/>
-        <source>Error open image</source>
-        <translation>Помилка відкриття зображення</translation>
+        <source>Error opening image</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Could not load the chosen image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error open image</source>
+        <translation type="obsolete">Помилка відкриття зображення</translation>
+    </message>
+    <message>
         <source>Could not load the choosen image</source>
-        <translation>Не вдалось завантажити обране зображення</translation>
+        <translation type="obsolete">Не вдалось завантажити обране зображення</translation>
     </message>
 </context>
 <context>

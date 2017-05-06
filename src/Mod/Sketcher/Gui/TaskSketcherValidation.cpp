@@ -36,9 +36,16 @@
 # include <Inventor/nodes/SoShapeHints.h>
 #endif
 
+#include <BRep_Tool.hxx>
+#include <gp_Pnt.hxx>
 #include <Precision.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+#include <TopTools_IndexedDataMapOfShapeListOfShape.hxx>
+#include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
 #include <algorithm>
 
 #include "ui_TaskSketcherValidation.h"
@@ -148,26 +155,20 @@ struct SketcherValidation::ConstraintIds {
     Sketcher::PointPos SecondPos;
 };
 
-struct SketcherValidation::Constraint_Less  : public std::binary_function<const ConstraintIds&,
-                                                                          const ConstraintIds&, bool>
+struct SketcherValidation::Constraint_Equal  : public std::unary_function<const ConstraintIds&, bool>
 {
-    bool operator()(const ConstraintIds& x,
-                    const ConstraintIds& y) const
+    ConstraintIds c;
+    Constraint_Equal(const ConstraintIds& c) : c(c)
     {
-        int x1 = x.First;
-        int x2 = x.Second;
-        int y1 = y.First;
-        int y2 = y.Second;
-
-        if (x1 > x2)
-        { std::swap(x1, x2); }
-        if (y1 > y2)
-        { std::swap(y1, y2); }
-
-        if      (x1 < y1) return true;
-        else if (x1 > y1) return false;
-        else if (x2 < y2) return true;
-        else if (x2 > y2) return false;
+    }
+    bool operator()(const ConstraintIds& x) const
+    {
+        if (c.First == x.First && c.FirstPos == x.FirstPos &&
+            c.Second == x.Second && c.SecondPos == x.SecondPos)
+            return true;
+        if (c.Second == x.First && c.SecondPos == x.FirstPos &&
+            c.First == x.Second && c.FirstPos == x.SecondPos)
+            return true;
         return false;
     }
 };
@@ -179,7 +180,7 @@ void SketcherValidation::on_findButton_clicked()
     for (std::size_t i=0; i<geom.size(); i++) {
         Part::Geometry* g = geom[i];
         if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-            const Part::GeomLineSegment *segm = dynamic_cast<const Part::GeomLineSegment*>(g);
+            const Part::GeomLineSegment *segm = static_cast<const Part::GeomLineSegment*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -191,7 +192,7 @@ void SketcherValidation::on_findButton_clicked()
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
+            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -203,7 +204,7 @@ void SketcherValidation::on_findButton_clicked()
             vertexIds.push_back(id);
         }
         else if (g->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
-            const Part::GeomArcOfEllipse *segm = dynamic_cast<const Part::GeomArcOfEllipse*>(g);
+            const Part::GeomArcOfEllipse *segm = static_cast<const Part::GeomArcOfEllipse*>(g);
             VertexIds id;
             id.GeoId = (int)i;
             id.PosId = Sketcher::start;
@@ -214,18 +215,57 @@ void SketcherValidation::on_findButton_clicked()
             id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
+        else if (g->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+            const Part::GeomArcOfHyperbola *segm = static_cast<const Part::GeomArcOfHyperbola*>(g);
+            VertexIds id;
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::start;
+            id.v = segm->getStartPoint();
+            vertexIds.push_back(id);
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::end;
+            id.v = segm->getEndPoint();
+            vertexIds.push_back(id);
+        }
+        else if (g->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+            const Part::GeomArcOfParabola *segm = static_cast<const Part::GeomArcOfParabola*>(g);
+            VertexIds id;
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::start;
+            id.v = segm->getStartPoint();
+            vertexIds.push_back(id);
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::end;
+            id.v = segm->getEndPoint();
+            vertexIds.push_back(id);
+        }
+        else if (g->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            const Part::GeomBSplineCurve *segm = static_cast<const Part::GeomBSplineCurve*>(g);
+            VertexIds id;
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::start;
+            id.v = segm->getStartPoint();
+            vertexIds.push_back(id);
+            id.GeoId = (int)i;
+            id.PosId = Sketcher::end;
+            id.v = segm->getEndPoint();
+            vertexIds.push_back(id);
+        }
     }
 
-    std::set<ConstraintIds, Constraint_Less> coincidences;
     double prec = Precision::Confusion();
     QVariant v = ui->comboBoxTolerance->itemData(ui->comboBoxTolerance->currentIndex());
     if (v.isValid())
         prec = v.toDouble();
     else
         prec = QLocale::system().toDouble(ui->comboBoxTolerance->currentText());
+
     std::sort(vertexIds.begin(), vertexIds.end(), Vertex_Less(prec));
     std::vector<VertexIds>::iterator vt = vertexIds.begin();
     Vertex_EqualTo pred(prec);
+
+    std::list<ConstraintIds> coincidences;
+    // Make a list of constraint we expect for coincident vertexes
     while (vt < vertexIds.end()) {
         // get first item whose adjacent element has the same vertex coordinates
         vt = std::adjacent_find(vt, vertexIds.end(), pred);
@@ -239,7 +279,7 @@ void SketcherValidation::on_findButton_clicked()
                     id.FirstPos = vt->PosId;
                     id.Second = vn->GeoId;
                     id.SecondPos = vn->PosId;
-                    coincidences.insert(id);
+                    coincidences.push_back(id);
                 }
                 else {
                     break;
@@ -250,15 +290,21 @@ void SketcherValidation::on_findButton_clicked()
         }
     }
 
+    // Go through the available 'Coincident', 'Tangent' or 'Perpendicular' constraints
+    // and check which of them is forcing two vertexes to be coincident.
+    // If there is none but two vertexes can be considered equal a coincident constraint is missing.
     std::vector<Sketcher::Constraint*> constraint = sketch->Constraints.getValues();
     for (std::vector<Sketcher::Constraint*>::iterator it = constraint.begin(); it != constraint.end(); ++it) {
-        if ((*it)->Type == Sketcher::Coincident) {
+        if ((*it)->Type == Sketcher::Coincident ||
+            (*it)->Type == Sketcher::Tangent ||
+            (*it)->Type == Sketcher::Perpendicular) {
             ConstraintIds id;
             id.First = (*it)->First;
             id.FirstPos = (*it)->FirstPos;
             id.Second = (*it)->Second;
             id.SecondPos = (*it)->SecondPos;
-            std::set<ConstraintIds, Constraint_Less>::iterator pos = coincidences.find(id);
+            std::list<ConstraintIds>::iterator pos = std::find_if
+                    (coincidences.begin(), coincidences.end(), Constraint_Equal(id));
             if (pos != coincidences.end()) {
                 coincidences.erase(pos);
             }
@@ -269,7 +315,7 @@ void SketcherValidation::on_findButton_clicked()
     this->vertexConstraints.reserve(coincidences.size());
     std::vector<Base::Vector3d> points;
     points.reserve(coincidences.size());
-    for (std::set<ConstraintIds, Constraint_Less>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
+    for (std::list<ConstraintIds>::iterator it = coincidences.begin(); it != coincidences.end(); ++it) {
         this->vertexConstraints.push_back(*it);
         points.push_back(it->v);
     }
@@ -318,6 +364,28 @@ void SketcherValidation::on_fixButton_clicked()
     doc->recompute();
 }
 
+void SketcherValidation::on_highlightButton_clicked()
+{
+    std::vector<Base::Vector3d> points;
+    TopoDS_Shape shape = sketch->Shape.getValue();
+
+    // build up map vertex->edge
+    TopTools_IndexedDataMapOfShapeListOfShape vertex2Edge;
+    TopExp::MapShapesAndAncestors(shape, TopAbs_VERTEX, TopAbs_EDGE, vertex2Edge);
+    for (int i=1; i<= vertex2Edge.Extent(); ++i) {
+        const TopTools_ListOfShape& los = vertex2Edge.FindFromIndex(i);
+        if (los.Extent() != 2) {
+            const TopoDS_Vertex& vertex = TopoDS::Vertex(vertex2Edge.FindKey(i));
+            gp_Pnt pnt = BRep_Tool::Pnt(vertex);
+            points.push_back(Base::Vector3d(pnt.X(), pnt.Y(), pnt.Z()));
+        }
+    }
+
+    hidePoints();
+    if (!points.empty())
+        showPoints(points);
+}
+
 void SketcherValidation::on_findConstraint_clicked()
 {
     if (sketch->evaluateConstraints()) {
@@ -346,8 +414,8 @@ void SketcherValidation::on_findReversed_clicked()
         Part::Geometry* g = geom[i];
         //only arcs of circles need to be repaired. Arcs of ellipse were so broken there should be nothing to repair from.
         if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-            const Part::GeomArcOfCircle *segm = dynamic_cast<const Part::GeomArcOfCircle*>(g);
-            if(segm->isReversedInXY()){
+            const Part::GeomArcOfCircle *segm = static_cast<const Part::GeomArcOfCircle*>(g);
+            if (segm->isReversed()) {
                 points.push_back(segm->getStartPoint(/*emulateCCW=*/true));
                 points.push_back(segm->getEndPoint(/*emulateCCW=*/true));
             }

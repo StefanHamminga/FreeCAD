@@ -1,7 +1,6 @@
 include_directories(
     ${CMAKE_CURRENT_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
-    ${QT_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
 )
@@ -19,7 +18,13 @@ SOURCE_GROUP("Moc" FILES ${Test_MOC_SRCS})
 set(Dialogs_UIC_SRCS
     UnitTest.ui
 )
-qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
+
+if(BUILD_QT5)
+    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
+else()
+    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialogs_UIC_SRCS})
+endif()
+
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
     UnitTest.ui
@@ -30,7 +35,11 @@ SET(Dialogs_SRCS
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
-qt4_add_resources(Resource_SRCS Resources/Test.qrc)
+if(BUILD_QT5)
+    qt5_add_resources(Resource_SRCS Resources/Test.qrc)
+else()
+    qt4_add_resources(Resource_SRCS Resources/Test.qrc)
+endif()
 SET(Resource_SRCS
     ${Resource_SRCS}
     Resources/Test.qrc
@@ -61,3 +70,10 @@ SET_PYTHON_PREFIX_SUFFIX(QtUnitGui)
 INSTALL(TARGETS QtUnitGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${TestGuiPy_SRCS} DESTINATION Mod/Test)
 
+SET(TestGuiIcon_SVG
+    Resources/icons/TestWorkbench.svg
+)
+
+fc_copy_sources(QtUnitGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Test" ${TestGuiIcon_SVG})
+
+INSTALL(FILES ${TestGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Test/Resources/icons")

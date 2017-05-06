@@ -134,7 +134,7 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
         if (!shape.IsNull()) {
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(obj.getDocument());
             QString label = QString::fromUtf8(obj.Label.getValue());
-            QString name = QString::fromAscii(obj.getNameInDocument());
+            QString name = QString::fromLatin1(obj.getNameInDocument());
             
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
@@ -194,7 +194,7 @@ bool DlgBooleanOperation::hasSolids(const App::DocumentObject* obj) const
     if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
         const TopoDS_Shape& shape = static_cast<const Part::Feature*>(obj)->Shape.getValue();
         TopExp_Explorer anExp (shape, TopAbs_SOLID);
-        for (; anExp.More(); anExp.Next()) {
+        if (anExp.More()) {
             return true;
         }
     }
@@ -217,7 +217,7 @@ void DlgBooleanOperation::findShapes()
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(*it)->Shape.getValue();
         if (!shape.IsNull()) {
             QString label = QString::fromUtf8((*it)->Label.getValue());
-            QString name = QString::fromAscii((*it)->getNameInDocument());
+            QString name = QString::fromLatin1((*it)->getNameInDocument());
             
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
@@ -304,6 +304,8 @@ bool DlgBooleanOperation::indexOfCurrentItem(QTreeWidgetItem* item, int& top_ind
 
 void DlgBooleanOperation::currentItemChanged(QTreeWidgetItem* current, QTreeWidgetItem * previous)
 {
+    Q_UNUSED(current);
+    Q_UNUSED(previous);
 //    if (current && current->flags() & Qt::ItemIsUserCheckable)
 //        current->setCheckState(0, Qt::Checked);
     //if (previous && previous->flags() & Qt::ItemIsUserCheckable)

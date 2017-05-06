@@ -94,7 +94,7 @@
 <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-        <location line="+63"/>
+        <location line="+60"/>
         <source>Robot</source>
         <translation>Robot</translation>
     </message>
@@ -196,7 +196,7 @@
     <message>
         <location line="+1"/>
         <source>Insert robot Tool location into trajectory</source>
-        <translation>Inserte la herramienta lacalización del robot en la trayectoria</translation>
+        <translation>Inserte la herramienta localización del robot en la trayectoria</translation>
     </message>
 </context>
 <context>
@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Trayectoria dress-up...</translation>
+        <translation>Trayectoria dress-up...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Crear un objeto de disfraz que reemplaza a algunos aspectos de una trayectoria</translation>
+        <translation>Crear un objeto dress-up que reemplaza a algunos aspectos de una trayectoria</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -368,8 +368,8 @@
         <location line="+49"/>
         <location line="+100"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-52"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-49"/>
+        <location line="+62"/>
         <location filename="../../CommandInsertRobot.cpp" line="+181"/>
         <location filename="../../CommandTrajectory.cpp" line="-276"/>
         <location line="+56"/>
@@ -379,10 +379,15 @@
         <translation>Selección incorrecta</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-61"/>
+        <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
         <translation>Seleccione un robot y un objeto trayectoria.</translation>
@@ -398,20 +403,28 @@
         <translation>Usted necesita por lo menos dos puntos de paso en una trayectoria para poder simular.</translation>
     </message>
     <message>
-        <location filename="../../CommandExport.cpp" line="-43"/>
-        <location line="+65"/>
         <source>KRL file(*.src)</source>
-        <translation>Archivo KRL (*.src)</translation>
+        <translation type="obsolete">Archivo KRL (*.src)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
         <source>All Files (*.*)</source>
-        <translation>Todos los archivos (*.*)</translation>
+        <translation type="obsolete">Todos los archivos (*.*)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-40"/>
+        <location line="+62"/>
+        <source>KRL file</source>
+        <translation>Archivo KRL</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
+        <source>All Files</source>
+        <translation>Todos los Archivos</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
         <source>Export program</source>
         <translation>Exportar programa</translation>
     </message>
@@ -431,12 +444,11 @@
         <translation>Usted tiene que pasar el ratón por encima de una geometría (preselección) para utilizar este comando. Consulte la documentación para obtener más detalles.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Seleccione un Robot para establecer la posición de inicio</translation>
+        <translation type="obsolete">Seleccione un Robot para establecer la posición de inicio</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Seleccione un Robot</translation>
     </message>

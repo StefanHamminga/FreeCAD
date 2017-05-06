@@ -35,7 +35,7 @@ class View3DInventorViewer;
 /**
  * @brief Python interface for View3DInventorViewer
  * 
- * The interface does not offer all methods the c++ View3DInventorViewer counterpart has, respectivly
+ * The interface does not offer all methods the c++ View3DInventorViewer counterpart has, respectively
  * also not everything the QuarterWidget and the SoQtQuarterAdaptor offers. It only exposes 
  * methods with additioanl functionality in comparison to the View3DInventorPy class. Everything that
  * can be done from there has no interface here. 
@@ -51,22 +51,27 @@ public:
     Py::Object repr();
     Py::Object getattr(const char *);
     int setattr(const char *, const Py::Object &);
-    
+
     //exposed methods
     Py::Object getSoEventManager(const Py::Tuple&);
     Py::Object getSoRenderManager(const Py::Tuple&);
-    
+    Py::Object getSceneGraph(const Py::Tuple&);
+    Py::Object setSceneGraph(const Py::Tuple&);
+
     Py::Object seekToPoint(const Py::Tuple&);
     Py::Object setFocalDistance(const Py::Tuple& args);
-    Py::Object getFocalDistance(const Py::Tuple& args);    
-    
+    Py::Object getFocalDistance(const Py::Tuple& args);
+    Py::Object getPoint(const Py::Tuple& args);
+    Py::Object getPickRadius(const Py::Tuple& args);
+    Py::Object setPickRadius(const Py::Tuple& args);
+
+
 
 private:
-    private:
     typedef PyObject* (*method_varargs_handler)(PyObject *_self, PyObject *_args);
     static method_varargs_handler pycxx_handler;
     static PyObject *method_varargs_ext_handler(PyObject *_self, PyObject *_args);
-    
+
 private:
     std::list<PyObject*> callbacks;
     View3DInventorViewer* _viewer;

@@ -29,8 +29,8 @@
 # include <climits>
 # include <Standard_Version.hxx>
 # include <BRep_Builder.hxx>
-# include <Handle_TDocStd_Document.hxx>
-# include <Handle_XCAFApp_Application.hxx>
+# include <TDocStd_Document.hxx>
+# include <XCAFApp_Application.hxx>
 # include <TDocStd_Document.hxx>
 # include <XCAFApp_Application.hxx>
 # include <XCAFDoc_DocumentTool.hxx>
@@ -64,15 +64,27 @@
 # endif
 #endif
 
-#include "ImportOCAF.h"
 #include <Base/Console.h>
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
+#include <App/Part.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/FeatureCompound.h>
+#include "ImportOCAF.h"
 #include <Mod/Part/App/ProgressIndicator.h>
 #include <Mod/Part/App/ImportIges.h>
 #include <Mod/Part/App/ImportStep.h>
+
+#include <App/DocumentObject.h>
+#include <App/DocumentObjectGroup.h>
+
+#ifdef HAVE_TBB
+#include <tbb/parallel_for.h>
+#include <tbb/blocked_range.h>
+#include <tbb/task_group.h>
+#endif
+
 
 
 using namespace Import;
@@ -80,7 +92,7 @@ using namespace Import;
 
 #define OCAF_KEEP_PLACEMENT
 
-ImportOCAF::ImportOCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name)
+ImportOCAF::ImportOCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
     : pDoc(h), doc(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (pDoc->Main());
@@ -93,14 +105,25 @@ ImportOCAF::~ImportOCAF()
 
 void ImportOCAF::loadShapes()
 {
+    std::vector<App::DocumentObject*> lValue;
     myRefShapes.clear();
-    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false);
+    loadShapes(pDoc->Main(), TopLoc_Location(), default_name, "", false, lValue);
+    lValue.clear();
 }
 
-void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, const std::string& defaultname, const std::string& assembly, bool isRef)
+void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc,
+                            const std::string& defaultname, const std::string& assembly, bool isRef,
+                            std::vector<App::DocumentObject*>& lValue)
 {
     int hash = 0;
+#ifdef HAVE_TBB
+    using namespace tbb;
+    task_group g;
+#endif
     TopoDS_Shape aShape;
+
+    std::vector<App::DocumentObject *> localValue;
+
     if (aShapeTool->GetShape(label,aShape)) {
         hash = aShape.HashCode(HashUpper);
     }
@@ -156,6 +179,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
 
 #if defined(OCAF_KEEP_PLACEMENT)
     std::string asm_name = part_name;
+    (void)assembly;
 #else
     std::string asm_name = assembly;
     if (aShapeTool->IsAssembly(label)) {
@@ -165,7 +189,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
 
     TDF_Label ref;
     if (aShapeTool->IsReference(label) && aShapeTool->GetReferredShape(label, ref)) {
-        loadShapes(ref, part_loc, part_name, asm_name, true);
+        loadShapes(ref, part_loc, part_name, asm_name, true, lValue);
     }
 
     if (isRef || myRefShapes.find(hash) == myRefShapes.end()) {
@@ -177,43 +201,89 @@ void ImportOCAF::loadShapes(const TDF_Label& label, const TopLoc_Location& loc, 
             if (!asm_name.empty())
                 part_name = asm_name;
             if (isRef)
-                createShape(label, loc, part_name);
+                createShape(label, loc, part_name, lValue);
             else
-                createShape(label, part_loc, part_name);
+                createShape(label, part_loc, part_name, localValue);
         }
         else {
+            // This is probably an Assembly let's try to create a Compound with the name
+            App::Part *pcPart = NULL;
+            if (aShapeTool->IsAssembly(label)) {
+                pcPart = static_cast<App::Part*>(doc->addObject
+                            ("App::Part",asm_name.c_str()));
+            }
+
             for (TDF_ChildIterator it(label); it.More(); it.Next()) {
-                loadShapes(it.Value(), part_loc, part_name, asm_name, isRef);
+                loadShapes(it.Value(), part_loc, part_name, asm_name, isRef, localValue);
+            }
+
+            if (pcPart) {
+                for (std::size_t i=0; i<localValue.size(); i++) {
+                    pcPart->addObject((localValue[i]));
+                }
+
+                if (!localValue.empty())
+                    lValue.push_back(pcPart);
             }
         }
     }
 }
 
-void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name)
+void ImportOCAF::createShape(const TDF_Label& label, const TopLoc_Location& loc, const std::string& name,
+                             std::vector<App::DocumentObject*>& lValue)
 {
     const TopoDS_Shape& aShape = aShapeTool->GetShape(label);
+#ifdef HAVE_TBB
+    using namespace tbb;
+    task_group g;
+#endif
+
     if (!aShape.IsNull() && aShape.ShapeType() == TopAbs_COMPOUND) {
         TopExp_Explorer xp;
         int ctSolids = 0, ctShells = 0;
-        for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++)
-            createShape(xp.Current(), loc, name);
-        for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++)
-            createShape(xp.Current(), loc, name);
+        std::vector<App::DocumentObject *> localValue;
+
+        App::Part *pcPart = NULL;
+        for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
+            createShape(xp.Current(), loc, name, localValue);
+        }
+        for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
+            createShape(xp.Current(), loc, name, localValue);
+        }
+
+        if (!localValue.empty()) {
+            pcPart = static_cast<App::Part*>(doc->addObject("App::Part",name.c_str()));
+
+            // localValue contain the object that I must add to the local Part
+            // I must add the PartOrigin and the Part itself
+            for (std::size_t i=0; i<localValue.size(); i++) {
+                pcPart->addObject(localValue[i]);
+            }
+
+            lValue.push_back(pcPart);
+        }
+
         if (ctSolids > 0 || ctShells > 0)
             return;
     }
 
-    createShape(aShape, loc, name);
+    createShape(aShape, loc, name, lValue);
 }
 
-void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name)
+void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& loc, const std::string& name,
+                             std::vector<App::DocumentObject*>& lvalue)
 {
     Part::Feature* part = static_cast<Part::Feature*>(doc->addObject("Part::Feature"));
+
+    // I probably have to create a Part copy
+    // as to properly set it up into my new step tree
     if (!loc.IsIdentity())
         part->Shape.setValue(aShape.Moved(loc));
     else
         part->Shape.setValue(aShape);
+
     part->Label.setValue(name);
+    lvalue.push_back(part);
 
     Quantity_Color aColor;
     App::Color color(0.8f,0.8f,0.8f);
@@ -274,18 +344,20 @@ void ImportOCAF::createShape(const TopoDS_Shape& aShape, const TopLoc_Location& 
 
 // ----------------------------------------------------------------------------
 
-ExportOCAF::ExportOCAF(Handle_TDocStd_Document h)
+ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
     : pDoc(h)
+    , keepExplicitPlacement(explicitPlacement)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
     aColorTool = XCAFDoc_DocumentTool::ColorTool(pDoc->Main());
 
-#if defined(OCAF_KEEP_PLACEMENT)
-    rootLabel = aShapeTool->NewShape();
-    TDataStd_Name::Set(rootLabel, "ASSEMBLY");
-#else
-    rootLabel = TDF_TagSource::NewChild(pDoc->Main());
-#endif
+    if (keepExplicitPlacement) {
+        rootLabel = aShapeTool->NewShape();
+        TDataStd_Name::Set(rootLabel, "ASSEMBLY");
+    }
+    else {
+        rootLabel = TDF_TagSource::NewChild(pDoc->Main());
+    }
 }
 
 void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& colors)
@@ -294,13 +366,16 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
     if (shape.IsNull())
         return;
 
-#if defined(OCAF_KEEP_PLACEMENT)
-    // http://www.opencascade.org/org/forum/thread_18813/?forum=3
-    TopLoc_Location aLoc = shape.Location();
-    TopoDS_Shape baseShape = shape.Located(TopLoc_Location());
-#else
-    TopoDS_Shape baseShape = shape;
-#endif
+    TopoDS_Shape baseShape;
+    TopLoc_Location aLoc;
+    if (keepExplicitPlacement) {
+        // http://www.opencascade.org/org/forum/thread_18813/?forum=3
+        aLoc = shape.Location();
+        baseShape = shape.Located(TopLoc_Location());
+    }
+    else {
+        baseShape = shape;
+    }
 
     // Add shape and name
     TDF_Label shapeLabel = aShapeTool->NewShape();
@@ -308,9 +383,9 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
 
     TDataStd_Name::Set(shapeLabel, TCollection_ExtendedString(part->Label.getValue(), 1));
 
-#if defined(OCAF_KEEP_PLACEMENT)
-    aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
-#endif
+    if (keepExplicitPlacement) {
+        aShapeTool->AddComponent(rootLabel, shapeLabel, aLoc);
+    }
 
     // Add color information
     Quantity_Color col;
@@ -359,7 +434,7 @@ void ExportOCAF::saveShape(Part::Feature* part, const std::vector<App::Color>& c
 
 // ----------------------------------------------------------------------------
 
-ImportXCAF::ImportXCAF(Handle_TDocStd_Document h, App::Document* d, const std::string& name)
+ImportXCAF::ImportXCAF(Handle(TDocStd_Document) h, App::Document* d, const std::string& name)
     : hdoc(h), doc(d), default_name(name)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool (hdoc->Main());

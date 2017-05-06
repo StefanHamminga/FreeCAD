@@ -300,7 +300,7 @@ public:
 
     virtual void apply(SoNode * node);
     virtual void apply(SoPath * path);
-    virtual void apply(const SoPathList & pathlist, SbBool obeysrules = FALSE);
+    virtual void apply(const SoPathList & pathlist, SbBool obeysrules = false);
     void setVisible(SbBool b) { hlVisible = b; }
     SbBool isVisible() const { return hlVisible; }
     void setColor(const SbColor & color);
@@ -318,6 +318,28 @@ private:
     void drawBoxes(SoPath * pathtothis, const SoPathList * pathlist);
 
     SoBoxSelectionRenderActionP * pimpl;
+};
+
+/**
+ * Helper class no notify nodes to update VBO.
+ * @author Werner Mayer
+ */
+class GuiExport SoUpdateVBOAction : public SoAction
+{
+    SO_ACTION_HEADER(SoUpdateVBOAction);
+
+public:
+    SoUpdateVBOAction ();
+    ~SoUpdateVBOAction();
+
+    static void initClass();
+    static void finish(void);
+
+protected:
+    virtual void beginTraversal(SoNode *node);
+
+private:
+    static void callDoAction(SoAction *action,SoNode *node);
 };
 
 } // namespace Gui

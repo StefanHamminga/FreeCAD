@@ -45,7 +45,7 @@ class GuiExport Placement : public Gui::LocationDialog
     Q_OBJECT
 
 public:
-    Placement(QWidget* parent = 0, Qt::WFlags fl = 0);
+    Placement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~Placement();
     void accept();
     void reject();
@@ -63,11 +63,13 @@ private Q_SLOTS:
     void on_applyIncrementalPlacement_toggled(bool);
     void onPlacementChanged(int);
     void on_resetButton_clicked();
+    void on_centerOfMass_toggled(bool);
 
 private:
     bool onApply();
     void setPlacementData(const Base::Placement&);
     Base::Placement getPlacementData() const;
+    Base::Vector3d getCenterData() const;
     QString getPlacementString() const;
     void directionActivated(int);
     void applyPlacement(const Base::Placement& p, bool incremental);
@@ -87,6 +89,7 @@ private:
     QSignalMapper* signalMapper;
     Connection connectAct;
     Base::Placement ref;
+    Base::Vector3d cntOfMass;
     std::string propertyName; // the name of the placement property
     std::set<std::string> documents;
 
@@ -98,7 +101,7 @@ class GuiExport DockablePlacement : public Placement
     Q_OBJECT
 
 public:
-    DockablePlacement(QWidget* parent = 0, Qt::WFlags fl = 0);
+    DockablePlacement(QWidget* parent = 0, Qt::WindowFlags fl = 0);
     ~DockablePlacement();
 
     void accept();

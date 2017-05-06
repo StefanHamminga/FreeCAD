@@ -24,13 +24,13 @@
 
 class PlotWorkbench(Workbench):
     """Workbench of Plot module."""
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Plot/resources/icons/PlotWorkbench.svg"
+        self.__class__.MenuText = "Plot"
+        self.__class__.ToolTip = "The Plot module is used to edit/save output plots performed by other tools"
+
     from plotUtils import Paths
     import PlotGui
-
-    Icon = 'Icon.svg'
-    MenuText = "Plot"
-    ToolTip = ("The Plot module is used to edit/save output plots performed "
-               "by other tools")
 
     def Initialize(self):
         from PySide import QtCore, QtGui
@@ -54,8 +54,7 @@ class PlotWorkbench(Workbench):
             msg = QtGui.QApplication.translate(
                 "plot_console",
                 "matplotlib not found, Plot module will be disabled",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintMessage(msg + '\n')
 
 

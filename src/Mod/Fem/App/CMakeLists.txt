@@ -5,51 +5,42 @@ else(MSVC)
 endif(MSVC)
 
 if(BUILD_FEM_NETGEN)
-    add_definitions(-DFCWithNetgen)
+    add_definitions(-DFCWithNetgen ${NETGEN_DEFINITIONS})
 endif(BUILD_FEM_NETGEN)
-
 
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
     ${CMAKE_BINARY_DIR}/src
     ${CMAKE_CURRENT_BINARY_DIR}
-    ${CMAKE_SOURCE_DIR}/src/3rdParty/ANN/include
     ${Boost_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
     ${SMESH_INCLUDE_DIR}
+    ${NETGEN_INCLUDE_DIRS}
+    ${VTK_INCLUDE_DIRS}
 )
 
 link_directories(${OCC_LIBRARY_DIR})
 
+set(Fem_LIBS
+    Part
+    FreeCADApp
+    StdMeshers
+    SMESH
+    SMDS
+    SMESHDS
+)
 
 if(BUILD_FEM_NETGEN)
-    set(Fem_LIBS
-        Part
-        FreeCADApp
-        StdMeshers
+    list(APPEND Fem_LIBS
         NETGENPlugin
-        SMESH
-        SMDS
-        SMESHDS
-    )
-else(BUILD_FEM_NETGEN)
-    set(Fem_LIBS
-        Part
-        FreeCADApp
-        StdMeshers
-        SMESH
-        SMDS
-        SMESHDS
     )
 endif(BUILD_FEM_NETGEN)
 
 generate_from_xml(FemMeshPy)
-
 
 SET(Python_SRCS
     FemMeshPy.xml
@@ -70,57 +61,107 @@ SET(Mod_SRCS
 SOURCE_GROUP("Module" FILES ${Mod_SRCS})
 
 SET(FemScripts_SRCS
-    _CommandFemBeamSection.py
-    _CommandFemFromShape.py
-    _CommandFemShellThickness.py
-    _CommandMechanicalJobControl.py
-    _CommandMechanicalMaterial.py
-    _CommandMechanicalShowResult.py
-    _CommandNewMechanicalAnalysis.py
-    _CommandPurgeFemResults.py
-    _CommandQuickAnalysis.py
-    _FemAnalysis.py
-    _FemBeamSection.py
-    _FemShellThickness.py
-    _MechanicalMaterial.py
-    _TaskPanelFemBeamSection.py
-    _TaskPanelFemShellThickness.py
-    _TaskPanelJobControl.py
-    _TaskPanelMechanicalMaterial.py
-    _TaskPanelResultControl.py
-    _ViewProviderFemAnalysis.py
-    _ViewProviderFemBeamSection.py
-    _ViewProviderFemShellThickness.py
-    _ViewProviderMechanicalMaterial.py
-    ccxDatReader.py
-    ccxFrdReader.py
-    ccxInpWriter.py
     convert2TetGen.py
+    importCcxDatResults.py
+    importCcxFrdResults.py
+    importFenicsMesh.py
+    importInpMesh.py
+    importToolsFem.py
+    importVTKResults.py
+    importZ88Mesh.py
+    importZ88O2Results.py
     Init.py
     InitGui.py
-    FemCommands.py
-    FemBeamSection.py
-    FemExample.py
-    FemShellThickness.py
+    FemGmshTools.py
+    FemInputWriter.py
+    FemInputWriterCcx.py
+    FemInputWriterZ88.py
+    FemMesh2Mesh.py
+    FemMeshTools.py
+    FemSelectionObserver.py
     FemTools.py
-    MechanicalAnalysis.py
-    MechanicalMaterial.py
-    SelectionObserverFem.py
+    FemToolsCcx.py
+    FemToolsZ88.py
+    ObjectsFem.py
     TestFem.py
-
-    TaskPanelFemBeamSection.ui
-    TaskPanelFemShellThickness.ui
-    TaskPanelMechanicalAnalysis.ui
-    TaskPanelMechanicalMaterial.ui
-    TaskPanelShowDisplacement.ui
 )
 #SOURCE_GROUP("Scripts" FILES ${FemScripts_SRCS})
+
+SET(FemObjectsScripts_SRCS
+    PyObjects/__init__.py
+    PyObjects/_FemConstraintSelfWeight.py
+    PyObjects/_FemElementFluid1D.py
+    PyObjects/_FemElementGeometry1D.py
+    PyObjects/_FemElementGeometry2D.py
+    PyObjects/_FemMaterialMechanicalNonlinear.py
+    PyObjects/_FemMeshGmsh.py
+    PyObjects/_FemMeshGroup.py
+    PyObjects/_FemMeshRegion.py
+    PyObjects/_FemResultMechanical.py
+    PyObjects/_FemSolverCalculix.py
+    PyObjects/_FemSolverZ88.py
+    PyObjects/_FemMaterial.py
+)
+
+SET(FemGuiScripts_SRCS
+    PyGui/FemCommands.py
+    PyGui/__init__.py
+    PyGui/_CommandFemAnalysis.py
+    PyGui/_CommandFemConstraintSelfWeight.py
+    PyGui/_CommandFemElementFluid1D.py
+    PyGui/_CommandFemElementGeometry1D.py
+    PyGui/_CommandFemElementGeometry2D.py
+    PyGui/_CommandFemMaterialMechanicalNonlinear.py
+    PyGui/_CommandFemMaterialSolid.py
+    PyGui/_CommandFemMaterialFluid.py
+    PyGui/_CommandFemMesh2Mesh.py
+    PyGui/_CommandFemMeshGmshFromShape.py
+    PyGui/_CommandFemMeshNetgenFromShape.py
+    PyGui/_CommandFemMeshClear.py
+    PyGui/_CommandFemMeshGroup.py
+    PyGui/_CommandFemMeshPrintInfo.py
+    PyGui/_CommandFemMeshRegion.py
+    PyGui/_CommandFemResultShow.py
+    PyGui/_CommandFemResultsPurge.py
+    PyGui/_CommandFemSolverCalculix.py
+    PyGui/_CommandFemSolverControl.py
+    PyGui/_CommandFemSolverRun.py
+    PyGui/_CommandFemSolverZ88.py
+    PyGui/_TaskPanelFemElementFluid1D.py
+    PyGui/_TaskPanelFemElementGeometry1D.py
+    PyGui/_TaskPanelFemElementGeometry2D.py
+    PyGui/_TaskPanelFemMaterial.py
+    PyGui/_TaskPanelFemMeshGmsh.py
+    PyGui/_TaskPanelFemMeshGroup.py
+    PyGui/_TaskPanelFemMeshRegion.py
+    PyGui/_TaskPanelFemResultShow.py
+    PyGui/_TaskPanelFemSolverCalculix.py
+    PyGui/_ViewProviderFemConstraintSelfWeight.py
+    PyGui/_ViewProviderFemElementFluid1D.py
+    PyGui/_ViewProviderFemElementGeometry1D.py
+    PyGui/_ViewProviderFemElementGeometry2D.py
+    PyGui/_ViewProviderFemMaterial.py
+    PyGui/_ViewProviderFemMaterialMechanicalNonlinear.py
+    PyGui/_ViewProviderFemMeshGmsh.py
+    PyGui/_ViewProviderFemMeshGroup.py
+    PyGui/_ViewProviderFemMeshRegion.py
+    PyGui/_ViewProviderFemResultMechanical.py
+    PyGui/_ViewProviderFemSolverCalculix.py
+    PyGui/_ViewProviderFemSolverZ88.py
+    PyGui/TaskPanelFemElementFluid1D.ui
+    PyGui/TaskPanelFemElementGeometry1D.ui
+    PyGui/TaskPanelFemElementGeometry2D.ui
+    PyGui/TaskPanelFemMaterial.ui
+    PyGui/TaskPanelFemMeshGmsh.ui
+    PyGui/TaskPanelFemMeshGroup.ui
+    PyGui/TaskPanelFemMeshRegion.ui
+    PyGui/TaskPanelFemResultShow.ui
+    PyGui/TaskPanelFemSolverCalculix.ui
+)
 
 SET(FemTests_SRCS
     test_files/ccx/mesh_points.csv
     test_files/ccx/mesh_volumes.csv
-    test_files/ccx/static_analysis.inp
-    test_files/ccx/frequency_analysis.inp
     test_files/ccx/cube_frequency.inp
     test_files/ccx/cube_frequency.dat
     test_files/ccx/cube_frequency.frd
@@ -129,6 +170,14 @@ SET(FemTests_SRCS
     test_files/ccx/cube_static.dat
     test_files/ccx/cube_static.frd
     test_files/ccx/cube_static_expected_values
+    test_files/ccx/cube.fcstd
+    test_files/ccx/spine_points.csv
+    test_files/ccx/spine_volumes.csv
+    test_files/ccx/spine_thermomech.inp
+    test_files/ccx/spine_thermomech.dat
+    test_files/ccx/spine_thermomech.frd
+    test_files/ccx/spine_thermomech_expected_values
+    test_files/ccx/spine_thermomech.fcstd
 )
 
 SET(FemBase_SRCS
@@ -144,14 +193,16 @@ SET(FemBase_SRCS
     FemMesh.h
     FemResultObject.cpp
     FemResultObject.h
+    FemSolverObject.cpp
+    FemSolverObject.h
     FemConstraint.cpp
     FemConstraint.h
     FemMeshProperty.cpp
     FemMeshProperty.h
-	)
+    )
 SOURCE_GROUP("Base types" FILES ${FemBase_SRCS})
-	
-	
+
+
 SET(FemSet_SRCS
     FemSetObject.cpp
     FemSetObject.h
@@ -163,9 +214,9 @@ SET(FemSet_SRCS
     FemSetFacesObject.h
     FemSetGeometryObject.cpp
     FemSetGeometryObject.h
-	)
+    )
 SOURCE_GROUP("Set objects" FILES ${FemSet_SRCS})
-	
+
 SET(FemConstraints_SRCS
     FemConstraintBearing.h
     FemConstraintBearing.cpp
@@ -173,37 +224,71 @@ SET(FemConstraints_SRCS
     FemConstraintFixed.h
     FemConstraintForce.cpp
     FemConstraintForce.h
+    FemConstraintFluidBoundary.cpp
+    FemConstraintFluidBoundary.h
     FemConstraintPressure.cpp
     FemConstraintPressure.h
     FemConstraintGear.cpp
     FemConstraintGear.h
     FemConstraintPulley.cpp
     FemConstraintPulley.h
-	)
+    FemConstraintDisplacement.h
+    FemConstraintDisplacement.cpp
+    FemConstraintTemperature.h
+    FemConstraintTemperature.cpp
+    FemConstraintHeatflux.h
+    FemConstraintHeatflux.cpp
+    FemConstraintInitialTemperature.h
+    FemConstraintInitialTemperature.cpp
+    FemConstraintPlaneRotation.cpp
+    FemConstraintPlaneRotation.h
+    FemConstraintContact.cpp
+    FemConstraintContact.h
+    FemConstraintTransform.cpp
+    FemConstraintTransform.h
+    )
 SOURCE_GROUP("Constraints" FILES ${FemConstraints_SRCS})
 
-SET(FemResult_SRCS
-	)
-SOURCE_GROUP("ResultObjects" FILES ${FemResult_SRCS})
+if(BUILD_FEM_VTK)
+    SET(FemPost_SRCS
+        PropertyPostDataObject.h
+        PropertyPostDataObject.cpp
+        FemPostObject.h
+        FemPostObject.cpp
+        FemPostPipeline.h
+        FemPostPipeline.cpp
+        FemPostFilter.h
+        FemPostFilter.cpp
+        FemPostFunction.h
+        FemPostFunction.cpp
+        FemVTKTools.h
+        FemVTKTools.cpp
+    )
+    SOURCE_GROUP("PostObjects" FILES ${FemPost_SRCS})
+endif(BUILD_FEM_VTK)
+
 
 SET(Fem_SRCS
-	${FemBase_SRCS}
-	${FemSet_SRCS}
-	${FemConstraints_SRCS}
-	${FemResult_SRCS}
+    ${FemBase_SRCS}
+    ${FemSet_SRCS}
+    ${FemConstraints_SRCS}
+    ${FemResult_SRCS}
+    ${FemPost_SRCS}
     ${Mod_SRCS}
     ${Python_SRCS}
 )
 
 add_library(Fem SHARED ${Fem_SRCS})
-target_link_libraries(Fem ${Fem_LIBS})
+target_link_libraries(Fem ${Fem_LIBS} ${VTK_LIBRARIES})
 
 
-fc_target_copy_resource(Fem 
+fc_target_copy_resource(Fem
     ${CMAKE_SOURCE_DIR}/src/Mod/Fem
     ${CMAKE_BINARY_DIR}/Mod/Fem
-	Init.py 
+    Init.py
     ${FemScripts_SRCS}
+    ${FemObjectsScripts_SRCS}
+    ${FemGuiScripts_SRCS}
     ${FemTests_SRCS}
     )
 

@@ -1,41 +1,18 @@
 // PythonStuff.cpp
-
-/*==============================
-Copyright (c) 2011-2015 Dan Heeks
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
-
+// Copyright 2011, Dan Heeks
+// This program is released under the BSD license. See the file COPYING for details.
 
 #include "PythonStuff.h"
 
 #include "Area.h"
 #include "Point.h"
+#include "AreaDxf.h"
 #include "kurve/geometry.h"
 
 #if defined (_POSIX_C_SOURCE)
 #   undef    _POSIX_C_SOURCE
 #endif
+
 #if defined (_XOPEN_SOURCE)
 #   undef    _XOPEN_SOURCE
 #endif
@@ -48,11 +25,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <Python.h>
 #endif
 
-#ifdef __GNUG__
+#if defined(__GNUG__) && !defined(__clang__)
 #pragma implementation
-#endif
-#ifdef _MSC_VER
-#pragma warning(disable : 4244)
 #endif
 
 #include <boost/progress.hpp>
@@ -97,13 +71,17 @@ boost::python::tuple transformed_point(const geoff_geometry::Matrix &matrix, dou
 static void print_curve(const CCurve& c)
 {
 	std::size_t nvertices = c.m_vertices.size();
+#if defined SIZEOF_SIZE_T && SIZEOF_SIZE_T == 4
+	printf("number of vertices = %d\n", nvertices);
+#else
 	printf("number of vertices = %lu\n", nvertices);
+#endif
 	int i = 0;
 	for(std::list<CVertex>::const_iterator It = c.m_vertices.begin(); It != c.m_vertices.end(); It++, i++)
 	{
 		const CVertex& vertex = *It;
-		printf("vertex %d type = %d, x = %g, y = %g", i+1, vertex.m_type, vertex.m_p.x / CArea::m_units, vertex.m_p.y / CArea::m_units);
-		if(vertex.m_type)printf(", xc = %g, yc = %g", vertex.m_c.x / CArea::m_units, vertex.m_c.y / CArea::m_units);
+		printf("vertex %d type = %d, x = %g, y = %g", i+1, vertex.m_type, vertex.m_p.x / CArea::get_units(), vertex.m_p.y / CArea::get_units());
+		if(vertex.m_type)printf(", xc = %g, yc = %g", vertex.m_c.x / CArea::get_units(), vertex.m_c.y / CArea::get_units());
 		printf("\n");
 	}
 }
@@ -119,7 +97,7 @@ static void print_area(const CArea &a)
 
 static unsigned int num_vertices(const CCurve& curve)
 {
-	return static_cast<int>(curve.m_vertices.size());
+	return static_cast<unsigned int>(curve.m_vertices.size());
 }
 
 static CVertex FirstVertex(const CCurve& curve)
@@ -134,12 +112,12 @@ static CVertex LastVertex(const CCurve& curve)
 
 static void set_units(double units)
 {
-	CArea::m_units = units;
+	CArea::set_units(units);
 }
 
 static double get_units()
 {
-	return CArea::m_units;
+	return CArea::get_units();
 }
 
 static bool holes_linked()
@@ -147,6 +125,13 @@ static bool holes_linked()
 	return CArea::HolesLinked();
 }
 
+static CArea AreaFromDxf(const char* filepath)
+{
+	CArea area;
+	AreaDxfRead dxf(&area, filepath);
+	dxf.DoRead();
+	return area;
+}
 
 static void append_point(CCurve& c, const Point& p)
 {
@@ -187,6 +172,10 @@ boost::python::list SplitArea(const CArea& a)
 	return alist;
 }
 
+void dxfArea(CArea& area, const char* /*str*/)
+{
+	area = CArea();
+}
 
 boost::python::list getCurveSpans(const CCurve& c)
 {
@@ -427,5 +416,6 @@ BOOST_PYTHON_MODULE(area) {
     bp::def("set_units", set_units);
     bp::def("get_units", get_units);
     bp::def("holes_linked", holes_linked);
+    bp::def("AreaFromDxf", AreaFromDxf);
     bp::def("TangentialArc", TangentialArc);
 }

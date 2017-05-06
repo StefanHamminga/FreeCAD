@@ -28,7 +28,7 @@
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <App/PropertyStandard.h>
 #include "Utils.h"
-#include "Range.h"
+#include <App/Range.h>
 
 // inclusion of the generated files (generated out of SheetPy.xml)
 #include "SheetPy.h"
@@ -67,10 +67,19 @@ PyObject* SheetPy::set(PyObject *args)
         return 0;
 
     try {
-        Range rangeIter(address);
-        do {
-            getSheetPtr()->setCell(rangeIter.address().c_str(), contents);
-        } while (rangeIter.next());
+        Sheet * sheet = getSheetPtr();
+        std::string cellAddress = sheet->getAddressFromAlias(address).c_str();
+
+        /* Check to see if address is really an alias first */
+        if (cellAddress.size() > 0)
+            sheet->setCell(cellAddress.c_str(), contents);
+        else {
+            Range rangeIter(address);
+
+            do {
+                sheet->setCell(rangeIter.address().c_str(), contents);
+            } while (rangeIter.next());
+        }
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -145,6 +154,9 @@ PyObject* SheetPy::clear(PyObject *args)
 
 PyObject* SheetPy::clearAll(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return 0;
+
     this->getSheetPtr()->clearAll();
     Py_Return;
 }
@@ -172,7 +184,7 @@ PyObject* SheetPy::exportFile(PyObject *args)
     const char * quoteChar = "\"";
     const char * escapeChar = "\\";
 
-    if (!PyArg_ParseTuple(args, "s|sss:importFile", &filename, &delimiter, &quoteChar, &escapeChar))
+    if (!PyArg_ParseTuple(args, "s|sss:exportFile", &filename, &delimiter, &quoteChar, &escapeChar))
         return 0;
 
     if (getSheetPtr()->exportToFile(filename, delimiter[0], quoteChar[0], escapeChar[0]))
@@ -277,8 +289,13 @@ PyObject* SheetPy::setStyle(PyObject *args)
             PyObject * item = PySet_Pop(copy);
 
             // check on the key:
+#if PY_MAJOR_VERSION >= 3
+            if (PyBytes_Check(item))
+                style.insert(PyBytes_AsString(item));
+#else
             if (PyString_Check(item))
                 style.insert(PyString_AsString(item));
+#endif
             else {
                 std::string error = std::string("type of the set need to be a string, not ") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
@@ -288,11 +305,19 @@ PyObject* SheetPy::setStyle(PyObject *args)
         }
         Py_DECREF(copy);
     }
+#if PY_MAJOR_VERSION >= 3
+    else if (PyBytes_Check(value)) {
+#else
     else if (PyString_Check(value)) {
+#endif
         using namespace boost;
 
         escaped_list_separator<char> e('\0', '|', '\0');
+#if PY_MAJOR_VERSION >= 3
+        std::string line = PyBytes_AsString(value);
+#else
         std::string line = PyString_AsString(value);
+#endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
         for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
@@ -404,7 +429,11 @@ PyObject* SheetPy::getStyle(PyObject *args)
         PyObject * s = PySet_New(NULL);
 
         for (std::set<std::string>::const_iterator i = style.begin(); i != style.end(); ++i)
+#if PY_MAJOR_VERSION >= 3
+            PySet_Add(s, PyBytes_FromString((*i).c_str()));
+#else
             PySet_Add(s, PyString_FromString((*i).c_str()));
+#endif
 
         return s;
     }
@@ -441,15 +470,79 @@ PyObject* SheetPy::setAlias(PyObject *args)
 {
     CellAddress address;
     const char * strAddress;
-    const char * value;
+    PyObject * value;
 
-    if (!PyArg_ParseTuple(args, "ss:setAlias", &strAddress, &value))
+    if (!PyArg_ParseTuple(args, "sO:setAlias", &strAddress, &value))
         return 0;
 
     try {
         address = stringToAddress(strAddress);
-        getSheetPtr()->setAlias(address, value);
+        if (PyUnicode_Check(value))
+#if PY_MAJOR_VERSION >= 3
+            getSheetPtr()->setAlias(address, PyUnicode_AsUTF8(value));
+#else
+        {
+            PyObject* unicode = PyUnicode_AsUTF8String(value);
+            getSheetPtr()->setAlias(address, PyString_AsString(unicode));
+            Py_DECREF(unicode);            
+        }
+        else if (PyString_Check(value))
+            getSheetPtr()->setAlias(address, PyString_AsString(value));
+#endif
+        else if (value == Py_None)
+            getSheetPtr()->setAlias(address, "");
+        else
+            throw Base::TypeError("String or None expected");
+
         Py_Return;
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+}
+
+PyObject* SheetPy::getAlias(PyObject *args)
+{
+    const char * strAddress;
+
+    if (!PyArg_ParseTuple(args, "s:getAlias", &strAddress))
+        return 0;
+
+    try {
+        CellAddress address(strAddress);
+        const Cell * cell = getSheetPtr()->getCell(address);
+        std::string alias;
+
+        if (cell && cell->getAlias(alias))
+            return Py::new_reference_to( Py::String( alias ) );
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
+    }
+    catch (const Base::Exception & e) {
+        PyErr_SetString(PyExc_ValueError, e.what());
+        return 0;
+    }
+}
+
+PyObject* SheetPy::getCellFromAlias(PyObject *args)
+{
+    const char * alias;
+
+    if (!PyArg_ParseTuple(args, "s:getAlias", &alias))
+        return 0;
+
+    try {
+        std::string address = getSheetPtr()->getAddressFromAlias(alias);
+
+        if (address.size() > 0)
+            return Py::new_reference_to( Py::String( address ) );
+        else {
+            Py_INCREF(Py_None);
+            return Py_None;
+        }
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -501,8 +594,13 @@ PyObject* SheetPy::setAlignment(PyObject *args)
         while (n-- > 0) {
             PyObject * item = PySet_Pop(copy);
 
+#if PY_MAJOR_VERSION >= 3
+            if (PyBytes_Check(item))
+                alignment = Cell::decodeAlignment(PyBytes_AsString(item), alignment);
+#else
             if (PyString_Check(item))
                 alignment = Cell::decodeAlignment(PyString_AsString(item), alignment);
+#endif
             else {
                 std::string error = std::string("type of the key need to be a string, not") + item->ob_type->tp_name;
                 PyErr_SetString(PyExc_TypeError, error.c_str());
@@ -513,12 +611,20 @@ PyObject* SheetPy::setAlignment(PyObject *args)
 
         Py_DECREF(copy);
     }
+#if PY_MAJOR_VERSION >= 3
+    else if (PyBytes_Check(value)) {
+#else
     else if (PyString_Check(value)) {
+#endif
         // Argument is a string, combination of alignments, separated by the pipe character
         using namespace boost;
 
         escaped_list_separator<char> e('\0', '|', '\0');
+#if PY_MAJOR_VERSION >= 3
+        std::string line = PyBytes_AsString(value);
+#else
         std::string line = PyString_AsString(value);
+#endif
         tokenizer<escaped_list_separator<char> > tok(line, e);
 
         for(tokenizer<escaped_list_separator<char> >::iterator i = tok.begin(); i != tok.end();++i)
@@ -585,6 +691,20 @@ PyObject* SheetPy::getAlignment(PyObject *args)
     if (cell && cell->getAlignment(alignment)) {
         PyObject * s = PySet_New(NULL);
 
+#if PY_MAJOR_VERSION >= 3
+        if (alignment & Cell::ALIGNMENT_LEFT)
+            PySet_Add(s, PyBytes_FromString("left"));
+        if (alignment & Cell::ALIGNMENT_HCENTER)
+            PySet_Add(s, PyBytes_FromString("center"));
+        if (alignment & Cell::ALIGNMENT_RIGHT)
+            PySet_Add(s, PyBytes_FromString("right"));
+        if (alignment & Cell::ALIGNMENT_TOP)
+            PySet_Add(s, PyBytes_FromString("top"));
+        if (alignment & Cell::ALIGNMENT_VCENTER)
+            PySet_Add(s, PyBytes_FromString("vcenter"));
+        if (alignment & Cell::ALIGNMENT_BOTTOM)
+            PySet_Add(s, PyBytes_FromString("bottom"));
+#else
         if (alignment & Cell::ALIGNMENT_LEFT)
             PySet_Add(s, PyString_FromString("left"));
         if (alignment & Cell::ALIGNMENT_HCENTER)
@@ -597,6 +717,7 @@ PyObject* SheetPy::getAlignment(PyObject *args)
             PySet_Add(s, PyString_FromString("vcenter"));
         if (alignment & Cell::ALIGNMENT_BOTTOM)
             PySet_Add(s, PyString_FromString("bottom"));
+#endif
 
         return s;
     }
@@ -610,8 +731,13 @@ static float decodeFloat(const PyObject * obj)
 {
     if (PyFloat_Check(obj))
         return PyFloat_AsDouble((PyObject *)obj);
+#if PY_MAJOR_VERSION >= 3
+    else if (PyLong_Check(obj))
+        return PyLong_AsLong((PyObject *)obj);
+#else
     else if (PyInt_Check(obj))
         return PyInt_AsLong((PyObject *)obj);
+#endif
     throw Base::TypeError("Float or integer expected");
 }
 
@@ -759,25 +885,6 @@ PyObject* SheetPy::getBackground(PyObject *args)
     }
 }
 
-PyObject* SheetPy::setPosition(PyObject *args)
-{
-    const char * strAddress;
-    CellAddress address;
-
-    if (!PyArg_ParseTuple(args, "s:setPosition", &strAddress))
-        return 0;
-
-    try {
-        address = stringToAddress(strAddress);
-        getSheetPtr()->setPosition(address);
-        Py_Return;
-    }
-    catch (const Base::Exception & e) {
-        PyErr_SetString(PyExc_ValueError, e.what());
-        return 0;
-    }
-}
-
 PyObject* SheetPy::setColumnWidth(PyObject *args)
 {
     const char * columnStr;
@@ -810,7 +917,7 @@ PyObject* SheetPy::getColumnWidth(PyObject *args)
     try {
         CellAddress address(std::string(columnStr) + "1");
 
-        return Py::new_reference_to( Py::Int( getSheetPtr()->getColumnWidth(address.col()) ) );
+        return Py::new_reference_to( Py::Long( getSheetPtr()->getColumnWidth(address.col()) ) );
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -848,7 +955,7 @@ PyObject* SheetPy::getRowHeight(PyObject *args)
     try {
         CellAddress address("A" + std::string(rowStr));
 
-        return Py::new_reference_to( Py::Int( getSheetPtr()->getRowHeight(address.row()) ) );
+        return Py::new_reference_to( Py::Long( getSheetPtr()->getRowHeight(address.row()) ) );
     }
     catch (const Base::Exception & e) {
         PyErr_SetString(PyExc_ValueError, e.what());
@@ -867,7 +974,7 @@ PyObject *SheetPy::getCustomAttributes(const char* attr) const
     return prop->getPyObject();
 }
 
-int SheetPy::setCustomAttributes(const char* attr, PyObject* obj)
+int SheetPy::setCustomAttributes(const char* , PyObject* )
 {
     return 0;
 }

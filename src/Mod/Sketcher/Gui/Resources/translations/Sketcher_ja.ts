@@ -2,220 +2,331 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="ja" sourcelanguage="en">
 <context>
+    <name>CmdSketcherBSplineComb</name>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+175"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Show/Hide B-spline curvature comb</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the curvature comb for all B-splines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherBSplineDegree</name>
+    <message>
+        <location line="-70"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Show/Hide B-spline degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the degree for all B-splines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherBSplinePolygon</name>
+    <message>
+        <location line="+32"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Show/Hide B-spline control polygon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the control polygons for all B-splines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>CmdSketcherClone</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="+1523"/>
+        <location filename="../../CommandSketcherTools.cpp" line="+1347"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>最後に選択された点を参照としてのジオメトリーのクローンを作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCloseShape</name>
     <message>
-        <location line="-1428"/>
+        <location line="-1252"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Close Shape</source>
-        <translation type="unfinished">図形を閉じる</translation>
+        <translation>図形を閉じる</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Produce closed shape by Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished">Produce closed shape by Link end point of element with next elements&apos; starting point</translation>
+        <translation>要素の最終点と次の要素の開始点をつないで閉じたシェイプを作成</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCompBSplineShowHideGeometryInformation</name>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+66"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Show/hide B-spline information layer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>Show/Hide B-spline degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Show/Hide B-spline control polygon</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Show/Hide B-spline curvature comb</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCompCopy</name>
     <message>
-        <location line="+1451"/>
+        <location filename="../../CommandSketcherTools.cpp" line="+1276"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>コピー</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>最後に選択された点を参照としてのジオメトリーのクローンを作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCompCreateArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="+1751"/>
+        <location filename="../../CommandCreateGeo.cpp" line="+1867"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create arc</source>
-        <translation type="unfinished">円弧を作成</translation>
+        <translation>円弧を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc in the sketcher</source>
-        <translation type="unfinished">スケッチに円弧を作成</translation>
+        <translation>スケッチに円弧を作成</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+77"/>
         <source>Center and end points</source>
-        <translation type="unfinished">中心点と端点から円弧を作成</translation>
+        <translation>中心点と端点から円弧を作成</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>End points and rim point</source>
-        <translation type="unfinished">端点と円周上の点から作成</translation>
+        <translation>端点と円周上の点から作成</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCompCreateBSpline</name>
+    <message>
+        <location line="+2855"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a B-spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a B-spline in the sketch</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCompCreateCircle</name>
     <message>
-        <location line="+1833"/>
+        <location line="+358"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create circle</source>
-        <translation type="unfinished">円を作成</translation>
+        <translation>円を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a circle in the sketcher</source>
-        <translation type="unfinished">スケッチに円を作成</translation>
+        <translation>スケッチに円を作成</translation>
     </message>
     <message>
-        <location line="+74"/>
+        <location line="+77"/>
         <source>Center and rim point</source>
-        <translation type="unfinished">中心点から円を作る</translation>
+        <translation>中心点から円を作る</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>3 rim points</source>
-        <translation type="unfinished">3点を指定して円を作成</translation>
+        <translation>3点を指定して円を作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCompCreateConic</name>
     <message>
-        <location line="-438"/>
+        <location line="-1053"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a conic</source>
-        <translation type="unfinished">円錐曲線を作成</translation>
+        <translation>円錐曲線を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a conic in the sketch</source>
-        <translation type="unfinished">スケッチに円錐曲線を作成します</translation>
+        <translation>スケッチに円錐曲線を作成</translation>
     </message>
     <message>
-        <location line="+88"/>
+        <location line="+105"/>
         <source>Ellipse by center, major radius, point</source>
-        <translation type="unfinished">中心、主半径、点からなる楕円を作成</translation>
+        <translation>中心、長半径、点を指定して楕円を作成</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Ellipse by Periapsis, apoapsis, minor radius</source>
-        <translation type="unfinished">近点、軌道遠点、小半径からなる楕円を作成</translation>
+        <translation>近点、遠点、短半径を指定して楕円を作成</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Arc of ellipse by center, major radius, endpoints</source>
-        <translation type="unfinished">中心点、主半径、端点からなる楕円の円弧を作成</translation>
+        <translation>中心、長半径、端点を指定して楕円の円弧を作成</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Arc of hyperbola by center, major radius, endpoints</source>
+        <translation>中心、長半径、端点からなる双曲線の円弧</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Arc of parabola by focus, vertex, endpoints</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCompCreateRegularPolygon</name>
     <message>
-        <location line="+1821"/>
+        <location line="+2503"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create regular polygon</source>
-        <translation type="unfinished">正多角形を作成</translation>
+        <translation>正多角形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an regular polygon in the sketcher</source>
-        <translation type="unfinished">スケッチャーで、正多角形を作成します。</translation>
+        <translation>スケッチャーで正多角形を作成</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+103"/>
         <source>Triangle</source>
-        <translation type="unfinished">三角形</translation>
+        <translation>正三角形</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Square</source>
-        <translation type="unfinished">方形</translation>
+        <translation>方形</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Pentagon</source>
-        <translation type="unfinished">五角形</translation>
+        <translation>正五角形</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Hexagon</source>
-        <translation type="unfinished">六角形</translation>
+        <translation>正六角形</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Heptagon</source>
-        <translation type="unfinished">七角形</translation>
+        <translation>正七角形</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Octagon</source>
-        <translation type="unfinished">八角形</translation>
+        <translation>正八角形</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherConnect</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="-1345"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-1169"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Connect Edges</source>
-        <translation type="unfinished">エッジを接続</translation>
+        <translation>エッジを接続</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Link end point of element with next elements&apos; starting point</source>
-        <translation type="unfinished">Link end point of element with next elements&apos; starting point</translation>
+        <translation>要素の最終点と次の要素の開始点をつなぐ</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherConstrainAngle</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2505"/>
+        <location filename="../../CommandConstraints.cpp" line="+5053"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -231,9 +342,9 @@
 <context>
     <name>CmdSketcherConstrainCoincident</name>
     <message>
-        <location line="-1664"/>
+        <location line="-3217"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -249,9 +360,9 @@
 <context>
     <name>CmdSketcherConstrainDistance</name>
     <message>
-        <location line="+90"/>
+        <location line="+143"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -267,9 +378,9 @@
 <context>
     <name>CmdSketcherConstrainDistanceX</name>
     <message>
-        <location line="+263"/>
+        <location line="+560"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -289,14 +400,14 @@
 <context>
     <name>CmdSketcherConstrainDistanceY</name>
     <message>
-        <location line="+163"/>
+        <location line="+242"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain vertical distance</source>
-        <translation>Constrain vertical distance</translation>
+        <translation type="unfinished">Constrain vertical distance</translation>
     </message>
     <message>
         <source>Constrain horizontal distance</source>
@@ -311,9 +422,9 @@
 <context>
     <name>CmdSketcherConstrainEqual</name>
     <message>
-        <location line="+1403"/>
+        <location line="+2775"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -329,9 +440,9 @@
 <context>
     <name>CmdSketcherConstrainHorizontal</name>
     <message>
-        <location line="-2222"/>
+        <location line="-4457"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -347,27 +458,27 @@
 <context>
     <name>CmdSketcherConstrainInternalAlignment</name>
     <message>
-        <location line="+2654"/>
+        <location line="+5080"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain InternalAlignment</source>
-        <translation type="unfinished">Constrain InternalAlignment</translation>
+        <translation>内部整列拘束</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrains an element to be aligned with the internal geometry of another element</source>
-        <translation type="unfinished">Constrains an element to be aligned with the internal geometry of another element</translation>
+        <translation>要素が他の要素の内部ジオメトリーと並ぶように拘束</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherConstrainLock</name>
     <message>
-        <location line="-2464"/>
+        <location line="-4662"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -383,9 +494,9 @@
 <context>
     <name>CmdSketcherConstrainParallel</name>
     <message>
-        <location line="+782"/>
+        <location line="+1534"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -401,9 +512,9 @@
 <context>
     <name>CmdSketcherConstrainPerpendicular</name>
     <message>
-        <location line="+97"/>
+        <location line="+195"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -413,7 +524,7 @@
     <message>
         <location line="+1"/>
         <source>Create a perpendicular constraint between two lines</source>
-        <translation type="unfinished">2直線間の垂直拘束を作成</translation>
+        <translation>2直線間の垂直拘束を作成</translation>
     </message>
     <message>
         <source>Create a Perpendicular constraint between two lines</source>
@@ -423,9 +534,9 @@
 <context>
     <name>CmdSketcherConstrainPointOnObject</name>
     <message>
-        <location line="-515"/>
+        <location line="-914"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -435,15 +546,15 @@
     <message>
         <location line="+1"/>
         <source>Fix a point onto an object</source>
-        <translation>点をオブジェクト上に拘束</translation>
+        <translation>点をオブジェクト上に拘束する</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherConstrainRadius</name>
     <message>
-        <location line="+1087"/>
+        <location line="+2205"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -459,27 +570,27 @@
 <context>
     <name>CmdSketcherConstrainSnellsLaw</name>
     <message>
-        <location line="+854"/>
+        <location line="+1471"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Constrain refraction (Snell&apos;s law&apos;)</source>
-        <translation type="unfinished">屈折率（スネルの法則）を拘束</translation>
+        <translation>屈折率（スネルの法則）を拘束</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</source>
-        <translation type="unfinished">Create a refraction law (Snell&apos;s law) constraint between two endpoints of rays and an edge as an interface.</translation>
+        <translation>光線の2端点と境界のエッジの間に屈折の法則(スネル則の法則)による拘束を作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherConstrainSymmetric</name>
     <message>
-        <location line="-172"/>
+        <location line="-288"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -489,7 +600,7 @@
     <message>
         <location line="+1"/>
         <source>Create a symmetry constraint between two points with respect to a line or a third point</source>
-        <translation type="unfinished">線または第三点に対して、２点間の対称拘束を作成する</translation>
+        <translation>線または第三点に対して、２点間の対称拘束を作成する</translation>
     </message>
     <message>
         <source>Create an symmetry constraint between two points with respect to a line</source>
@@ -499,9 +610,9 @@
 <context>
     <name>CmdSketcherConstrainTangent</name>
     <message>
-        <location line="-952"/>
+        <location line="-1819"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -511,15 +622,15 @@
     <message>
         <location line="+1"/>
         <source>Create a tangent constraint between two entities</source>
-        <translation>2エンティティ間に正接拘束を作成</translation>
+        <translation>2 つのエンティティ間に正接拘束を作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherConstrainVertical</name>
     <message>
-        <location line="-1294"/>
+        <location line="-2613"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -529,79 +640,97 @@
     <message>
         <location line="+1"/>
         <source>Create a vertical constraint on the selected item</source>
-        <translation>選択されているアイテムに対して垂直拘束を作成</translation>
+        <translation>選択されているアイテムに対して垂直拘束を作成する</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherConvertToNURB</name>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+22"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Convert Geometry to B-spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Converts the given Geometry to a B-spline</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCopy</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="+1278"/>
+        <location filename="../../CommandSketcherTools.cpp" line="+1100"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>コピー</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>ジオメトリの単純コピーは最後に選択した点を基準に取って作成される</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreate3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-3622"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-5106"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create arc by three points</source>
-        <translation type="unfinished">3点を指定して円弧を作成</translation>
+        <translation>3点を指定して円弧を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">終点と円弧に上の点から円弧を作成</translation>
+        <translation>終点と円弧に上の点から円弧を作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreate3PointCircle</name>
     <message>
-        <location line="+1911"/>
+        <location line="+3296"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create circle by three points</source>
-        <translation type="unfinished">3点を指定して円を作成</translation>
+        <translation>3点を指定して円を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a circle by 3 perimeter points</source>
-        <translation type="unfinished">3境界点で円を作成します。</translation>
+        <translation>3つの境界点から円を作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateArc</name>
     <message>
-        <location line="-2213"/>
+        <location line="-3612"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create arc by center</source>
-        <translation type="unfinished">中心点から円弧を作成します。</translation>
+        <translation>中心点から円弧を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">中心と終点から円弧を作成</translation>
+        <translation>中心と終点から円弧を作成</translation>
     </message>
     <message>
         <source>Create arc</source>
@@ -615,27 +744,81 @@
 <context>
     <name>CmdSketcherCreateArcOfEllipse</name>
     <message>
-        <location line="+1848"/>
+        <location line="+1886"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse</source>
-        <translation type="unfinished">楕円弧を作成します。</translation>
+        <translation>楕円弧を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an arc of ellipse in the sketch</source>
-        <translation type="unfinished">スケッチに楕円弧を作成します</translation>
+        <translation>スケッチに楕円弧を作成します。</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreateArcOfHyperbola</name>
+    <message>
+        <location line="+393"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc of hyperbola</source>
+        <translation>双曲線の円弧を作成</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc of hyperbola in the sketch</source>
+        <translation>スケッチ上に双曲線の円弧を作成</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreateArcOfParabola</name>
+    <message>
+        <location line="+350"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc of parabola</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create an arc of parabola in the sketch</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreateBSpline</name>
+    <message>
+        <location line="+565"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create B-spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a B-spline via control point in the sketch.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateCircle</name>
     <message>
-        <location line="-1256"/>
+        <location line="-2583"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -651,9 +834,9 @@
 <context>
     <name>CmdSketcherCreateDraftLine</name>
     <message>
-        <location line="+1910"/>
+        <location line="+3297"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -669,45 +852,45 @@
 <context>
     <name>CmdSketcherCreateEllipseBy3Points</name>
     <message>
-        <location line="-1039"/>
+        <location line="-2419"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create ellipse by 3 points</source>
-        <translation type="unfinished">3 点からなる楕円を作成</translation>
+        <translation>3 点を指定して楕円を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by 3 points in the sketch</source>
-        <translation type="unfinished">スケッチに３点からなる楕円を作成します。</translation>
+        <translation>3点を指定して楕円をスケッチに作成します。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateEllipseByCenter</name>
     <message>
-        <location line="-31"/>
+        <location line="-32"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create ellipse by center</source>
-        <translation type="unfinished">中心点による楕円を作成します。</translation>
+        <translation>中心点を指定して楕円を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an ellipse by center in the sketch</source>
-        <translation type="unfinished">スケッチに中心点による楕円を作成します。</translation>
+        <translation>中心点を指定して楕円をスケッチに作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateFillet</name>
     <message>
-        <location line="+1346"/>
+        <location line="+2742"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -721,51 +904,51 @@
     <message>
         <location line="+1"/>
         <source>Create a fillet between two lines or at a coincident point</source>
-        <translation>Create a fillet between two lines or at a coincident point</translation>
+        <translation type="unfinished">Create a fillet between two lines or at a coincident point</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateHeptagon</name>
     <message>
-        <location line="+954"/>
+        <location line="+1020"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create heptagon</source>
-        <translation type="unfinished">七角形を作成</translation>
+        <translation>七角形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a heptagon in the sketch</source>
-        <translation type="unfinished">スケッチに七角形を作成します。</translation>
+        <translation>スケッチに七角形を作成します。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateHexagon</name>
     <message>
-        <location line="-27"/>
+        <location line="-28"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create hexagon</source>
-        <translation type="unfinished">六角形を作成</translation>
+        <translation>六角形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a hexagon in the sketch</source>
-        <translation type="unfinished">スケッチに六角形を作成します。</translation>
+        <translation>スケッチに六角形を作成します。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateLine</name>
     <message>
-        <location line="-4845"/>
+        <location line="-6427"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -781,45 +964,63 @@
 <context>
     <name>CmdSketcherCreateOctagon</name>
     <message>
-        <location line="+4891"/>
+        <location line="+6475"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create octagon</source>
-        <translation type="unfinished">八角形を作成</translation>
+        <translation>八角形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an octagon in the sketch</source>
-        <translation type="unfinished">スケッチに八角形を作成します。</translation>
+        <translation>スケッチに八角形を作成します。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreatePentagon</name>
     <message>
-        <location line="-78"/>
+        <location line="-81"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create pentagon</source>
-        <translation type="unfinished">五角形を作成</translation>
+        <translation>正五角形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a pentagon in the sketch</source>
-        <translation type="unfinished">スケッチに五角形を作成します。</translation>
+        <translation>スケッチに五角形を作成します。</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherCreatePeriodicBSpline</name>
+    <message>
+        <location line="-1942"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create periodic B-spline</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create a periodic B-spline via control point in the sketch.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreatePoint</name>
     <message>
-        <location line="-1244"/>
+        <location line="+615"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -835,9 +1036,9 @@
 <context>
     <name>CmdSketcherCreatePolyline</name>
     <message>
-        <location line="-2729"/>
+        <location line="-4156"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -847,7 +1048,7 @@
     <message>
         <location line="+1"/>
         <source>Create a polyline in the sketch. &apos;M&apos; Key cycles behaviour</source>
-        <translation type="unfinished">スケッチにポリラインを作成する。Mキーを押すと円弧になります。</translation>
+        <translation>スケッチにポリラインを作成する。Mキーを押すと円弧になります。</translation>
     </message>
     <message>
         <source>Create a polyline in the sketch</source>
@@ -857,9 +1058,9 @@
 <context>
     <name>CmdSketcherCreateRectangle</name>
     <message>
-        <location line="-616"/>
+        <location line="-678"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -875,45 +1076,45 @@
 <context>
     <name>CmdSketcherCreateSlot</name>
     <message>
-        <location line="+4293"/>
+        <location line="+5857"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create slot</source>
-        <translation type="unfinished">長円を作成</translation>
+        <translation>長円形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a slot in the sketch</source>
-        <translation type="unfinished">スケッチに長円を作成する</translation>
+        <translation>スケッチに長円を作成する</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateSquare</name>
     <message>
-        <location line="+261"/>
+        <location line="+266"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create square</source>
-        <translation type="unfinished">正方形を作成</translation>
+        <translation>正方形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a square in the sketch</source>
-        <translation type="unfinished">スケッチに正方形を作成します</translation>
+        <translation>スケッチに正方形を作成します</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherCreateText</name>
     <message>
-        <location line="-1191"/>
+        <location line="-1270"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -929,45 +1130,45 @@
 <context>
     <name>CmdSketcherCreateTriangle</name>
     <message>
-        <location line="+1162"/>
+        <location line="+1240"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create equilateral triangle</source>
-        <translation type="unfinished">正三角形を作成</translation>
+        <translation>正三角形を作成</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create an equilateral triangle in the sketch</source>
-        <translation type="unfinished">スケッチに正三角形を作成します。</translation>
+        <translation>スケッチに正三角形を作成します。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherEditSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+186"/>
+        <location filename="../../Command.cpp" line="+283"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edit sketch</source>
-        <translation type="unfinished">スケッチを編集</translation>
+        <translation>スケッチを編集</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Edit the selected sketch</source>
-        <translation type="unfinished">選択したスケッチを編集します。</translation>
+        <translation>選択したスケッチを編集します。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherExternal</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-503"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-518"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -977,15 +1178,33 @@
     <message>
         <location line="+1"/>
         <source>Create an edge linked to an external geometry</source>
-        <translation>外部形状につながるエッジを作成</translation>
+        <translation>外部形状にリンクするエッジを作成</translation>
+    </message>
+</context>
+<context>
+    <name>CmdSketcherIncreaseDegree</name>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+85"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Increase degree</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Increases the degree of the B-spline</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherLeaveSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+28"/>
+        <location filename="../../Command.cpp" line="+29"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1001,9 +1220,9 @@
 <context>
     <name>CmdSketcherMapSketch</name>
     <message>
-        <location line="+125"/>
+        <location line="+127"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1015,11 +1234,16 @@
         <source>Map a sketch to a face</source>
         <translation>スケッチを面上にマッピング</translation>
     </message>
+    <message>
+        <location line="+50"/>
+        <source>Some of the selected objects depend on the sketch to be mapped. Circular dependencies are not allowed!</source>
+        <translation>選択したオブジェクトの一部がマッピング先のスケッチに依存しています。循環依存はできません！</translation>
+    </message>
 </context>
 <context>
     <name>CmdSketcherMergeSketches</name>
     <message>
-        <location line="+280"/>
+        <location line="+289"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1027,23 +1251,23 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Merge sketches</source>
-        <translation type="unfinished">スケッチをマージ</translation>
+        <translation>スケッチをマージ</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">誤った選択</translation>
+        <translation>誤った選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select at least two sketches, please.</source>
-        <translation type="unfinished">少なくとも 2 つのスケッチを選択してください。</translation>
+        <translation>少なくとも 2 つのスケッチを選択してください。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherMirrorSketch</name>
     <message>
-        <location line="-124"/>
+        <location line="-126"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1051,25 +1275,25 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Mirror sketch</source>
-        <translation type="unfinished"></translation>
+        <translation>スケッチを鏡像化</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">誤った選択</translation>
+        <translation>誤った選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select one or more sketches, please.</source>
-        <translation type="unfinished"></translation>
+        <translation>1 つ以上のスケッチを選択してください。</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherNewSketch</name>
     <message>
-        <location line="-466"/>
+        <location line="-548"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1083,7 +1307,7 @@
     <message>
         <location line="+1"/>
         <source>Create a new sketch</source>
-        <translation type="unfinished">新規スケッチを作成</translation>
+        <translation>新規スケッチを作成</translation>
     </message>
 </context>
 <context>
@@ -1104,61 +1328,61 @@
 <context>
     <name>CmdSketcherRectangularArray</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="+317"/>
+        <location filename="../../CommandSketcherTools.cpp" line="+320"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Rectangular Array</source>
-        <translation type="unfinished"></translation>
+        <translation>格子状配列</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates an rectangular array pattern of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>最後に選択された点を参照位置としてジオメトリーの格子状配列パターンを作成</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherReorientSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+194"/>
+        <location filename="../../Command.cpp" line="+216"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reorient sketch...</source>
-        <translation type="unfinished">スケッチの向きを変更...</translation>
+        <translation>スケッチの方向を変更...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Reorient the selected sketch</source>
-        <translation type="unfinished">選択したスケッチの向きを変更</translation>
+        <translation>選択したスケッチの方向を変更</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherRestoreInternalAlignmentGeometry</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="-1087"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-915"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show/hide internal geometry</source>
-        <translation type="unfinished">内部ジオメトリの表示/非表示</translation>
+        <translation>内部ジオメトリの表示/非表示</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Show all internal geometry / hide unused internal geometry</source>
-        <translation type="unfinished">全ての内部ジオメトリを表示/未使用の内部ジオメトリを非表示</translation>
+        <translation>全ての内部ジオメトリを表示/未使用の内部ジオメトリを非表示</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSelectConflictingConstraints</name>
     <message>
-        <location line="-178"/>
+        <location line="-175"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1166,31 +1390,31 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Conflicting Constraints</source>
-        <translation type="unfinished">競合している拘束を選択します</translation>
+        <translation>競合している拘束を選択します</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSelectConstraints</name>
     <message>
-        <location line="-254"/>
+        <location line="-253"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Constraints</source>
-        <translation type="unfinished">拘束を選択</translation>
+        <translation>拘束を選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the constraints associated to the selected elements</source>
-        <translation type="unfinished">Select the constraints associated to the selected elements</translation>
+        <translation>選択されている要素に関連づけられた拘束を選択してください</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSelectElementsAssociatedWithConstraints</name>
     <message>
-        <location line="+303"/>
+        <location line="+300"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1198,49 +1422,49 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Elements associated with constraints</source>
-        <translation type="unfinished">Select Elements associated with constraints</translation>
+        <translation>拘束に関連づけられた要素を選択してください</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSelectHorizontalAxis</name>
     <message>
-        <location line="-152"/>
+        <location line="-149"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Horizontal Axis</source>
-        <translation type="unfinished">水平軸を選択</translation>
+        <translation>水平軸を選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the horizontal axis</source>
-        <translation type="unfinished">水平軸を選択します</translation>
+        <translation>水平軸を選択します</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSelectOrigin</name>
     <message>
-        <location line="-92"/>
+        <location line="-94"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Origin</source>
-        <translation type="unfinished">原点を選択</translation>
+        <translation>原点を選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the origin point</source>
-        <translation type="unfinished">原点を選択する</translation>
+        <translation>原点を選択する</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSelectRedundantConstraints</name>
     <message>
-        <location line="+130"/>
+        <location line="+133"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
@@ -1248,43 +1472,43 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Select Redundant Constraints</source>
-        <translation type="unfinished">冗長な拘束を選択</translation>
+        <translation>冗長な拘束を選択</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSelectVerticalAxis</name>
     <message>
-        <location line="-87"/>
+        <location line="-89"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select Vertical Axis</source>
-        <translation type="unfinished">垂直軸を選択</translation>
+        <translation>垂直軸を選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select the vertical axis</source>
-        <translation type="unfinished">垂直軸を選択します</translation>
+        <translation>垂直軸を選択します</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherSymmetry</name>
     <message>
-        <location line="+593"/>
+        <location line="+421"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Symmetry</source>
-        <translation type="unfinished"></translation>
+        <translation>対称</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Creates symmetric geometry with respect to the last selected line or point</source>
-        <translation type="unfinished"></translation>
+        <translation>最後に選択した線分や点に対して対称ジオメトリを作成します</translation>
     </message>
 </context>
 <context>
@@ -1292,17 +1516,17 @@
     <message>
         <location filename="../../CommandAlterGeometry.cpp" line="+72"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggle construction geometry</source>
-        <translation type="unfinished"></translation>
+        <translation>補助ジオメトリーと切り替える</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggles the toolbar or selected geometry to/from construction mode</source>
-        <translation type="unfinished"></translation>
+        <translation>ツールバーまたは選択したジオメトリを補助モードと切り替えます</translation>
     </message>
     <message>
         <source>Toggle construction line</source>
@@ -1316,27 +1540,27 @@
 <context>
     <name>CmdSketcherToggleDrivingConstraint</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="+2980"/>
+        <location filename="../../CommandConstraints.cpp" line="+5296"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggle reference/driving constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>拘束の参照/能動を切り替え</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Toggles the toolbar or selected constraints to/from reference mode</source>
-        <translation type="unfinished"></translation>
+        <translation>ツールバーまたは選択した拘束を参照モードと切り替える</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherTrimming</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-193"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-236"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1356,37 +1580,37 @@
 <context>
     <name>CmdSketcherValidateSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+220"/>
+        <location filename="../../Command.cpp" line="+278"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Validate sketch...</source>
-        <translation type="unfinished">スケッチの妥当性...</translation>
+        <translation>スケッチの妥当性...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Validate sketch</source>
-        <translation type="unfinished">スケッチを検証</translation>
+        <translation>スケッチを検証</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+12"/>
         <source>Wrong selection</source>
-        <translation type="unfinished">誤った選択</translation>
+        <translation>誤った選択</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Select one sketch, please.</source>
-        <translation type="unfinished">スケッチを1つ選択してください</translation>
+        <translation>スケッチを1つ選択してください</translation>
     </message>
 </context>
 <context>
     <name>CmdSketcherViewSketch</name>
     <message>
-        <location line="-49"/>
+        <location line="-53"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -1410,70 +1634,91 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../CommandAlterGeometry.cpp" line="+42"/>
+        <location filename="../../CommandAlterGeometry.cpp" line="+44"/>
         <location line="+8"/>
-        <location filename="../../CommandConstraints.cpp" line="-3393"/>
-        <location line="+329"/>
-        <location line="+97"/>
-        <location line="+96"/>
+        <location filename="../../CommandConstraints.cpp" line="-6372"/>
+        <location line="+893"/>
+        <location line="+209"/>
+        <location line="+212"/>
+        <location line="+11"/>
+        <location line="+14"/>
+        <location line="+282"/>
+        <location line="+11"/>
         <location line="+10"/>
-        <location line="+10"/>
-        <location line="+80"/>
-        <location line="+10"/>
-        <location line="+10"/>
-        <location line="+72"/>
-        <location line="+10"/>
+        <location line="+125"/>
+        <location line="+11"/>
         <location line="+93"/>
         <location line="+30"/>
-        <location line="+46"/>
-        <location line="+45"/>
+        <location line="+85"/>
+        <location line="+154"/>
+        <location line="+40"/>
+        <location line="+16"/>
         <location line="+7"/>
-        <location line="+34"/>
-        <location line="+10"/>
-        <location line="+51"/>
-        <location line="+32"/>
-        <location line="+26"/>
         <location line="+46"/>
-        <location line="+10"/>
-        <location line="+49"/>
-        <location line="+32"/>
+        <location line="+22"/>
+        <location line="+57"/>
+        <location line="+11"/>
+        <location line="+27"/>
+        <location line="+47"/>
         <location line="+26"/>
-        <location line="+46"/>
-        <location line="+12"/>
+        <location line="+29"/>
+        <location line="+104"/>
+        <location line="+11"/>
+        <location line="+25"/>
+        <location line="+48"/>
+        <location line="+26"/>
+        <location line="+29"/>
+        <location line="+142"/>
+        <location line="+13"/>
         <location line="+14"/>
         <location line="+16"/>
-        <location line="+66"/>
-        <location line="+12"/>
+        <location line="+44"/>
+        <location line="+128"/>
+        <location line="+13"/>
         <location line="+91"/>
-        <location line="+28"/>
-        <location line="+26"/>
-        <location line="+112"/>
         <location line="+43"/>
+        <location line="+9"/>
+        <location line="+27"/>
+        <location line="+10"/>
+        <location line="+148"/>
+        <location line="+26"/>
+        <location line="+10"/>
+        <location line="+286"/>
         <location line="+13"/>
         <location line="+90"/>
-        <location line="+28"/>
-        <location line="+90"/>
-        <location line="+34"/>
-        <location line="+10"/>
-        <location line="+41"/>
-        <location line="+253"/>
+        <location line="+43"/>
+        <location line="+9"/>
+        <location line="+30"/>
+        <location line="+114"/>
+        <location line="+30"/>
+        <location line="+139"/>
+        <location line="+144"/>
         <location line="+11"/>
-        <location line="+151"/>
-        <location line="+56"/>
-        <location line="+45"/>
+        <location line="+41"/>
+        <location line="+254"/>
+        <location line="+199"/>
         <location line="+12"/>
+        <location line="+180"/>
+        <location line="+56"/>
+        <location line="+252"/>
+        <location line="+13"/>
         <location line="+15"/>
         <location line="+6"/>
-        <location line="+24"/>
+        <location line="+16"/>
+        <location line="+16"/>
         <location line="+9"/>
-        <location line="+54"/>
-        <location line="+10"/>
+        <location line="+115"/>
+        <location line="+12"/>
         <location line="+21"/>
         <location line="+27"/>
         <location line="+18"/>
         <location line="+12"/>
         <location line="+48"/>
-        <location line="+180"/>
+        <location line="+22"/>
+        <location line="+18"/>
+        <location line="+21"/>
+        <location line="+123"/>
+        <location line="+103"/>
         <location line="+11"/>
         <location line="+20"/>
         <location line="+23"/>
@@ -1485,24 +1730,24 @@
         <location line="+6"/>
         <location line="+6"/>
         <location line="+137"/>
-        <location line="+51"/>
+        <location line="+53"/>
         <location line="+8"/>
         <location line="+30"/>
-        <location filename="../../CommandSketcherTools.cpp" line="-888"/>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-31"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-716"/>
         <location line="+8"/>
         <location line="+42"/>
-        <location line="+60"/>
+        <location line="+61"/>
         <location line="+8"/>
         <location line="+79"/>
-        <location line="+428"/>
-        <location line="+242"/>
-        <location line="+37"/>
-        <location line="+111"/>
+        <location line="+424"/>
+        <location line="+110"/>
+        <location line="+108"/>
         <location line="+6"/>
         <location line="+228"/>
-        <location line="+67"/>
-        <location line="+394"/>
-        <location line="+67"/>
+        <location line="+64"/>
+        <location line="+397"/>
+        <location line="+64"/>
         <source>Wrong selection</source>
         <translation>誤った選択</translation>
     </message>
@@ -1513,42 +1758,49 @@
         <translation>スケッチからエッジを選択（複数可）</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-3133"/>
-        <location line="+97"/>
+        <location filename="../../CommandConstraints.cpp" line="-5549"/>
+        <location line="+209"/>
         <source>Select an edge from the sketch.</source>
         <translation>スケッチからエッジを選択</translation>
     </message>
     <message>
-        <location line="-70"/>
-        <location line="+102"/>
+        <location line="-181"/>
+        <location line="+63"/>
+        <location line="+154"/>
+        <location line="+63"/>
         <source>Double constraint</source>
         <translation>二重拘束</translation>
     </message>
     <message>
-        <location line="-101"/>
-        <location line="+97"/>
+        <location line="-279"/>
+        <location line="+63"/>
+        <location line="+149"/>
+        <location line="+63"/>
         <source>The selected edge has already a horizontal constraint!</source>
         <translation>選択されているエッジは既に水平拘束されています！</translation>
     </message>
     <message>
-        <location line="-107"/>
+        <location line="-285"/>
         <location line="+14"/>
         <location line="+10"/>
-        <location line="+73"/>
-        <location line="+9"/>
+        <location line="+39"/>
+        <location line="+14"/>
+        <location line="+144"/>
         <location line="+15"/>
-        <location filename="../../CommandSketcherTools.cpp" line="-1737"/>
-        <location line="+102"/>
+        <location line="+39"/>
+        <location line="+9"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-1559"/>
+        <location line="+103"/>
         <source>Impossible constraint</source>
         <translation>拘束不可</translation>
     </message>
     <message>
-        <location line="-468"/>
+        <location line="-1196"/>
         <source>Cannot add a constraint between two external geometries!</source>
         <translation>2つの外部形状間に拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="+260"/>
+        <location line="+449"/>
         <location line="+11"/>
         <location line="+12"/>
         <source>Only sketch and its support is allowed to select</source>
@@ -1560,34 +1812,36 @@
         <translation>選択されているアイテムの1つがスケッチ上にある必要があります</translation>
     </message>
     <message>
-        <location line="+56"/>
-        <location line="+97"/>
+        <location line="+432"/>
+        <location line="+63"/>
+        <location line="+212"/>
         <source>The selected edge is not a line segment</source>
         <translation>選択したエッジは線分ではありません</translation>
     </message>
     <message>
-        <location line="-83"/>
-        <location line="+97"/>
+        <location line="-261"/>
+        <location line="+63"/>
+        <location line="+149"/>
+        <location line="+63"/>
         <source>The selected edge has already a vertical constraint!</source>
         <translation>選択されているエッジは既に垂直拘束されています！</translation>
     </message>
     <message>
-        <location line="-87"/>
+        <location line="-265"/>
         <source>The selected item(s) can&apos;t accept a horizontal constraint!</source>
         <translation>選択されているアイテムは水平拘束出来ません！</translation>
     </message>
     <message>
-        <location line="+97"/>
+        <location line="+212"/>
         <source>The selected item(s) can&apos;t accept a vertical constraint!</source>
         <translation>選択されているアイテムは垂直拘束出来ません！</translation>
     </message>
     <message>
-        <location line="+53"/>
         <source>Select entities from the sketch.</source>
-        <translation>スケッチからエンティティを選択してください</translation>
+        <translation type="obsolete">スケッチからエンティティを選択してください</translation>
     </message>
     <message>
-        <location line="+10"/>
+        <location line="+176"/>
         <source>Select exactly one entity from the sketch.</source>
         <translation>スケッチからエンティティを1つだけ選択してください</translation>
     </message>
@@ -1596,11 +1850,7 @@
         <translation type="obsolete">スケッチから節点を1つ選択してください</translation>
     </message>
     <message>
-        <location line="+90"/>
-        <location line="+92"/>
-        <location line="+179"/>
-        <location line="+86"/>
-        <location line="+165"/>
+        <location line="+442"/>
         <source>Select vertexes from the sketch.</source>
         <translation>スケッチから節点を選択してください</translation>
     </message>
@@ -1609,136 +1859,210 @@
         <translation type="obsolete">外部形状においてX固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="-72"/>
+        <location line="+646"/>
         <source>Cannot add a fixed x-coordinate constraint on the root point!</source>
-        <translation type="unfinished">原点に対してX固定座標の拘束を追加することはできません！</translation>
+        <translation>原点に対してX座標を固定する拘束を追加することはできません！</translation>
     </message>
     <message>
         <source>Cannot add a fixed y-coordinate constraint on an external geometry!</source>
         <translation type="obsolete">外部形状に対してY固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="-530"/>
+        <location line="-1074"/>
         <source>Select one vertex from the sketch other than the origin.</source>
-        <translation type="unfinished"></translation>
+        <translation>スケッチから原点以外の節点を 1 つ選択します。</translation>
     </message>
     <message>
-        <location line="+396"/>
+        <location line="+857"/>
+        <location line="+75"/>
         <source>None of the selected points were constrained onto the respective curves, either because they are parts of the same element, or because they are both external geometry.</source>
-        <translation type="unfinished"></translation>
+        <translation>選択した点は、どれも曲線上に拘束されることができないで、それらは同じ要素の部分であるか両方とも外部ジオメトであるためだ。</translation>
     </message>
     <message>
-        <location line="+7"/>
+        <location line="-68"/>
         <source>Select either one point and several curves, or one curve and several points. You have selected %1 curves and %2 points.</source>
-        <translation type="unfinished"></translation>
+        <translation>１点と複数の曲線、または1つの曲線と複数の点を選択してください。 %1 個の曲線と %2 個の点が選択されています。</translation>
     </message>
     <message>
-        <location line="+290"/>
+        <location line="+453"/>
         <source>Cannot add a fixed y-coordinate constraint on the root point!</source>
-        <translation type="unfinished">原点に対してY固定座標の拘束を追加することはできません！</translation>
+        <translation>原点に対してY座標を固定する拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="+747"/>
-        <location line="+10"/>
+        <location line="+1698"/>
         <location line="+41"/>
         <source>Select one or more arcs or circles from the sketch.</source>
-        <translation type="unfinished">スケッチから 1 つ以上の円弧または円を選択してください。</translation>
+        <translation>スケッチから 1 つ以上の円弧または円を選択してください。</translation>
     </message>
     <message>
         <location line="+52"/>
         <source>Constrain equal</source>
-        <translation type="unfinished">等値拘束</translation>
+        <translation>等値拘束</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Do you want to share the same radius for all selected elements?</source>
-        <translation type="unfinished">Do you want to share the same radius for all selected elements?</translation>
+        <translation>すべての選択された要素で同じ半径を使用しますか？</translation>
     </message>
     <message>
-        <location line="+200"/>
         <source>Select only entities from the sketch.</source>
-        <translation type="unfinished">Select only entities from the sketch.</translation>
+        <translation type="obsolete">スケッチからエンティティのみを選択</translation>
     </message>
     <message>
-        <location line="+11"/>
-        <location line="+207"/>
+        <location line="-3134"/>
+        <source>Select vertices from the sketch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+307"/>
+        <source>Select two or more points from the sketch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+365"/>
+        <source>This constraint does not make sense for non-linear curves</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+154"/>
+        <location line="+188"/>
+        <location line="+244"/>
+        <location line="+1771"/>
+        <location line="+505"/>
+        <source>Select the right things from the sketch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="-2668"/>
+        <location line="+69"/>
+        <source>Point on BSpline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+219"/>
+        <location line="+243"/>
+        <source>This constraint only makes sense on a line segment or a pair of points</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+513"/>
+        <location line="+37"/>
+        <location line="+184"/>
+        <source>Perpendicular to BSpline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+264"/>
+        <source>There are a number of ways this constraint can be applied.
+
+Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
+        <comment>tangent constraint</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+177"/>
+        <location line="+30"/>
+        <location line="+144"/>
+        <source>Tangency to BSpline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+589"/>
+        <source>Constraint only applies to arcs or circles.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+211"/>
+        <location line="+236"/>
         <source>Select one or two lines from the sketch. Or select two edges and a point.</source>
-        <translation type="unfinished">スケッチから1本か2本の線分を選択してください。あるいは2つのエッジと頂点を選択します。</translation>
+        <translation>スケッチから1本か2本の線分を選択してください。あるいは2つのエッジと頂点を選択します。</translation>
     </message>
     <message>
         <location line="-90"/>
+        <location line="+168"/>
         <source>Parallel lines</source>
-        <translation type="unfinished">平行線</translation>
+        <translation>平行線</translation>
     </message>
     <message>
-        <location line="+1"/>
+        <location line="-167"/>
+        <location line="+168"/>
         <source>An angle constraint cannot be set for two parallel lines.</source>
-        <translation type="unfinished">２つの平行線に角度拘束を設定できません。</translation>
+        <translation>２つの平行線に角度拘束を設定できません。</translation>
     </message>
     <message>
-        <location line="+417"/>
+        <location line="+223"/>
+        <source>Equality for BSpline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+400"/>
         <source>Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">Select two endpoints of lines to act as rays, and an edge representing a boundary. The first selected point corresponds to index n1, second - to n2, and datum value sets the ratio n2/n1.</translation>
+        <translation>光線として使用される直線の2端点と境界を表すエッジを選択してください。1つ目に選択された点がインデックスn1、2つ目の点がインデックスn2と対応し、データ値は比n2/n1を設定します。</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Selected objects are not just geometry from one sketch.</source>
-        <translation type="unfinished">Selected objects are not just geometry from one sketch.</translation>
+        <translation>選択されたオブジェクトは1つのスケッチから成るジオメトリーではありません。</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Number of selected objects is not 3 (is %1).</source>
-        <translation type="unfinished">選択したオブジェクトの数が 3 ではなく（%1 です）。</translation>
+        <translation>選択したオブジェクトの数が 3 ではなく（%1 です）。</translation>
     </message>
     <message>
         <location line="+22"/>
         <source>Can not create constraint with external geometry only!!</source>
-        <translation type="unfinished"></translation>
+        <translation>外部ジオメトリーのみからなる拘束を作成することはできません！！</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Incompatible geometry is selected!</source>
-        <translation type="unfinished">互換性のないジオメトリが選択されています！</translation>
+        <translation>互換性のないジオメトリが選択されています！</translation>
     </message>
     <message>
-        <location line="+100"/>
+        <location line="+9"/>
+        <source>SnellsLaw on BSpline edge currently unsupported.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+103"/>
         <location line="+11"/>
         <source>Select at least one ellipse and one edge from the sketch.</source>
-        <translation type="unfinished">Select at least one ellipse and one edge from the sketch.</translation>
+        <translation>スケッチから少なくとも1つの楕円と1つのエッジを選択してください。</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Sketch axes cannot be used in internal alignment constraint</source>
-        <translation type="unfinished">Sketch axes cannot be used in internal alignment constraint</translation>
+        <translation>スケッチ軸を内部整列拘束で使用することはできません。</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>You can not internally constraint an ellipse on other ellipse. Select only one ellipse.</source>
-        <translation type="unfinished">他の楕円上にある楕円は内部拘束することができない。一つだけ楕円を選択して下さい。</translation>
+        <translation>他の楕円上にある楕円は内部拘束することができない。一つだけ楕円を選択して下さい。</translation>
     </message>
     <message>
         <location line="+6"/>
         <location line="+164"/>
         <source>Maximum 2 points are supported.</source>
-        <translation type="unfinished">最大 2 点がサポートされています。</translation>
+        <translation>最大 2 点がサポートされています。</translation>
     </message>
     <message>
         <location line="-158"/>
         <location line="+164"/>
         <source>Maximum 2 lines are supported.</source>
-        <translation type="unfinished">最大 2線がサポートされています。</translation>
+        <translation>最大 2線がサポートされています。</translation>
     </message>
     <message>
         <location line="-127"/>
         <location line="+164"/>
         <source>Nothing to constraint</source>
-        <translation type="unfinished">拘束はありません</translation>
+        <translation>拘束はありません</translation>
     </message>
     <message>
         <location line="-163"/>
         <source>Currently all internal geometry of the ellipse is already exposed.</source>
-        <translation type="unfinished">Currently all internal geometry of the ellipse is already exposed.</translation>
+        <translation>現在、楕円の全ての内部ジオメトリーは既に公開されています。</translation>
     </message>
     <message>
         <location line="+86"/>
@@ -1746,59 +2070,59 @@
         <location line="+155"/>
         <location line="+8"/>
         <source>Extra elements</source>
-        <translation type="unfinished">Extra elements</translation>
+        <translation>余分な要素</translation>
     </message>
     <message>
         <location line="-170"/>
         <location line="+8"/>
         <location line="+155"/>
         <source>More elements than possible for the given ellipse were provided. These were ignored.</source>
-        <translation type="unfinished">More elements than possible for the given ellipse were provided. These were ignored.</translation>
+        <translation>指定された楕円に対して可能な数を超えた要素が設定されました。これらは無視されました。</translation>
     </message>
     <message>
         <location line="-142"/>
         <source>You can not internally constraint an arc of ellipse on other arc of ellipse. Select only one arc of ellipse.</source>
-        <translation type="unfinished">他の楕円弧にある楕円弧には内部拘束することができません。楕円弧を一つだけ選択してください。</translation>
+        <translation>他の楕円弧にある楕円弧には内部拘束することができません。楕円弧を一つだけ選択してください。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>You can not internally constraint an ellipse on an arc of ellipse. Select only one ellipse or arc of ellipse.</source>
-        <translation type="unfinished">楕円弧にある楕円には内部拘束することができません。楕円弧または楕円を一つだけ選択してください。</translation>
+        <translation>楕円弧にある楕円には内部拘束することができません。楕円弧または楕円を一つだけ選択してください。</translation>
     </message>
     <message>
         <location line="+50"/>
         <source>Currently all internal geometry of the arc of ellipse is already exposed.</source>
-        <translation type="unfinished">Currently all internal geometry of the arc of ellipse is already exposed.</translation>
+        <translation>現在、楕円の弧の全ての内部ジオメトリーは既に公開されています。</translation>
     </message>
     <message>
         <location line="+94"/>
         <source>More elements than possible for the given arc of ellipse were provided. These were ignored.</source>
-        <translation type="unfinished">More elements than possible for the given arc of ellipse were provided. These were ignored.</translation>
+        <translation>指定された楕円の弧に対して可能な数を超えた要素が設定されました。これらは無視されました。</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Currently internal geometry is only supported for ellipse or arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished">現在の内部ジオメトリにおいては、楕円または楕円弧のサポートのみサポートされてます。最後に選択した要素は、楕円または楕円弧である必要があります。</translation>
+        <translation>現在の内部ジオメトリにおいては、楕円または楕円弧のサポートのみサポートされてます。最後に選択した要素は、楕円または楕円弧である必要があります。</translation>
     </message>
     <message>
-        <location line="+51"/>
+        <location line="+53"/>
         <location line="+8"/>
         <location line="+30"/>
         <source>Select constraint(s) from the sketch.</source>
-        <translation type="unfinished"></translation>
+        <translation>スケッチからの拘束（複数可）を選択します。</translation>
     </message>
     <message>
         <source>Select exactly two vertexes from the sketch.</source>
         <translation type="obsolete">スケッチから節点を2つだけ選択してください</translation>
     </message>
     <message>
-        <location line="-2831"/>
+        <location line="-4811"/>
         <location line="+10"/>
         <source>Select two or more vertexes from the sketch.</source>
-        <translation type="unfinished">スケッチから2点以上の頂点を選択してください</translation>
+        <translation>スケッチから2点以上の節点を選択してください。</translation>
     </message>
     <message>
-        <location line="+82"/>
+        <location line="+136"/>
         <location line="+123"/>
         <source>Select exactly one line or one point and one line or two points from the sketch.</source>
         <translation>スケッチから1直線または1点と1直線または2点を選択してください</translation>
@@ -1817,10 +2141,10 @@
         <translation type="obsolete">スケッチから1点と1つのオブジェクトを選択してください</translation>
     </message>
     <message>
-        <location line="+172"/>
-        <location line="+109"/>
-        <location line="+56"/>
-        <location line="+107"/>
+        <location line="+468"/>
+        <location line="+100"/>
+        <location line="+144"/>
+        <location line="+99"/>
         <source>Select exactly one line or up to two points from the sketch.</source>
         <translation>スケッチから1直線または2つ以下の点を選択してください</translation>
     </message>
@@ -1829,7 +2153,7 @@
         <translation type="obsolete">外部形状に対して水平距離拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="-221"/>
+        <location line="-316"/>
         <source>Cannot add a horizontal length constraint on an axis!</source>
         <translation>軸に対して水平距離拘束を追加することはできません！</translation>
     </message>
@@ -1846,7 +2170,7 @@
         <translation type="obsolete">外部形状に対して垂直距離拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="+163"/>
+        <location line="+242"/>
         <source>Cannot add a vertical length constraint on an axis!</source>
         <translation>軸に対して垂直距離拘束を追加することはできません！</translation>
     </message>
@@ -1859,65 +2183,68 @@
         <translation type="obsolete">原点に対してY固定座標の拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="+104"/>
+        <location line="+245"/>
         <source>Select two or more lines from the sketch.</source>
         <translation>スケッチから2本以上の直線を選択してください</translation>
     </message>
     <message>
-        <location line="+12"/>
-        <location line="+1242"/>
+        <location line="+13"/>
+        <location line="+2495"/>
         <source>Select at least two lines from the sketch.</source>
         <translation>スケッチから2本以上の直線を選択してください</translation>
     </message>
     <message>
-        <location line="-1228"/>
+        <location line="-2481"/>
         <source>Select a valid line</source>
         <translation>有効な直線を選択してください</translation>
     </message>
     <message>
         <location line="+16"/>
+        <location line="+44"/>
         <source>The selected edge is not a valid line</source>
         <translation>選択されたエッジは有効な直線ではありません</translation>
     </message>
     <message>
-        <location line="+52"/>
+        <location line="+105"/>
         <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">There is a number of ways this constraint can be applied.
+        <translation>この拘束を適用できる方法が複数あります。
 
-Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</translation>
+可能な組み合わせ： 2曲線; 1端点と1曲線; 2端点; 2曲線と1点</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+20"/>
         <source>Select some geometry from the sketch.</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">スケッチから幾つかのジオメトリを選択してください。</translation>
+        <translation>スケッチから幾つかのジオメトリを選択してください。</translation>
     </message>
     <message>
-        <location line="+12"/>
+        <location line="+13"/>
         <source>Wrong number of selected objects!</source>
         <comment>perpendicular constraint</comment>
-        <translation type="unfinished">選択したオブジェクトの数が正しくありません ！</translation>
+        <translation>選択したオブジェクトの数が正しくありません ！</translation>
     </message>
     <message>
         <location line="+59"/>
-        <location line="+313"/>
-        <location line="+1155"/>
+        <location line="+499"/>
+        <location line="+164"/>
+        <location line="+467"/>
+        <location line="+1660"/>
         <source>Error</source>
-        <translation type="unfinished">エラー</translation>
+        <translation>エラー</translation>
     </message>
     <message>
-        <location line="-1442"/>
-        <location line="+312"/>
+        <location line="-2764"/>
+        <location line="+662"/>
         <source>With 3 objects, there must be 2 curves and 1 point.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">With 3 objects, there must be 2 curves and 1 point.</translation>
+        <translation>使用される3オブジェクトは2つの曲線と1つの点である必要があります。</translation>
     </message>
     <message>
-        <location line="-303"/>
-        <location line="+28"/>
+        <location line="-653"/>
+        <location line="+43"/>
         <source>Cannot add a perpendicularity constraint at an unconnected point!</source>
         <translation>接続していない点に対して垂直拘束を追加することはできません！</translation>
     </message>
@@ -1934,37 +2261,38 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">選択されているエッジは円弧、直線、または円である必要があります</translation>
     </message>
     <message>
-        <location line="+26"/>
+        <location line="+36"/>
+        <location line="+184"/>
         <source>One of the selected edges should be a line.</source>
         <translation>選択されているエッジの1つが直線である必要があります</translation>
     </message>
     <message>
-        <location line="+141"/>
         <source>There is a number of ways this constraint can be applied.
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">There is a number of ways this constraint can be applied.
+        <translation type="obsolete">この拘束を適用できる方法が複数あります。
 
-Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</translation>
+可能な組み合わせ： 2曲線; 1端点と1曲線; 2端点; 2曲線と1点</translation>
     </message>
     <message>
-        <location line="+11"/>
+        <location line="+293"/>
         <source>Select some geometry from the sketch.</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">スケッチから幾つかのジオメトリを選択してください。</translation>
+        <translation>スケッチから幾つかのジオメトリを選択してください。</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Wrong number of selected objects!</source>
         <comment>tangent constraint</comment>
-        <translation type="unfinished">選択したオブジェクトの数が正しくありません ！</translation>
+        <translation>選択したオブジェクトの数が正しくありません ！</translation>
     </message>
     <message>
         <location line="+93"/>
-        <location line="+28"/>
+        <location line="+43"/>
+        <location line="+322"/>
         <source>Cannot add a tangency constraint at an unconnected point!</source>
-        <translation>接続されていない点に対して接触拘束を追加することはできません！</translation>
+        <translation>接続されていない点に対して正接拘束を追加することはできません！</translation>
     </message>
     <message>
         <source>Select exactly one arc or circle from the sketch.</source>
@@ -1979,7 +2307,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">外部形状に対して角度拘束を追加することはできません！</translation>
     </message>
     <message>
-        <location line="+590"/>
+        <location line="+841"/>
         <source>Cannot add an angle constraint on an axis!</source>
         <translation>軸に対して角度拘束を追加することはできません！</translation>
     </message>
@@ -1988,7 +2316,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">スケッチから直線を1本または2本だけ選択してください</translation>
     </message>
     <message>
-        <location line="+101"/>
+        <location line="+308"/>
         <source>Select two edges from the sketch.</source>
         <translation>スケッチから2本のエッジを選択してください</translation>
     </message>
@@ -1997,38 +2325,41 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">スケッチから少なくとも2本のエッジ選択してください</translation>
     </message>
     <message>
-        <location line="+27"/>
-        <location line="+463"/>
+        <location line="+28"/>
+        <location line="+641"/>
         <source>Select two or more compatible edges</source>
         <translation>2本以上の交換可能なエッジを選択してください</translation>
     </message>
     <message>
-        <location line="-457"/>
+        <location line="-635"/>
         <source>Sketch axes cannot be used in equality constraints</source>
         <translation>スケッチの軸を等値拘束に使用することはできません</translation>
     </message>
     <message>
-        <location line="+24"/>
+        <location line="+32"/>
         <location line="+9"/>
         <source>Select two or more edges of similar type</source>
         <translation>同じタイプのエッジを2本以上選択してください</translation>
     </message>
     <message>
-        <location line="+54"/>
-        <location line="+10"/>
+        <location line="+115"/>
+        <location line="+12"/>
         <location line="+48"/>
         <location line="+78"/>
+        <location line="+61"/>
         <source>Select two points and a symmetry line, two points and a symmetry point or a line and a symmetry point from the sketch.</source>
-        <translation type="unfinished">2つの点と対称線、2つの点と対称点、あるいは1本の直線と対称点をスケッチから選択してください。</translation>
+        <translation>2つの点と対称線、2つの点と対称点、あるいは1本の直線と対称点をスケッチから選択してください。</translation>
     </message>
     <message>
-        <location line="-60"/>
+        <location line="-121"/>
         <source>Cannot add a constraint between external geometries!</source>
         <translation>外部形状との間に対して拘束を追加することはできません！</translation>
     </message>
     <message>
         <location line="-45"/>
         <location line="+57"/>
+        <location line="+70"/>
+        <location line="+18"/>
         <source>Cannot add a symmetry constraint between a line and its end points!</source>
         <translation>直線とその端点間に対称拘束を追加することはできません！</translation>
     </message>
@@ -2069,49 +2400,40 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="obsolete">スケッチから2エンティティだけ選択します</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+4123"/>
         <source>Edit sketch</source>
-        <translation>スケッチを編集</translation>
+        <translation type="obsolete">スケッチを編集</translation>
     </message>
     <message>
-        <location line="+14"/>
         <source>A dialog is already open in the task panel</source>
-        <translation>タスクパネルで既にダイアログが開かれています</translation>
+        <translation type="obsolete">タスクパネルで既にダイアログが開かれています</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Do you want to close this dialog?</source>
-        <translation>このダイアログを閉じますか？</translation>
+        <translation type="obsolete">このダイアログを閉じますか？</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-359"/>
         <source>Several sub-elements selected</source>
-        <translation>いくつかのサブ要素が選択されています</translation>
+        <translation type="obsolete">いくつかのサブ要素が選択されています</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>You have to select a single face as support for a sketch!</source>
-        <translation>スケッチサポートとして単一の面を選択する必要があります！</translation>
+        <translation type="obsolete">スケッチサポートとして単一の面を選択する必要があります！</translation>
     </message>
     <message>
-        <location line="+9"/>
         <source>No support face selected</source>
-        <translation>サポート面が選択されていません</translation>
+        <translation type="obsolete">サポート面が選択されていません</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>You have to select a face as support for a sketch!</source>
-        <translation>スケッチサポートとして面を選択する必要があります！</translation>
+        <translation type="obsolete">スケッチサポートとして面を選択する必要があります！</translation>
     </message>
     <message>
-        <location line="+6"/>
         <source>No planar support</source>
-        <translation>平面のサポートがありません</translation>
+        <translation type="obsolete">平面のサポートがありません</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>You need a planar face as support for a sketch!</source>
-        <translation>スケッチサポートとして平面が必要です！</translation>
+        <translation type="obsolete">スケッチサポートとして平面が必要です！</translation>
     </message>
     <message>
         <location filename="../../EditDatumDialog.cpp" line="+82"/>
@@ -2124,74 +2446,126 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>データムを編集できません。スケッチ拘束が他の拘束と矛盾しています。</translation>
     </message>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2827"/>
-        <location line="+2270"/>
-        <location filename="../../EditDatumDialog.cpp" line="+89"/>
+        <location filename="../../CommandConstraints.cpp" line="-5786"/>
+        <location line="+4650"/>
+        <location line="+149"/>
+        <location filename="../../EditDatumDialog.cpp" line="+97"/>
         <source>Dimensional constraint</source>
         <translation>寸法拘束</translation>
     </message>
     <message>
-        <location filename="../../AppSketcherGui.cpp" line="+99"/>
         <source>Display</source>
-        <translation type="unfinished">表示</translation>
+        <translation type="obsolete">表示</translation>
     </message>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="-141"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-142"/>
         <location line="+8"/>
-        <location line="+102"/>
+        <location line="+103"/>
         <location line="+8"/>
         <source>Select at least two edges from the sketch.</source>
-        <translation type="unfinished">スケッチから2本以上の直線を選択してください</translation>
+        <translation>スケッチから2本以上の直線を選択してください</translation>
     </message>
     <message>
-        <location line="-78"/>
-        <location line="+102"/>
+        <location line="-79"/>
+        <location line="+103"/>
         <source>One selected edge is not connectable</source>
-        <translation type="unfinished">One selected edge is not connectable</translation>
+        <translation>選択されたエッジの1つが接続できません</translation>
     </message>
     <message>
-        <location line="-92"/>
+        <location line="-93"/>
         <source>Closing a shape formed by exactly two lines makes no sense.</source>
-        <translation type="unfinished">Closing a shape formed by exactly two lines makes no sense.</translation>
+        <translation>2直線だけからできたシェイプを閉じることはできません。</translation>
     </message>
     <message>
-        <location line="+147"/>
-        <location line="+428"/>
-        <location line="+279"/>
-        <location line="+345"/>
+        <location line="+148"/>
+        <location line="+424"/>
+        <location line="+110"/>
+        <location line="+342"/>
         <location line="+461"/>
         <source>Select elements from a single sketch.</source>
-        <translation type="unfinished">Select elements from a single sketch.</translation>
+        <translation>1つのスケッチから要素を選択してください。</translation>
     </message>
     <message>
-        <location line="-1120"/>
+        <location line="-948"/>
         <source>No constraint selected</source>
-        <translation type="unfinished">拘束が選択されていません</translation>
+        <translation>拘束が選択されていません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>At least one constraint must be selected</source>
-        <translation type="unfinished">拘束には1つ以上を選択する必要があります</translation>
+        <translation>拘束には1つ以上を選択する必要があります</translation>
     </message>
     <message>
-        <location line="+276"/>
         <source>Currently internal geometry is only supported for ellipse and arc of ellipse. The last selected element must be an ellipse or an arc of ellipse.</source>
-        <translation type="unfinished">現在の内部ジオメトリにおいては、楕円または楕円弧のサポートのみサポートされてます。最後に選択した要素は、楕円または楕円弧である必要があります。</translation>
+        <translation type="obsolete">現在の内部ジオメトリにおいては、楕円または楕円弧のサポートのみサポートされてます。最後に選択した要素は、楕円または楕円弧である必要があります。</translation>
     </message>
     <message>
-        <location line="+148"/>
+        <location line="+252"/>
         <source>A symmetric construction requires at least two geometric elements, the last geometric element being the reference for the symmetry construction.</source>
-        <translation type="unfinished"></translation>
+        <translation>対称構造では、少なくとも 2 つの幾何学的要素、および対称構造で参照されている最後の幾何学的要素を必要とします。</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>The last element must be a point or a line serving as reference for the symmetry construction.</source>
-        <translation type="unfinished"></translation>
+        <translation>対称拘束のための参照として使用される最後の要素は点または線である必要があります。</translation>
     </message>
     <message>
-        <location line="+295"/>
+        <location line="+292"/>
         <location line="+461"/>
         <source>A copy requires at least one selected non-external geometric element</source>
+        <translation>コピーをするには、非外部ジオメトリ要素を1 つ以上選択することが必要です。</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="-493"/>
+        <source>There are no modes that accept the selected set of subelements</source>
+        <translation>選択したサブ要素セットに合うモードがありません。</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Broken link to support subelements</source>
+        <translation>サポートサブ要素への壊れたリンク</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <location line="+9"/>
+        <source>Unexpected error</source>
+        <translation>予期しないエラーです。</translation>
+    </message>
+    <message>
+        <location line="-5"/>
+        <source>Face is non-planar</source>
+        <translation>面が平面ではありません</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Selected shapes are of wrong form (e.g., a curved edge where a straight one is needed)</source>
+        <translation>選択した形状が不正な形式です（例. 直線エッジが必要なのに曲線エッジ）</translation>
+    </message>
+    <message>
+        <location line="+41"/>
+        <source>Sketch mapping</source>
+        <translation>スケッチ・マッピング</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Can&apos;t map the skecth to selected object. %1.</source>
+        <translation>選択したオブジェクトにスケッチをマッピングできません。%1。</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <location line="+351"/>
+        <source>Don&apos;t attach</source>
+        <translation>アタッチしない</translation>
+    </message>
+    <message>
+        <location filename="../../AppSketcherGui.cpp" line="+121"/>
+        <location line="+1"/>
+        <source>Sketcher</source>
+        <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="+1"/>
+        <source>None of the selected elements is an edge.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2229,101 +2603,146 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+141"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+399"/>
         <source>Toggle to/from reference</source>
-        <translation type="unfinished"></translation>
+        <translation>参照への切り替え</translation>
     </message>
     <message>
-        <location line="+16"/>
+        <location line="-4"/>
         <source>Change value</source>
-        <translation type="unfinished">値を変更</translation>
+        <translation>値を変更</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+10"/>
         <source>Rename</source>
-        <translation type="unfinished">名前の変更</translation>
+        <translation>名前の変更</translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>Center sketch</source>
+        <translation>スケッチを中央に配置</translation>
+    </message>
+    <message>
+        <location line="+3"/>
         <source>Delete</source>
-        <translation type="unfinished">削除</translation>
+        <translation>削除</translation>
+    </message>
+    <message>
+        <location line="+4"/>
+        <source>Swap constraint names</source>
+        <translation>拘束名を交換</translation>
+    </message>
+    <message>
+        <location line="+70"/>
+        <source>Unnamed constraint</source>
+        <translation>名前のない拘束</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Only the names of named constraints can be swapped.</source>
+        <translation>スワップできるのは名前のついた拘束だけです。</translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::EditDatumDialog</name>
     <message>
-        <location filename="../../CommandConstraints.cpp" line="-2336"/>
-        <location filename="../../EditDatumDialog.cpp" line="-73"/>
+        <location filename="../../CommandConstraints.cpp" line="-4867"/>
+        <location filename="../../EditDatumDialog.cpp" line="-81"/>
         <source>Insert angle</source>
-        <translation type="unfinished">角度を挿入</translation>
+        <translation>角度を挿入</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Angle:</source>
-        <translation type="unfinished">角度:</translation>
+        <translation>角度:</translation>
     </message>
     <message>
         <location line="+4"/>
         <location filename="../../EditDatumDialog.cpp" line="+4"/>
         <source>Insert radius</source>
-        <translation type="unfinished">半径を挿入</translation>
+        <translation>半径を挿入</translation>
     </message>
     <message>
         <location line="+6"/>
         <location filename="../../EditDatumDialog.cpp" line="+6"/>
         <source>Refractive index ratio</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">屈折率</translation>
+        <translation>屈折率</translation>
     </message>
     <message>
         <location line="+1"/>
         <location filename="../../EditDatumDialog.cpp" line="+1"/>
         <source>Ratio n2/n1:</source>
         <comment>Constraint_SnellsLaw</comment>
-        <translation type="unfinished">比 n2/n1:</translation>
+        <translation>比 n2/n1:</translation>
     </message>
     <message>
-        <location line="+2285"/>
+        <location line="+4649"/>
+        <location line="+162"/>
         <source>Change radius</source>
-        <translation type="unfinished">半径を変更</translation>
+        <translation>半径を変更</translation>
     </message>
     <message>
-        <location line="-2290"/>
-        <location line="+2291"/>
+        <location line="-4816"/>
+        <location line="+4655"/>
+        <location line="+162"/>
         <location filename="../../EditDatumDialog.cpp" line="-5"/>
         <source>Radius:</source>
-        <translation type="unfinished">半径:</translation>
+        <translation>半径:</translation>
     </message>
     <message>
-        <location line="+733"/>
+        <location line="+1184"/>
         <source>Refractive index ratio</source>
-        <translation type="unfinished">屈折率</translation>
+        <translation>屈折率</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Ratio n2/n1:</source>
-        <translation type="unfinished">比 n2/n1:</translation>
+        <translation>比 n2/n1:</translation>
     </message>
     <message>
-        <location line="-3016"/>
+        <location line="-5993"/>
         <location filename="../../EditDatumDialog.cpp" line="+9"/>
         <source>Insert length</source>
-        <translation type="unfinished">長さを挿入</translation>
+        <translation>長さを挿入</translation>
     </message>
     <message>
         <location line="+2"/>
         <location filename="../../EditDatumDialog.cpp" line="+2"/>
         <source>Length:</source>
-        <translation type="unfinished">長さ:</translation>
+        <translation>長さ:</translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::ElementView</name>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="+169"/>
+        <location filename="../../TaskSketcherElements.cpp" line="+170"/>
         <source>Delete</source>
-        <translation type="unfinished">削除</translation>
+        <translation>削除</translation>
+    </message>
+</context>
+<context>
+    <name>SketcherGui::ExternalSelection</name>
+    <message>
+        <location filename="../../CommandCreateGeo.cpp" line="+41"/>
+        <source>Linking this will cause circular dependency.</source>
+        <translation>このリンクは依存関係の循環を発生させます。</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>This object is in another document.</source>
+        <translation>このオブジェクトは別のドキュメントです。</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>This object belongs to another body, can&apos;t link. Hold Ctrl to allow crossreferences.</source>
+        <translation>このオブジェクトは別のボディーに属していてリンクできません。相互参照を許可するにはCtrlキーを押してください。</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>This object belongs to another part, can&apos;t link.</source>
+        <translation>このオブジェクトは別のパーツに属していてリンクできません。</translation>
     </message>
 </context>
 <context>
@@ -2338,13 +2757,18 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <source>datum:</source>
         <translation>データム:</translation>
     </message>
+    <message>
+        <location line="+17"/>
+        <source>Name (optional)</source>
+        <translation>名前 (オプション)</translation>
+    </message>
 </context>
 <context>
     <name>SketcherGui::PropertyConstraintListItem</name>
     <message>
-        <location filename="../../PropertyConstraintListItem.cpp" line="+120"/>
+        <location filename="../../PropertyConstraintListItem.cpp" line="+124"/>
         <source>Unnamed</source>
-        <translation type="unfinished">MeishoMisette</translation>
+        <translation>Unnamed</translation>
     </message>
 </context>
 <context>
@@ -2353,22 +2777,22 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location filename="../../SketchMirrorDialog.ui" line="+14"/>
         <location line="+6"/>
         <source>Select Mirror Axis/Point</source>
-        <translation type="unfinished"></translation>
+        <translation>鏡像化の軸/点を選択</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>X-Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>X 軸</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Y-Axis</source>
-        <translation type="unfinished"></translation>
+        <translation>Y軸</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Origin</source>
-        <translation type="unfinished"></translation>
+        <translation>原点</translation>
     </message>
 </context>
 <context>
@@ -2414,65 +2838,295 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location filename="../../SketchRectangularArrayDialog.ui" line="+17"/>
         <source>Create array</source>
-        <translation type="unfinished"></translation>
+        <translation>配列を作成</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Columns:</source>
-        <translation type="unfinished"></translation>
+        <translation>列:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of columns of the linear array</source>
-        <translation type="unfinished"></translation>
+        <translation>直線配列の列数</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Rows:</source>
-        <translation type="unfinished"></translation>
+        <translation>行:</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Number of rows of the linear array</source>
-        <translation type="unfinished"></translation>
+        <translation>直線配列の行数</translation>
     </message>
     <message>
         <location line="+18"/>
         <source>Makes the inter-row and inter-col spacing the same if clicked</source>
-        <translation type="unfinished"></translation>
+        <translation>クリックされた場合、行間と列間のスペースが等しくなります</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Equal vertical/horizontal spacing</source>
-        <translation type="unfinished"></translation>
+        <translation>垂直/水平方向を等間隔</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>if selected, each element in the array is constraint with respect to the others using construction lines</source>
-        <translation type="unfinished"></translation>
+        <translation>選択した場合、配列の各要素は補助線を使用して他の要素に対して拘束されます</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Constrain inter-element separation</source>
-        <translation type="unfinished"></translation>
+        <translation>内部要素の間隔を拘束</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>If checked it substitutes dimensional constraints by geometric constraints in the copies, so that a change in the original element is directly reflected on copies</source>
-        <translation type="unfinished"></translation>
+        <translation>ここをチェックした場合には、元の要素における変更をコピーに反映される様になりますので、コピーにおいて幾何学的拘束によって寸法拘束が直接置き換えられます</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::SketcherSettings</name>
     <message>
-        <location filename="../../SketcherSettings.ui" line="+14"/>
+        <location filename="../../SketcherSettings.cpp" line="+188"/>
         <source>Sketcher</source>
         <translation type="unfinished">Sketcher</translation>
+    </message>
+    <message>
+        <source>Sketcher colors</source>
+        <translation type="obsolete">スケッチの表示色</translation>
+    </message>
+    <message>
+        <source>Default edge color</source>
+        <translation type="obsolete">エッジの既定色</translation>
+    </message>
+    <message>
+        <source>The color of edges being edited</source>
+        <translation type="obsolete">編集中のエッジの色</translation>
+    </message>
+    <message>
+        <source>Default vertex color</source>
+        <translation type="obsolete">頂点の既定色</translation>
+    </message>
+    <message>
+        <source>The color of vertices being edited</source>
+        <translation type="obsolete">編集中の頂点の色</translation>
+    </message>
+    <message>
+        <source>Edit edge color</source>
+        <translation type="obsolete">エッジが編集中である時の色</translation>
+    </message>
+    <message>
+        <source>Edit vertex color</source>
+        <translation type="obsolete">節点が編集中である時の色</translation>
+    </message>
+    <message>
+        <source>Construction geometry</source>
+        <translation type="obsolete">拘束形状</translation>
+    </message>
+    <message>
+        <source>The color of construction geometry in edit mode</source>
+        <translation type="obsolete">編集モードでの補助図形の色</translation>
+    </message>
+    <message>
+        <source>External geometry</source>
+        <translation type="obsolete">外部形状</translation>
+    </message>
+    <message>
+        <source>The color of external geometry in edit mode</source>
+        <translation type="obsolete">編集モードでの、外部形状の色</translation>
+    </message>
+    <message>
+        <source>Fully constrained geometry</source>
+        <translation type="obsolete">完全拘束の図形</translation>
+    </message>
+    <message>
+        <location filename="../../SketcherSettings.ui" line="+14"/>
+        <source>General</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source>Marker size</source>
+        <translation>マーカーサイズ</translation>
+    </message>
+    <message>
+        <location line="+40"/>
+        <source>Geometry Creation &quot;Continue Mode&quot;</source>
+        <translation>ジオメトリ作成「モードの続行」</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>Constraint Creation &quot;Continue Mode&quot; (Experimental)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+43"/>
+        <source>Visibility automation</source>
+        <translation>表示の自動化</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>When opening sketch, hide all features that depend on it.</source>
+        <translation>スケッチを開いた時にそれに依存する全てのフィーチャーを非表示</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Hide all objects that depend on the sketch</source>
+        <translation>スケッチに依存している全てのオブジェクトを非表示</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>When opening sketch, show sources for external geometry links.</source>
+        <translation>スケッチを開いた時に外部ジオメトリーリンクのリンク元を表示。</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Show objects used for external geometry</source>
+        <translation>外部ジオメトリーで使用されているオブジェクトを表示</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>When opening sketch, show objects the sketch is attached to.</source>
+        <translation>スケッチを開いた時にスケッチがアタッチされているオブジェクトを表示</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Show object(s) sketch is attached to</source>
+        <translation>スケッチがアタッチされているオブジェクトを表示</translation>
+    </message>
+    <message>
+        <location line="+16"/>
+        <source>When closing sketch, move camera back to where it was before sketch was opened.</source>
+        <translation>スケッチを閉じた時にスケッチを開く前の位置にカメラを移動</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Restore camera position after editing</source>
+        <translation>編集後にカメラ位置を元に戻す</translation>
+    </message>
+    <message>
+        <location line="+22"/>
+        <source>Note: these settings are defaults applied to new sketches. The behavior is remembered for each sketch individually as properties on View tab.</source>
+        <translation>注意: これらの設定は新しいスケッチへ適用されるデフォルトです。動作は各スケッチごとにビュータブのプロパティーとして記憶されます。</translation>
+    </message>
+    <message>
+        <location line="+19"/>
+        <source>Apply current smart visibility to all sketches in open documents (update properties to match).</source>
+        <translation>開いているドキュメントの全てのスケッチに対して現在のスマート表示を適用（一致するプロパティーを更新）</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>Apply to existing sketches</source>
+        <translation>既存のスケッチに適用</translation>
+    </message>
+    <message>
+        <location line="+10"/>
+        <source>Segments per geometry</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+39"/>
+        <source>Sketch Solver</source>
+        <translation>スケッチ・ソルバー</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Show Advanced Solver Control in the Task bar</source>
+        <translation>タスクバーに高度なソルバー制御を表示</translation>
+    </message>
+    <message>
+        <source>The color of fully constrained geometry in edit mode</source>
+        <translation type="obsolete">編集モードにおいて、完全拘束である図形の色</translation>
+    </message>
+    <message>
+        <source>Constraint color</source>
+        <translation type="obsolete">幾何拘束の色</translation>
+    </message>
+    <message>
+        <source>Datum color</source>
+        <translation type="obsolete">データムの色</translation>
+    </message>
+    <message>
+        <source>Datum text size</source>
+        <translation type="obsolete">データムのテキストサイズ</translation>
+    </message>
+    <message>
+        <source>The default line thickness for new shapes</source>
+        <translation type="obsolete">新規図形での既定の線の太さ</translation>
+    </message>
+    <message>
+        <location line="-292"/>
+        <source>px</source>
+        <translation>px</translation>
+    </message>
+    <message>
+        <source>Default vertex size</source>
+        <translation type="obsolete">頂点の既定サイズ</translation>
+    </message>
+    <message>
+        <source>Default line width</source>
+        <translation type="obsolete">既定の線幅</translation>
+    </message>
+    <message>
+        <source>Cursor text color</source>
+        <translation type="obsolete">カーソルテキストの色</translation>
+    </message>
+    <message>
+        <source>Non-driving Datum color</source>
+        <translation type="obsolete">非能動のデータムの色</translation>
+    </message>
+    <message>
+        <source>The color of driving constraints in edit mode</source>
+        <translation type="obsolete">編集モードでのドライブ拘束の色</translation>
+    </message>
+    <message>
+        <source>The color of non-driving constrains or dimensions in edit mode</source>
+        <translation type="obsolete">編集モードでの非ドライブ拘束の色</translation>
+    </message>
+    <message>
+        <location line="-19"/>
+        <source>Sketch editing</source>
+        <translation>スケッチ編集</translation>
+    </message>
+    <message>
+        <location line="+12"/>
+        <source>Font size</source>
+        <translation>フォントサイズ</translation>
+    </message>
+    <message>
+        <location line="+65"/>
+        <source>Grid line pattern</source>
+        <translation>グリッドの線種</translation>
+    </message>
+    <message>
+        <location line="-16"/>
+        <source>Ask for value after creating a distance constraint</source>
+        <translation>距離拘束を作成した後に値を入力</translation>
+    </message>
+    <message>
+        <location filename="../../SketcherSettings.cpp" line="-51"/>
+        <source>%1 px</source>
+        <translation>%1 ピクセル</translation>
+    </message>
+    <message>
+        <location line="+48"/>
+        <source>Unexpected C++ exception</source>
+        <translation>予期しない C++ 例外</translation>
+    </message>
+</context>
+<context>
+    <name>SketcherGui::SketcherSettingsColors</name>
+    <message>
+        <location filename="../../SketcherSettingsColors.ui" line="+14"/>
+        <source>Colors</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+6"/>
@@ -2482,7 +3136,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+14"/>
         <source>Default edge color</source>
-        <translation type="unfinished">デフォルトのエッジの色</translation>
+        <translation type="unfinished">エッジの既定色</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -2509,7 +3163,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+33"/>
         <source>Edit vertex color</source>
-        <translation type="unfinished">頂点が編集中である時の色</translation>
+        <translation type="unfinished">節点が編集中である時の色</translation>
     </message>
     <message>
         <location line="+33"/>
@@ -2517,7 +3171,13 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">拘束形状</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+7"/>
+        <location line="+99"/>
+        <source>The color of fully constrained geometry in edit mode</source>
+        <translation type="unfinished">編集モードにおいて、完全拘束である図形の色</translation>
+    </message>
+    <message>
+        <location line="-79"/>
         <source>The color of construction geometry in edit mode</source>
         <translation type="unfinished">編集モードでの補助図形の色</translation>
     </message>
@@ -2534,31 +3194,10 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+26"/>
         <source>Fully constrained geometry</source>
-        <translation type="unfinished">図形が完全拘束になりました</translation>
+        <translation type="unfinished">完全拘束の図形</translation>
     </message>
     <message>
-        <location line="+319"/>
-        <source>Geometry Creation &quot;Continue Mode&quot;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
-        <source>Sketch Solver</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+6"/>
-        <source>Show Advanced Solver Control in the Task bar</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="-423"/>
-        <location line="+99"/>
-        <source>The color of fully constrained geometry in edit mode</source>
-        <translation type="unfinished">編集モードにおいて、完全拘束である図形の色</translation>
-    </message>
-    <message>
-        <location line="-7"/>
+        <location line="+13"/>
         <source>Constraint color</source>
         <translation type="unfinished">幾何拘束の色</translation>
     </message>
@@ -2573,7 +3212,12 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation type="unfinished">データムのテキストサイズ</translation>
     </message>
     <message>
-        <location line="+20"/>
+        <location line="+13"/>
+        <source>Default vertex size</source>
+        <translation type="unfinished">頂点の既定サイズ</translation>
+    </message>
+    <message>
+        <location line="+7"/>
         <location line="+35"/>
         <location line="+52"/>
         <source>The default line thickness for new shapes</source>
@@ -2583,17 +3227,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="-84"/>
         <location line="+35"/>
         <location line="+52"/>
-        <location line="+92"/>
         <source>px</source>
         <translation type="unfinished">px</translation>
     </message>
     <message>
-        <location line="-189"/>
-        <source>Default vertex size</source>
-        <translation type="unfinished">頂点の既定サイズ</translation>
-    </message>
-    <message>
-        <location line="+35"/>
+        <location line="-62"/>
         <source>Default line width</source>
         <translation type="unfinished">既定の線幅</translation>
     </message>
@@ -2605,80 +3243,60 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
         <location line="+46"/>
         <source>Non-driving Datum color</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">非能動のデータムの色</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>The color of driving constraints in edit mode</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">編集モードでのドライブ拘束の色</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>The color of non-driving constrains or dimensions in edit mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+25"/>
-        <source>Sketch editing</source>
-        <translation type="unfinished">スケッチ編集</translation>
-    </message>
-    <message>
-        <location line="+14"/>
-        <source>Font size</source>
-        <translation type="unfinished">フォントサイズ</translation>
-    </message>
-    <message>
-        <location line="+33"/>
-        <source>Grid line pattern</source>
-        <translation type="unfinished">グリッドの線種</translation>
-    </message>
-    <message>
-        <location line="+16"/>
-        <source>Ask for value after creating a distance constraint</source>
-        <translation type="unfinished">距離拘束を作成した後、値を入力してください</translation>
+        <translation type="unfinished">編集モードでの非ドライブ拘束の色</translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::SketcherValidation</name>
     <message>
-        <location filename="../../TaskSketcherValidation.cpp" line="+279"/>
+        <location filename="../../TaskSketcherValidation.cpp" line="+322"/>
         <source>No missing coincidences</source>
-        <translation type="unfinished">失われた一致点はありません</translation>
+        <translation>致点の欠損はありません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No missing coincidences found</source>
-        <translation type="unfinished">失われた一致点は見つかりませんでした</translation>
+        <translation>一致点の欠損は見つかりませんでした</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">失われた一致点</translation>
+        <translation>一致点の欠損</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>%1 missing coincidences found</source>
-        <translation type="unfinished">%1 個の失われた一致点が見つかりました</translation>
+        <translation>一致点の欠損が、%1 個見つかりました</translation>
     </message>
     <message>
-        <location line="+38"/>
+        <location line="+60"/>
         <source>No invalid constraints</source>
-        <translation type="unfinished">無効な拘束はありません</translation>
+        <translation>無効な拘束はありません</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No invalid constraints found</source>
-        <translation type="unfinished">無効な拘束は見つかりません</translation>
+        <translation>無効な拘束は見つかりません</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished">拘束が無効です</translation>
+        <translation>無効な拘束</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Invalid constraints found</source>
-        <translation type="unfinished">無効な拘束が見つかりました</translation>
+        <translation>無効な拘束が見つかりました</translation>
     </message>
     <message>
         <location line="+31"/>
@@ -2686,7 +3304,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <location line="+7"/>
         <location line="+11"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished">外部ジオメトリを反転</translation>
+        <translation>外部ジオメトリを反転</translation>
     </message>
     <message>
         <location line="-28"/>
@@ -2695,62 +3313,62 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 %2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
 
 Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</source>
-        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+        <translation>%1 において、外部ジオメトリと正接する連線で相反したところが見つかりました。これらの端点は3Dビューにあります。
 
-%2 constraints are linking to the endpoints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).
+%2 の拘束は端点にリンクされています。拘束はレポートビューにリスト表示されています（表示メニュー -&gt; ビュー -&gt; レポートビュー）。
 
-Click &quot;Swap endpoints in constraints&quot; button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15.???</translation>
+「拘束内の端点を交換」ボタンをクリックし端点を再配置してください。 v0.15 よりも古い FreeCAD において作成されたスケッチでは、一度だけ行ってみるとよい？？？</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-        <translation type="unfinished">%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
+        <translation>%1 個の反転した外部ジオメトリーの円弧が見つかりました。3Dビュー上で端点が囲まれています。
 
-However, no constraints linking to the endpoints were found.</translation>
+ただし端点にリンクする拘束が見つかりません。</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>No reversed external-geometry arcs were found.</source>
-        <translation type="unfinished">No reversed external-geometry arcs were found.</translation>
+        <translation>反転された外部ジオメトリーの円弧は見つかりませんでした。</translation>
     </message>
     <message>
         <location line="+11"/>
         <source>%1 changes were made to constraints linking to endpoints of reversed arcs.</source>
-        <translation type="unfinished">%1 changes were made to constraints linking to endpoints of reversed arcs.</translation>
+        <translation>%1 は、逆接の端点にリンクする拘束が変更されました。</translation>
     </message>
     <message>
         <location line="+13"/>
         <location line="+14"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished">Constraint orientation locking</translation>
+        <translation>方向のロック拘束</translation>
     </message>
     <message>
         <location line="-13"/>
         <source>Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</source>
-        <translation type="unfinished">Orientation locking was enabled and recomputed for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view).</translation>
+        <translation>方向のロック拘束が有効なので、 %1 の拘束は再計算されました。拘束はレポートビュー（表示メニュー -&gt; ビュー -&gt; レポートビュー）でリストされています。</translation>
     </message>
     <message>
         <location line="+14"/>
         <source>Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</source>
-        <translation type="unfinished">Orientation locking was disabled for %1 constraints. The constraints have been listed in Report view (menu View -&gt; Views -&gt; Report view). Note that for all future constraints, the locking still defaults to ON.</translation>
+        <translation>拘束 %1 によって方向のロックが無効です。拘束リストはレポートビューにあります(メニューの表示 -&gt; ビュー -&gt; レポートビュー)。全てのフィーチャー拘束でロックのデフォルトは有効のままであることに注意してください。</translation>
     </message>
     <message>
         <location line="+12"/>
         <location line="+12"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished">外部ジオメトリへの拘束を削除します。</translation>
+        <translation>外部ジオメトリへの拘束を削除</translation>
     </message>
     <message>
         <location line="-11"/>
         <source>You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</source>
-        <translation type="unfinished">You are about to delete ALL constraints that deal with external geometry. This is useful to rescue a sketch with broken/changed links to external geometry. Are you sure you want to delete the constraints?</translation>
+        <translation>外部ジオメトリーを扱うすべての拘束を削除しようとしています。これは外部ジオメトリーへの壊れた/変更されたリンクを回復するのに便利です。拘束を削除してもよろしいですか。</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>All constraints that deal with external geometry were deleted.</source>
-        <translation type="unfinished">All constraints that deal with external geometry were deleted.</translation>
+        <translation>外部ジオメトリーを扱うすべての制約が削除されました。</translation>
     </message>
 </context>
 <context>
@@ -2788,12 +3406,17 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="+5"/>
         <source>Reference</source>
-        <translation type="unfinished"></translation>
+        <translation>参照</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherConstrains.cpp" line="+51"/>
+        <location filename="../../TaskSketcherConstrains.cpp" line="+24"/>
         <source>Constraints</source>
-        <translation>Constraints</translation>
+        <translation type="unfinished">Constraints</translation>
+    </message>
+    <message>
+        <location line="+177"/>
+        <source>Error</source>
+        <translation>エラー</translation>
     </message>
 </context>
 <context>
@@ -2801,96 +3424,118 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../TaskSketcherElements.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">フォーム</translation>
+        <translation>フォーム</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Type:</source>
-        <translation type="unfinished">タイプ:</translation>
+        <translation>タイプ:</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Edge</source>
-        <translation type="unfinished">エッジ</translation>
+        <translation>エッジ</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Starting Point</source>
-        <translation type="unfinished">始点</translation>
+        <translation>始点</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>End Point</source>
-        <translation type="unfinished">端点</translation>
+        <translation>端点</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Center Point</source>
-        <translation type="unfinished">中心点</translation>
+        <translation>中心点</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Extended Naming</source>
-        <translation type="unfinished">名前付けの拡張</translation>
+        <translation>名前付けの拡張</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Auto-switch to Edge</source>
-        <translation type="unfinished">エッジに自動切換</translation>
+        <translation>エッジに自動切換</translation>
     </message>
     <message>
-        <location line="+10"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: 複数を選択&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: 次の妥当な型に切り替える&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="obsolete">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;Ctrl&amp;quot;: 複数を選択&lt;/p&gt;&lt;p&gt;&amp;quot;Z&amp;quot;: 次の妥当な型に切り替える&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../../TaskSketcherElements.cpp" line="+66"/>
+        <location filename="../../TaskSketcherElements.cpp" line="+68"/>
         <source>Elements</source>
-        <translation type="unfinished">要素</translation>
+        <translation>要素</translation>
     </message>
     <message>
-        <location line="+444"/>
+        <location line="+21"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&amp;quot;%1&amp;quot;: multiple selection&lt;/p&gt;&lt;p&gt;&amp;quot;%2&amp;quot;: switch to next valid type&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+458"/>
         <location line="+1"/>
-        <location line="+46"/>
+        <location line="+55"/>
         <location line="+1"/>
         <source>Point</source>
-        <translation type="unfinished">点</translation>
+        <translation>点</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-54"/>
         <location line="+1"/>
-        <location line="+46"/>
+        <location line="+55"/>
         <location line="+1"/>
         <source>Line</source>
-        <translation type="unfinished">直線</translation>
+        <translation>直線</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-54"/>
         <location line="+1"/>
-        <location line="+46"/>
+        <location line="+55"/>
         <location line="+1"/>
         <source>Arc</source>
-        <translation type="unfinished">円弧</translation>
+        <translation>円弧</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-54"/>
         <location line="+1"/>
-        <location line="+46"/>
+        <location line="+55"/>
         <location line="+1"/>
         <source>Circle</source>
-        <translation type="unfinished">円</translation>
+        <translation>円</translation>
     </message>
     <message>
-        <location line="-45"/>
+        <location line="-54"/>
         <location line="+1"/>
         <source>Ellipse</source>
-        <translation type="unfinished">楕円</translation>
+        <translation>楕円</translation>
     </message>
     <message>
         <location line="+2"/>
         <location line="+1"/>
         <source>Elliptical Arc</source>
-        <translation type="unfinished">楕円弧</translation>
+        <translation>楕円弧</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <source>Hyperbolic Arc</source>
+        <translation>双曲線の円弧</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <source>Parabolic Arc</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <location line="+1"/>
+        <source>BSpline</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location line="+2"/>
@@ -2898,7 +3543,7 @@ However, no constraints linking to the endpoints were found.</translation>
         <location line="+40"/>
         <location line="+1"/>
         <source>Other</source>
-        <translation type="unfinished">その他</translation>
+        <translation>その他</translation>
     </message>
 </context>
 <context>
@@ -2911,7 +3556,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location line="+6"/>
         <source>Show grid</source>
-        <translation type="unfinished">グリッドの表示</translation>
+        <translation>グリッドの表示</translation>
     </message>
     <message>
         <location line="+12"/>
@@ -3011,7 +3656,7 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../TaskSketcherGeneral.cpp" line="+121"/>
         <source>Edit controls</source>
-        <translation>Edit controls</translation>
+        <translation type="unfinished">Edit controls</translation>
     </message>
 </context>
 <context>
@@ -3025,9 +3670,9 @@ However, no constraints linking to the endpoints were found.</translation>
 <context>
     <name>SketcherGui::TaskSketcherSolverAdvanced</name>
     <message>
-        <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+66"/>
+        <location filename="../../TaskSketcherSolverAdvanced.cpp" line="+67"/>
         <source>Advanced solver control</source>
-        <translation type="unfinished"></translation>
+        <translation>高度なソルバー制御</translation>
     </message>
 </context>
 <context>
@@ -3035,90 +3680,119 @@ However, no constraints linking to the endpoints were found.</translation>
     <message>
         <location filename="../../TaskSketcherValidation.ui" line="+14"/>
         <source>Sketcher validation</source>
-        <translation type="unfinished">スケッチャーを検証</translation>
+        <translation>スケッチャーを検証</translation>
     </message>
     <message>
         <location line="+26"/>
         <source>Delete constraints to external geom.</source>
-        <translation type="unfinished">外部ジオメトリへの拘束を削除します。</translation>
+        <translation>外部ジオメトリへの拘束を削除</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Missing coincidences</source>
-        <translation type="unfinished">失われた一致点</translation>
+        <translation>一致点の欠損</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Tolerance:</source>
-        <translation type="unfinished">許容範囲:</translation>
+        <translation>許容範囲:</translation>
     </message>
     <message>
-        <location line="+27"/>
+        <location line="+24"/>
+        <source>Highlight open vertexes</source>
+        <translation>開いている頂点を強調表示</translation>
+    </message>
+    <message>
+        <location line="+10"/>
         <source>Reversed external geometry</source>
-        <translation type="unfinished">外部ジオメトリを反転</translation>
+        <translation>外部ジオメトリを反転</translation>
     </message>
     <message>
         <location line="+13"/>
         <source>Swap endpoints in constraints</source>
-        <translation type="unfinished">Swap endpoints in constraints</translation>
+        <translation>拘束内の端点を交換</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Constraint orientation locking</source>
-        <translation type="unfinished">Constraint orientation locking</translation>
+        <translation>方向のロック拘束</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Enable/Update</source>
-        <translation type="unfinished">有効化/更新</translation>
+        <translation>有効化/更新</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Disable</source>
-        <translation type="unfinished">無効化</translation>
+        <translation>無効化</translation>
     </message>
     <message>
-        <location line="-86"/>
-        <location line="+33"/>
+        <location line="-93"/>
+        <location line="+40"/>
         <location line="+23"/>
         <source>Find</source>
-        <translation type="unfinished">検査</translation>
+        <translation>検査</translation>
     </message>
     <message>
-        <location line="-63"/>
-        <location line="+47"/>
+        <location line="-70"/>
+        <location line="+37"/>
         <source>Fix</source>
-        <translation type="unfinished">修正</translation>
+        <translation>修正</translation>
     </message>
     <message>
-        <location line="-53"/>
+        <location line="-43"/>
         <source>Invalid constraints</source>
-        <translation type="unfinished">拘束が無効です</translation>
+        <translation>無効な拘束</translation>
     </message>
 </context>
 <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-        <location filename="../../ViewProviderSketch.cpp" line="+12"/>
+        <location filename="../../ViewProviderSketch.cpp" line="+4846"/>
         <source>Invalid sketch</source>
-        <translation type="unfinished">スケッチが無効です</translation>
+        <translation>スケッチが無効です</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>The sketch is invalid and cannot be edited.
 Use the sketch validation tool.</source>
-        <translation type="unfinished">スケッチが無効で編集できません。
+        <translation type="obsolete">スケッチが無効で編集できません。
 スケッチ検証ツールを使って下さい。</translation>
     </message>
     <message>
-        <location line="+99"/>
+        <location line="-41"/>
+        <source>Edit sketch</source>
+        <translation>スケッチを編集</translation>
+    </message>
+    <message>
+        <location line="+26"/>
+        <source>A dialog is already open in the task panel</source>
+        <translation>タスクパネルで既にダイアログが開かれています</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Do you want to close this dialog?</source>
+        <translation>このダイアログを閉じますか？</translation>
+    </message>
+    <message>
+        <location line="+15"/>
+        <source>Do you want to open the sketch validation tool?</source>
+        <translation>スケッチ検証ツールを起動しますか?</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The sketch is invalid and cannot be edited.</source>
+        <translation>スケッチが不正で、編集できません。</translation>
+    </message>
+    <message>
+        <location line="+138"/>
         <source>Please remove the following constraint:</source>
         <translation>以下の拘束を削除してください:</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Please remove at least one of the following constraints:</source>
-        <translation>以下の拘束の少なくとも1つを削除してください:</translation>
+        <translation>以下の拘束から少なくとも1つを削除してください:</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -3138,24 +3812,24 @@ Use the sketch validation tool.</source>
     <message>
         <location line="+7"/>
         <source>Over-constrained sketch </source>
-        <translation type="unfinished">スケッチが過剰拘束です </translation>
+        <translation>スケッチが過剰拘束です </translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+7"/>
         <location line="+8"/>
         <source>(click to select)</source>
-        <translation type="unfinished">（クリックすると選択）</translation>
+        <translation>（クリックすると選択）</translation>
     </message>
     <message>
         <location line="-9"/>
         <source>Sketch contains conflicting constraints </source>
-        <translation type="unfinished">スケッチには、競合する拘束が含まれています </translation>
+        <translation>スケッチには、競合する拘束が含まれています </translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Sketch contains redundant constraints </source>
-        <translation type="unfinished">スケッチには冗長な拘束が含まれています </translation>
+        <translation>スケッチには冗長な拘束が含まれています </translation>
     </message>
     <message>
         <source>Over-constrained sketch</source>
@@ -3172,7 +3846,7 @@ Use the sketch validation tool.</source>
     <message>
         <location line="+11"/>
         <source>Fully constrained sketch</source>
-        <translation>スケッチが完全拘束になりました</translation>
+        <translation>完全拘束のスケッチ</translation>
     </message>
     <message>
         <location line="+5"/>
@@ -3196,12 +3870,39 @@ Use the sketch validation tool.</source>
     </message>
 </context>
 <context>
+    <name>Sketcher_BSplineComb</name>
+    <message>
+        <location filename="../../CommandSketcherBSpline.cpp" line="-80"/>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the curvature comb for all B-splines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_BSplineDegree</name>
+    <message>
+        <location line="-9"/>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the degree for all B-splines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_BSplinePolygon</name>
+    <message>
+        <location line="+3"/>
+        <location line="+1"/>
+        <source>Switches between showing and hiding the control polygons for all B-splines</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>Sketcher_Clone</name>
     <message>
-        <location filename="../../CommandSketcherTools.cpp" line="-276"/>
+        <location filename="../../CommandSketcherTools.cpp" line="-274"/>
         <location line="+1"/>
         <source>Creates a clone of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>最後に選択された点を参照としてのジオメトリーのクローンを作成</translation>
     </message>
 </context>
 <context>
@@ -3209,12 +3910,12 @@ Use the sketch validation tool.</source>
     <message>
         <location line="-2"/>
         <source>Clone</source>
-        <translation type="unfinished"></translation>
+        <translation>複製</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>コピー</translation>
     </message>
 </context>
 <context>
@@ -3223,61 +3924,93 @@ Use the sketch validation tool.</source>
         <location line="+1"/>
         <location line="+1"/>
         <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-        <translation type="unfinished"></translation>
+        <translation>ジオメトリの単純コピーは最後に選択した点を基準に取って作成される</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_Create3PointArc</name>
     <message>
-        <location filename="../../CommandCreateGeo.cpp" line="-2550"/>
+        <location filename="../../CommandCreateGeo.cpp" line="-4013"/>
         <location line="+1"/>
         <source>Create an arc by its end points and a point along the arc</source>
-        <translation type="unfinished">終点と円弧に上の点から円弧を作成</translation>
+        <translation>終点と円弧に上の点から円弧を作成</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_Create3PointCircle</name>
     <message>
-        <location line="+1912"/>
+        <location line="+3297"/>
         <location line="+1"/>
         <source>Create a circle by 3 rim points</source>
-        <translation type="unfinished">円周上の3点から円を作成</translation>
+        <translation>円周上の3点から円を作成</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateArc</name>
     <message>
-        <location line="-1918"/>
+        <location line="-3303"/>
         <location line="+1"/>
         <source>Create an arc by its center and by its end points</source>
-        <translation type="unfinished">中心と終点から円弧を作成</translation>
+        <translation>中心と終点から円弧を作成</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateArcOfEllipse</name>
     <message>
-        <location line="+1576"/>
+        <location line="+2363"/>
         <location line="+1"/>
         <source>Create an arc of ellipse by its center, major radius, endpoints</source>
-        <translation type="unfinished">中心点、長半径、端点かななる楕円弧を作成する</translation>
+        <translation>中心点、長半径、端点かななる楕円弧を作成する</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateArcOfHyperbola</name>
+    <message>
+        <location line="+3"/>
+        <location line="+1"/>
+        <source>Create an arc of hyperbola by its center, major radius, endpoints</source>
+        <translation>中心、長半径、端点を指定して双曲線の円弧を作成</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateArcOfParabola</name>
+    <message>
+        <location line="+3"/>
+        <location line="+1"/>
+        <source>Create an arc of parabola by its focus, vertex, endpoints</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_CreateBSpline</name>
+    <message>
+        <location line="+571"/>
+        <source>B-spline by control points or poles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Create a B-spline by control points or poles</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-        <location line="+335"/>
+        <location line="+352"/>
         <location line="+1"/>
         <source>Create a circle by its center and by a rim point</source>
-        <translation type="unfinished">中心と円周上の点から円を作成</translation>
+        <translation>中心と円周上の点から円を作成</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateEllipseBy3Points</name>
     <message>
-        <location line="-341"/>
+        <location line="-939"/>
         <location line="+1"/>
         <source>Create a ellipse by periapsis, apoapsis, and minor radius</source>
-        <translation type="unfinished">Create a ellipse by periapsis, apoapsis, and minor radius</translation>
+        <translation>近点、遠点、短半径から楕円を作成</translation>
     </message>
 </context>
 <context>
@@ -3286,16 +4019,16 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create an ellipse by center, major radius and point</source>
-        <translation type="unfinished">Create an ellipse by center, major radius and point</translation>
+        <translation>中心、長半径、1点から楕円を作成</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_CreateHeptagon</name>
     <message>
-        <location line="+1946"/>
+        <location line="+2639"/>
         <location line="+1"/>
         <source>Create a heptagon by its center and by one corner</source>
-        <translation type="unfinished">1 つの角と中心点からなる正七角形を作成します</translation>
+        <translation>1 つの角と中心点を指定して正七角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -3304,7 +4037,7 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a hexagon by its center and by one corner</source>
-        <translation type="unfinished">1 つの角と中心点からなる正六角形を作成します</translation>
+        <translation>1 つの角と中心点を指定して正六角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -3313,7 +4046,7 @@ Use the sketch validation tool.</source>
         <location line="+7"/>
         <location line="+1"/>
         <source>Create an octagon by its center and by one corner</source>
-        <translation type="unfinished">1 つの角と中心点からなる正八角形を作成します</translation>
+        <translation>1 つの角と中心点を指定して正八角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -3322,7 +4055,7 @@ Use the sketch validation tool.</source>
         <location line="-13"/>
         <location line="+1"/>
         <source>Create a pentagon by its center and by one corner</source>
-        <translation type="unfinished">1 つの角と中心点からなる正五角形を作成します</translation>
+        <translation>1 つの角と中心点を指定して正五角形を作成します</translation>
     </message>
 </context>
 <context>
@@ -3331,7 +4064,7 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create a square by its center and by one corner</source>
-        <translation type="unfinished">中心点と1つの角からなる正方形を作成します</translation>
+        <translation>中心点と1つの角を指定して正方形を作成します</translation>
     </message>
 </context>
 <context>
@@ -3340,21 +4073,113 @@ Use the sketch validation tool.</source>
         <location line="-5"/>
         <location line="+1"/>
         <source>Create an equilateral triangle by its center and by one corner</source>
-        <translation type="unfinished">外接円の中心点と一つの頂点からなる正三角形を作成します。</translation>
+        <translation>外接円の中心点と一つの頂点を指定して正三角形を作成します。</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_Create_Periodic_BSpline</name>
+    <message>
+        <location line="-2033"/>
+        <source>Periodic B-spline by control points or poles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Create a periodic B-spline by control points or poles</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_MapSketch</name>
+    <message>
+        <location filename="../../Command.cpp" line="-56"/>
+        <source>No sketch found</source>
+        <translation>スケッチが見つかりません</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>The document doesn&apos;t have a sketch</source>
+        <translation>ドキュメントにスケッチが存在しません。</translation>
+    </message>
+    <message>
+        <location line="+9"/>
+        <source>Select sketch</source>
+        <translation>スケッチを選択</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select a sketch from the list</source>
+        <translation>リストからスケッチを選択</translation>
+    </message>
+    <message>
+        <location line="+53"/>
+        <source> (incompatible with selection)</source>
+        <translation> （選択物と非互換）</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source> (current)</source>
+        <translation> （現在のもの）</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source> (suggested)</source>
+        <translation> （サジェストされたもの）</translation>
+    </message>
+    <message>
+        <location line="+6"/>
+        <source>Sketch attachment</source>
+        <translation>スケッチのアタッチ</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Current attachment mode is incompatible with the new selection. Select the method to attach this sketch to selected objects.</source>
+        <translation>現在のアタッチメントモードは新しい選択物と互換性がありません。このスケッチと選択したオブジェクトのアタッチ方法を選択してください。</translation>
+    </message>
+    <message>
+        <location line="+2"/>
+        <source>Select the method to attach this sketch to selected objects.</source>
+        <translation>このスケッチと選択したオブジェクトのアタッチ方法を選択</translation>
+    </message>
+    <message>
+        <location line="+35"/>
+        <source>Map sketch</source>
+        <translation>スケッチをマッピング</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Can&apos;t map a sketch to support:
+%1</source>
+        <translation>サポートにスケッチをマッピングできません:
+%1</translation>
+    </message>
+</context>
+<context>
+    <name>Sketcher_NewSketch</name>
+    <message>
+        <location line="-406"/>
+        <source>Sketch attachment</source>
+        <translation>スケッチのアタッチ</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Select the method to attach this sketch to selected object</source>
+        <translation>選択したオブジェクトへのこのスケッチのアタッチ方法を選択</translation>
     </message>
 </context>
 <context>
     <name>Sketcher_ReorientSketch</name>
     <message>
-        <location filename="../../Command.cpp" line="+164"/>
+        <location line="+192"/>
         <source>Sketch has support</source>
-        <translation type="unfinished">スケッチには支持オブジェクトが設定されています</translation>
+        <translation>スケッチには支持オブジェクトが設定されています</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-        <translation type="unfinished">支持面が設定されているスケッチの向きを変えることはできません。スケッチと支持面を切り離しますか？</translation>
+        <translation>支持面が設定されているスケッチでは、スケッチの方向を再設定することができません。スケッチと支持面を切り離しますか？</translation>
     </message>
 </context>
 <context>
@@ -3398,22 +4223,22 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+25"/>
         <source>Executes a recompute of the active document after every command</source>
-        <translation type="unfinished"></translation>
+        <translation>コマンドの後に、作業中の文書で再計算を毎回実行します</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Auto Update</source>
-        <translation type="unfinished"></translation>
+        <translation>自動更新する</translation>
     </message>
     <message>
         <location line="+16"/>
         <source>Forces a recompute of the active document</source>
-        <translation type="unfinished"></translation>
+        <translation>作業中のドキュメントで、強制的に再計算します</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Update</source>
-        <translation type="unfinished"></translation>
+        <translation>更新</translation>
     </message>
 </context>
 <context>
@@ -3421,210 +4246,235 @@ Do you want to detach it from the support?</source>
     <message>
         <location filename="../../TaskSketcherSolverAdvanced.ui" line="+14"/>
         <source>Form</source>
-        <translation type="unfinished">フォーム</translation>
+        <translation>フォーム</translation>
     </message>
     <message>
         <location line="+8"/>
         <source>Default algorithm used for Sketch solving</source>
-        <translation type="unfinished"></translation>
+        <translation>スケッチの求解をするために用いられる既定アルゴリズム</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Default Solver:</source>
-        <translation type="unfinished"></translation>
+        <translation>既定のソルバー:</translation>
     </message>
     <message>
         <location line="+17"/>
-        <location line="+280"/>
+        <location line="+322"/>
         <source>BFGS</source>
-        <translation type="unfinished"></translation>
+        <translation>BFGS</translation>
     </message>
     <message>
-        <location line="-275"/>
-        <location line="+280"/>
+        <location line="-317"/>
+        <location line="+322"/>
         <source>LevenbergMarquardt</source>
-        <translation type="unfinished"></translation>
+        <translation>レーベンバーグ・マーカート法</translation>
     </message>
     <message>
-        <location line="-275"/>
-        <location line="+280"/>
+        <location line="-317"/>
+        <location line="+322"/>
         <source>DogLeg</source>
-        <translation type="unfinished"></translation>
+        <translation>DogLeg法</translation>
     </message>
     <message>
-        <location line="-268"/>
+        <location line="-310"/>
+        <source>Type of function to apply in DogLeg for the Gauss step</source>
+        <translation>ガウス ステップのためにドッグレッグで適用する関数の種類</translation>
+    </message>
+    <message>
+        <location line="+3"/>
+        <source>DogLeg Gauss step:</source>
+        <translation>DogLeg ガウス ステップ:</translation>
+    </message>
+    <message>
+        <location line="+17"/>
+        <source>FullPivLU</source>
+        <translation>FullPivLU</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>LeastNorm-FullPivLU</source>
+        <translation>最小ノルム-FullPivLU</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>LeastNorm-LDLT</source>
+        <translation>最小ノルム-LDLT</translation>
+    </message>
+    <message>
+        <location line="+12"/>
         <source>Maximum number of iterations of the default algorithm</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルトのアルゴリズムの最大反復数</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Maximum Iterations:</source>
-        <translation type="unfinished"></translation>
+        <translation>最大反復数:</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>If selected, the Maximum iterations value is multiplied by the sketch size</source>
-        <translation type="unfinished"></translation>
+        <translation>選択されている場合、最大反復値にスケッチサイズが乗算されます</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Sketch size multiplier:</source>
-        <translation type="unfinished"></translation>
+        <translation>スケッチサイズの倍率:</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>Error threshold under which convergence is reached</source>
-        <translation type="unfinished"></translation>
+        <translation>収束に到達したと判断する誤差下限値</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Convergence:</source>
-        <translation type="unfinished"></translation>
+        <translation>収束:</translation>
     </message>
     <message>
         <location line="+30"/>
         <source>Param1</source>
-        <translation type="unfinished"></translation>
+        <translation>パラメーター1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param2</source>
-        <translation type="unfinished"></translation>
+        <translation>パラメーター2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Param3</source>
-        <translation type="unfinished"></translation>
+        <translation>パラメーター3</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Algorithm used for the rank revealing QR decomposition</source>
-        <translation type="unfinished"></translation>
+        <translation>QR 分解のランク解決に使用されるアルゴリズム</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>QR Algorithm:</source>
-        <translation type="unfinished"></translation>
+        <translation>QR アルゴリズム:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Eigen Dense QR</source>
-        <translation type="unfinished"></translation>
+        <translation>固有密行列 QR</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Eigen Sparse QR</source>
-        <translation type="unfinished"></translation>
+        <translation>固有疎行列 QR</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Pivot threshold</source>
-        <translation type="unfinished"></translation>
+        <translation>旋回のしきい値</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1E-13</source>
-        <translation type="unfinished"></translation>
+        <translation>1E-13</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Solving algorithm used for determination of Redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation>冗長な拘束の判定に使用されるソルバー・アルゴリズム</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Redundant Solver:</source>
-        <translation type="unfinished"></translation>
+        <translation>代替ソルバー</translation>
     </message>
     <message>
         <location line="+39"/>
         <source>Maximum number of iterations of the solver used for determination of Redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation>冗長な拘束の判定に使用されるソルバーの最大反復回数</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Max Iterations:</source>
-        <translation type="unfinished"></translation>
+        <translation>余剰最大反復回数：</translation>
     </message>
     <message>
         <location line="+33"/>
         <source>If selected, the Maximum iterations value for the redundant algorithm is multiplied by the sketch size</source>
-        <translation type="unfinished"></translation>
+        <translation>選択されている場合、冗長アルゴリズムの最大反復値にスケッチのサイズが乗算されます</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Sketch size multiplier:</source>
-        <translation type="unfinished"></translation>
+        <translation>Red. スケッチサイズ倍率：</translation>
     </message>
     <message>
         <location line="+27"/>
         <source>Error threshold under which convergence is reached for the solving of redundant constraints</source>
-        <translation type="unfinished"></translation>
+        <translation>冗長な拘束の判定のためのソルバーが収束に到達したと判断する誤差下限値</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Red. Convergence</source>
-        <translation type="unfinished"></translation>
+        <translation>Red. 収束</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>1E-10</source>
-        <translation type="unfinished"></translation>
+        <translation>1E-10</translation>
     </message>
     <message>
         <location line="+20"/>
         <source>Red. Param1</source>
-        <translation type="unfinished"></translation>
+        <translation>赤 パラメーター1</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param2</source>
-        <translation type="unfinished"></translation>
+        <translation>赤 パラメーター2</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Red. Param3</source>
-        <translation type="unfinished"></translation>
+        <translation>赤 パラメーター3</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Degree of verbosity of the debug output to the console</source>
-        <translation type="unfinished"></translation>
+        <translation>コンソールへのデバッグ出力の詳細度</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Console  Debug mode:</source>
-        <translation type="unfinished"></translation>
+        <translation>コンソールデバッグモード:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>None</source>
-        <translation type="unfinished"></translation>
+        <translation>なし</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Minimum</source>
-        <translation type="unfinished"></translation>
+        <translation>最小値</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Iteration Level</source>
-        <translation type="unfinished"></translation>
+        <translation>イテレーション レベル</translation>
     </message>
     <message>
         <location line="+12"/>
         <source>Solve</source>
-        <translation type="unfinished"></translation>
+        <translation>求解</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Resets all solver values to their default values</source>
-        <translation type="unfinished"></translation>
+        <translation>すべてのソルバーの値を既定値にリセット</translation>
     </message>
     <message>
         <location line="+3"/>
         <source>Restore Defaults</source>
-        <translation type="unfinished"></translation>
+        <translation>デフォルトに戻す</translation>
     </message>
 </context>
 <context>
@@ -3632,7 +4482,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location filename="../../Workbench.cpp" line="+37"/>
         <source>Sketcher</source>
-        <translation>Sketcher</translation>
+        <translation type="unfinished">Sketcher</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -3642,7 +4492,7 @@ Do you want to detach it from the support?</source>
     <message>
         <location line="+2"/>
         <source>Sketcher tools</source>
-        <translation type="unfinished">スケッチャー ツール</translation>
+        <translation>スケッチャー ツール</translation>
     </message>
     <message>
         <source>Sketcher geoms</source>

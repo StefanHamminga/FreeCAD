@@ -35,6 +35,7 @@
 #include "DlgSettingsPathColor.h"
 #include "ViewProviderPathCompound.h"
 #include "ViewProviderPathShape.h"
+#include "ViewProviderArea.h"
 
 // use a different name to CreateCommand()
 void CreatePathCommands(void);
@@ -46,26 +47,26 @@ void loadPathResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef PathGui_methods[];
-
+namespace PathGui {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void PathGuiExport initPathGui()  
+PyMOD_INIT_FUNC(PathGui)
 {
      if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
     try {
+        Base::Interpreter().runString("import PartGui");
         Base::Interpreter().runString("import Path");
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void) Py_InitModule("PathGui", PathGui_methods);   /* mod name, table ptr */
+    PyObject* mod = PathGui::initModule();
     Base::Console().Log("Loading GUI of Path module... done\n");
 
     // instantiating the commands
@@ -77,12 +78,16 @@ void PathGuiExport initPathGui()
     PathGui::ViewProviderPathCompoundPython ::init();
     PathGui::ViewProviderPathShape          ::init();
     PathGui::ViewProviderPathPython         ::init();
+    PathGui::ViewProviderArea               ::init();
+    PathGui::ViewProviderAreaPython         ::init();
+    PathGui::ViewProviderAreaView           ::init();
+    PathGui::ViewProviderAreaViewPython     ::init();
 
      // add resources and reloads the translators
     loadPathResource();
     
     // register preferences pages
     new Gui::PrefPageProducer<PathGui::DlgSettingsPathColor> ("Path");
-}
 
-} // extern "C" {
+    PyMOD_Return(mod);
+}

@@ -57,7 +57,7 @@ PyObject *MeshPointPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // 
 }
 
 // constructor method
-int MeshPointPy::PyInit(PyObject* args, PyObject*k)
+int MeshPointPy::PyInit(PyObject* args, PyObject* /*kwds*/)
 {
     double  x=0.0,y=0.0,z=0.0;
     if (!PyArg_ParseTuple(args, "|ddd", &x,&y,&z))
@@ -69,6 +69,8 @@ int MeshPointPy::PyInit(PyObject* args, PyObject*k)
 
 PyObject*  MeshPointPy::unbound(PyObject *args)
 {
+    if (!PyArg_ParseTuple(args, ""))
+        return NULL;
     getMeshPointPtr()->Index = UINT_MAX;
     getMeshPointPtr()->Mesh = 0;
     Py_Return;
@@ -98,9 +100,9 @@ PyObject*  MeshPointPy::move(PyObject *args)
     Py_Return;
 }
 
-Py::Int MeshPointPy::getIndex(void) const
+Py::Long MeshPointPy::getIndex(void) const
 {
-    return Py::Int((long) getMeshPointPtr()->Index);
+    return Py::Long((long) getMeshPointPtr()->Index);
 }
 
 Py::Boolean MeshPointPy::getBound(void) const
@@ -176,12 +178,12 @@ void  MeshPointPy::setz(Py::Float arg)
     }
 }
 
-PyObject *MeshPointPy::getCustomAttributes(const char* attr) const
+PyObject *MeshPointPy::getCustomAttributes(const char* /*attr*/) const
 {
     return 0;
 }
 
-int MeshPointPy::setCustomAttributes(const char* attr, PyObject *obj)
+int MeshPointPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0; 
 }

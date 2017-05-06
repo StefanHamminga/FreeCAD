@@ -10,7 +10,6 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
-    ${QT_QTCORE_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
@@ -27,7 +26,6 @@ set(Inspection_LIBS
 
 SET(Inspection_SRCS
     AppInspection.cpp
-    AppInspectionPy.cpp
     InspectionFeature.cpp
     InspectionFeature.h
     PreCompiled.cpp

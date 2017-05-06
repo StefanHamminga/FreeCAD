@@ -63,7 +63,8 @@ using namespace std;
 
 Base::XMLReader::XMLReader(const char* FileName, std::istream& str) 
   : DocumentSchema(0), ProgramVersion(""), FileVersion(0), Level(0),
-    _File(FileName), _valid(false), _verbose(true)
+    CharacterCount(0), ReadType(None), _File(FileName), _valid(false),
+    _verbose(true)
 {
 #ifdef _MSC_VER
     str.imbue(std::locale::empty());
@@ -200,7 +201,7 @@ bool Base::XMLReader::read(void)
         char* message = XMLString::transcode(toCatch.getMessage());
         std::string what = message;
         XMLString::release(&message);
-        throw Base::Exception(what);
+        throw Base::XMLBaseException(what);
 #endif
     }
     catch (const SAXParseException& toCatch) {
@@ -222,7 +223,7 @@ bool Base::XMLReader::read(void)
         cerr << "Unexpected Exception \n" ;
         return false;
 #else
-        throw Base::Exception("Unexpected XML exception");
+        throw Base::XMLBaseException("Unexpected XML exception");
 #endif
     }
 
@@ -277,7 +278,7 @@ void Base::XMLReader::readBinFile(const char* filename)
     Base::FileInfo fi(filename);
     Base::ofstream to(fi, std::ios::out | std::ios::binary);
     if (!to)
-        throw Base::Exception("XMLReader::readBinFile() Could not open file!");
+        throw Base::FileException("XMLReader::readBinFile() Could not open file!");
 
     bool ok;
     do {

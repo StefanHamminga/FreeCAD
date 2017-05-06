@@ -50,7 +50,7 @@ class List;
 }
 
 namespace Base {
-  class Polygon2D;
+  class Polygon2d;
   class ViewProjMethod;
 }
 
@@ -127,7 +127,11 @@ public:
     Mesh::Facet getFacet(unsigned long) const;
     double getSurface() const;
     double getVolume() const;
-    void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
+    /** Get points from object with given accuracy */
+    virtual void getPoints(std::vector<Base::Vector3d> &Points,
+        std::vector<Base::Vector3d> &Normals,
+        float Accuracy, uint16_t flags=0) const;
+    virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &Topo,
         float Accuracy, uint16_t flags=0) const;
     std::vector<unsigned long> getPointsFromFacets(const std::vector<unsigned long>& facets) const;
     //@}
@@ -151,8 +155,13 @@ public:
     void save(const char* file,MeshCore::MeshIO::Format f=MeshCore::MeshIO::Undefined,
         const MeshCore::Material* mat = 0,
         const char* objectname = 0) const;
-    void save(std::ostream&) const;
+    void save(std::ostream&,MeshCore::MeshIO::Format f,
+        const MeshCore::Material* mat = 0,
+        const char* objectname = 0) const;
     bool load(const char* file, MeshCore::Material* mat = 0);
+    bool load(std::istream&, MeshCore::MeshIO::Format f, MeshCore::Material* mat = 0);
+    // Save and load in internal format
+    void save(std::ostream&) const;
     void load(std::istream&);
     //@}
 
@@ -160,11 +169,14 @@ public:
     //@{
     void addFacet(const MeshCore::MeshGeomFacet& facet);
     void addFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
-    void addFacets(const std::vector<MeshCore::MeshFacet> &facets);
     void addFacets(const std::vector<MeshCore::MeshFacet> &facets,
-                   const std::vector<Base::Vector3f>& points);
+                   bool checkManifolds);
+    void addFacets(const std::vector<MeshCore::MeshFacet> &facets,
+                   const std::vector<Base::Vector3f>& points,
+                   bool checkManifolds);
     void addFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
-                   const std::vector<Base::Vector3d>& points);
+                   const std::vector<Base::Vector3d>& points,
+                   bool checkManifolds);
     void setFacets(const std::vector<MeshCore::MeshGeomFacet>& facets);
     void setFacets(const std::vector<Data::ComplexGeoData::Facet> &facets,
                    const std::vector<Base::Vector3d>& points);
@@ -208,8 +220,8 @@ public:
     std::vector<Base::Vector3d> getPointNormals() const;
     void crossSections(const std::vector<TPlane>&, std::vector<TPolylines> &sections,
                        float fMinEps = 1.0e-2f, bool bConnectPolygons = false) const;
-    void cut(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);
-    void trim(const Base::Polygon2D& polygon, const Base::ViewProjMethod& proj, CutType);
+    void cut(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
+    void trim(const Base::Polygon2d& polygon, const Base::ViewProjMethod& proj, CutType);
     //@}
 
     /** @name Selection */
@@ -220,7 +232,9 @@ public:
     void addPointsToSelection(const std::vector<unsigned long>&) const;
     void removeFacetsFromSelection(const std::vector<unsigned long>&) const;
     void removePointsFromSelection(const std::vector<unsigned long>&) const;
+    unsigned long countSelectedFacets() const;
     bool hasSelectedFacets() const;
+    unsigned long countSelectedPoints() const;
     bool hasSelectedPoints() const;
     void getFacetsFromSelection(std::vector<unsigned long>&) const;
     void getPointsFromSelection(std::vector<unsigned long>&) const;
@@ -259,12 +273,13 @@ public:
     void flipNormals();
     void harmonizeNormals();
     void validateIndices();
-    void validateDeformations(float fMaxAngle);
-    void validateDegenerations();
+    void validateDeformations(float fMaxAngle, float fEps);
+    void validateDegenerations(float fEps);
     void removeDuplicatedPoints();
     void removeDuplicatedFacets();
     bool hasNonManifolds() const;
     void removeNonManifolds();
+    void removeNonManifoldPoints();
     bool hasSelfIntersections() const;
     void removeSelfIntersections();
     void removeSelfIntersections(const std::vector<unsigned long>&);
@@ -281,7 +296,7 @@ public:
     const Segment& getSegment(unsigned long) const;
     Segment& getSegment(unsigned long);
     MeshObject* meshFromSegment(const std::vector<unsigned long>&) const;
-    std::vector<Segment> getSegmentsFromType(GeometryType, const Segment& aSegment, float dev, unsigned long minFacets) const;
+    std::vector<Segment> getSegmentsFromType(GeometryType, float dev, unsigned long minFacets) const;
     //@}
 
     /** @name Primitives */
@@ -365,6 +380,7 @@ private:
     void deletedFacets(const std::vector<unsigned long>& remFacets);
     void updateMesh(const std::vector<unsigned long>&);
     void updateMesh();
+    void swapKernel(MeshCore::MeshKernel& m, const std::vector<std::string>& g);
 
 private:
     Base::Matrix4D _Mtrx;

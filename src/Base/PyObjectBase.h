@@ -84,6 +84,21 @@
  */
 #define PYFUNCIMP_S(CLASS,SFUNC) PyObject* CLASS::SFUNC (PyObject *self,PyObject *args,PyObject *kwd)
 
+
+/** Macro for initialization function of Python modules. 
+ */
+#if PY_MAJOR_VERSION >= 3
+# define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC PyInit_##name(void)
+#else
+# define PyMOD_INIT_FUNC(name) PyMODINIT_FUNC init##name(void)
+#endif
+
+#if PY_MAJOR_VERSION >= 3
+# define PyMOD_Return(name) return name
+#else
+# define PyMOD_Return(name) return (void)name
+#endif
+
 /**
  * Union to convert from PyTypeObject to PyObject pointer.
  */
@@ -125,7 +140,7 @@ inline void Assert(int expr, char *msg)         // C++ assert
 /// some basic python macros
 #define Py_NEWARGS 1
 /// return with no return value if nothing happens
-#define Py_Return Py_INCREF(Py_None); return Py_None;
+#define Py_Return return Py_INCREF(Py_None), Py_None
 /// returns an error
 #define Py_Error(E, M)   {PyErr_SetString(E, M); return NULL;}
 /// checks on a condition and returns an error on failure
@@ -134,32 +149,12 @@ inline void Assert(int expr, char *msg)         // C++ assert
 #define Py_Assert(A,E,M) {if (!(A)) {PyErr_SetString(E, M); return NULL;}}
 
 
-/// Define the PyParent Object
-typedef PyTypeObject * PyParentObject;
-
-
 /// This must be the first line of each PyC++ class
 #define Py_Header                                           \
 public:                                                     \
     static PyTypeObject   Type;                             \
     static PyMethodDef    Methods[];                        \
     virtual PyTypeObject *GetType(void) {return &Type;}
-
-/** This defines the _getattr_up macro
- *  which allows attribute and method calls
- *  to be properly passed up the hierarchy.
- */
-#define _getattr_up(Parent)                                 \
-{                                                           \
-    PyObject *rvalue = Py_FindMethod(Methods, this, attr);  \
-    if (rvalue == NULL)                                     \
-    {                                                       \
-        PyErr_Clear();                                      \
-        return Parent::_getattr(attr);                      \
-    }                                                       \
-    else                                                    \
-        return rvalue;                                      \
-} 
 
 /*------------------------------
  * PyObjectBase
@@ -197,6 +192,12 @@ class BaseExport PyObjectBase : public PyObject
      *  every Python C-Library function also on a PyObjectBase object
      */
     Py_Header
+
+    enum Status {
+        Valid = 0,
+        Immutable = 1,
+        Notify = 2
+    };
 
 protected:
     /// destructor
@@ -279,34 +280,49 @@ public:
 
     void setInvalid() { 
         // first bit is not set, i.e. invalid
-        StatusBits.reset(0);
+        StatusBits.reset(Valid);
         _pcTwinPointer = 0;
     }
 
     bool isValid() {
-        return StatusBits.test(0);
+        return StatusBits.test(Valid);
     }
 
     void setConst() {
         // second bit is set, i.e. immutable
-        StatusBits.set(1);
+        StatusBits.set(Immutable);
     }
 
     bool isConst() {
-        return StatusBits.test(1);
+        return StatusBits.test(Immutable);
     }
 
-    void setAttributeOf(const char* attr, const PyObjectBase* par);
+    void setShouldNotify(bool on) {
+        StatusBits.set(Notify, on);
+    }
+
+    bool shouldNotify() const {
+        return StatusBits.test(Notify);
+    }
+
     void startNotify();
 
-    typedef void* PointerType ;
+    typedef void* PointerType;
+
+private:
+    void setAttributeOf(const char* attr, PyObject* par);
+    void resetAttribute();
+    PyObject* getTrackedAttribute(const char* attr);
+    void trackAttribute(const char* attr, PyObject* obj);
+    void untrackAttribute(const char* attr);
 
 protected:
     std::bitset<32> StatusBits;
     /// pointer to the handled class
     void * _pcTwinPointer;
-    PyObjectBase* parent;
-    char* attribute;
+
+private:
+    PyObject* attrDict;
 };
 
 
@@ -492,7 +508,7 @@ inline PyObject * PyAsUnicodeObject(const char *str)
     // Returns a new reference, don't increment it!
     PyObject *p = PyUnicode_DecodeUTF8(str,strlen(str),0);
     if(!p)
-        throw Base::Exception("UTF8 conversion failure at PyAsUnicodeString()");
+        throw Base::UnicodeError("UTF8 conversion failure at PyAsUnicodeString()");
     return p;
 }
 

@@ -4,7 +4,7 @@
 <context>
     <name>CmdDrawingAnnotation</name>
     <message>
-        <location filename="../../Command.cpp" line="+475"/>
+        <location filename="../../Command.cpp" line="+474"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -42,26 +42,26 @@
 <context>
     <name>CmdDrawingDraftView</name>
     <message>
-        <location line="+183"/>
+        <location line="+185"/>
         <source>Drawing</source>
-        <translation type="unfinished">Výkres</translation>
+        <translation>Výkres</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Draft View</source>
-        <translation type="unfinished">&amp;Pohled z Návrhu</translation>
+        <translation>&amp;Pohled z Návrhu</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a Draft view of the selected object(s) in the active drawing</source>
-        <translation type="unfinished">Vloží pohled vybraných objektů z Návrhu do aktivního výkresu</translation>
+        <translation>Vloží pohled vybraných objektů z Návrhu do aktivního výkresu</translation>
     </message>
 </context>
 <context>
     <name>CmdDrawingExportPage</name>
     <message>
-        <location line="-90"/>
+        <location line="-92"/>
         <source>File</source>
         <translation>Soubor</translation>
     </message>
@@ -80,7 +80,7 @@
 <context>
     <name>CmdDrawingNewA3Landscape</name>
     <message>
-        <location line="-355"/>
+        <location line="-359"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -88,13 +88,13 @@
         <location line="+1"/>
         <location line="+1"/>
         <source>Insert new A3 landscape drawing</source>
-        <translation>Insert new A3 landscape drawing</translation>
+        <translation type="unfinished">Insert new A3 landscape drawing</translation>
     </message>
 </context>
 <context>
     <name>CmdDrawingNewPage</name>
     <message>
-        <location line="-185"/>
+        <location line="-179"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -108,7 +108,7 @@
 <context>
     <name>CmdDrawingNewView</name>
     <message>
-        <location line="+219"/>
+        <location line="+214"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -126,7 +126,7 @@
 <context>
     <name>CmdDrawingOpen</name>
     <message>
-        <location line="-255"/>
+        <location line="-250"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -144,7 +144,7 @@
 <context>
     <name>CmdDrawingOpenBrowserView</name>
     <message>
-        <location line="+378"/>
+        <location line="+375"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -163,7 +163,7 @@
 <context>
     <name>CmdDrawingOrthoViews</name>
     <message>
-        <location line="-53"/>
+        <location line="-54"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -181,7 +181,7 @@
 <context>
     <name>CmdDrawingProjectShape</name>
     <message>
-        <location line="+284"/>
+        <location line="+287"/>
         <source>Drawing</source>
         <translation>Výkres</translation>
     </message>
@@ -198,28 +198,47 @@
     </message>
 </context>
 <context>
+    <name>CmdDrawingSpreadsheetView</name>
+    <message>
+        <location line="+64"/>
+        <source>Drawing</source>
+        <translation>Výkres</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>&amp;Spreadsheet View</source>
+        <translation>Zobrazení Tabulky</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+2"/>
+        <source>Inserts a view of a selected spreadsheet in the active drawing</source>
+        <translation>Vloží zobrazení vybrané tabulky v aktivním výkresu</translation>
+    </message>
+</context>
+<context>
     <name>CmdDrawingSymbol</name>
     <message>
-        <location line="-110"/>
+        <location line="-179"/>
         <source>Drawing</source>
-        <translation type="unfinished">Výkres</translation>
+        <translation>Výkres</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Symbol</source>
-        <translation type="unfinished">&amp;Symbol</translation>
+        <translation>&amp;Symbol</translation>
     </message>
     <message>
         <location line="+1"/>
         <location line="+2"/>
         <source>Inserts a symbol from a svg file in the active drawing</source>
-        <translation type="unfinished">Vložit symbol ze souboru svg do aktivního výkresu</translation>
+        <translation>Vložit symbol ze souboru svg do aktivního výkresu</translation>
     </message>
 </context>
 <context>
     <name>DrawingGui::DrawingView</name>
     <message>
-        <location filename="../../DrawingView.cpp" line="+212"/>
+        <location filename="../../DrawingView.cpp" line="+211"/>
         <source>&amp;Background</source>
         <translation>&amp;Pozadí</translation>
     </message>
@@ -269,9 +288,13 @@
         <translation>Export PDF</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>PDF file (*.pdf)</source>
-        <translation>Soubor PDF (*.pdf)</translation>
+        <translation type="obsolete">Soubor PDF (*.pdf)</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>PDF file</source>
+        <translation>PDF soubor</translation>
     </message>
     <message>
         <location line="+16"/>
@@ -311,28 +334,38 @@
     <message>
         <location line="+81"/>
         <source>Different orientation</source>
-        <translation type="unfinished">Jiná orientace</translation>
+        <translation>Jiná orientace</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">Tiskárna používá jinou orientaci než výkres.
+        <translation>Tiskárna používá jinou orientaci než výkres.
 Chcete pokračovat?</translation>
     </message>
     <message>
         <location line="+7"/>
         <location line="+8"/>
         <source>Different paper size</source>
-        <translation type="unfinished">Jiný formát papíru</translation>
+        <translation>Jiný formát papíru</translation>
     </message>
     <message>
         <location line="-7"/>
         <location line="+8"/>
         <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
-        <translation type="unfinished">Tiskárna používá jiný formát papíru než výkres.
+        <translation>Tiskárna používá jiný formát papíru než výkres.
 Chcete pokračovat?</translation>
+    </message>
+    <message>
+        <location line="+11"/>
+        <source>Opening file failed</source>
+        <translation>Otevření souboru selhalo</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Can&apos;t open file &apos;%1&apos; for writing.</source>
+        <translation>Soubor &quot;%1&quot; nelze otevřít pro zápis.</translation>
     </message>
 </context>
 <context>
@@ -356,118 +389,108 @@ Chcete pokračovat?</translation>
         <location line="+25"/>
         <location line="+60"/>
         <source>Right click for axonometric settings</source>
-        <translation type="unfinished">Pro nastavení axonometrie klikněte pravým tlačítkem</translation>
+        <translation>Pro nastavení axonometrie klikněte pravým tlačítkem</translation>
     </message>
     <message>
         <location line="+106"/>
         <source>Top left x / y</source>
-        <translation type="unfinished">Horní levý x / y</translation>
+        <translation>Horní levý x / y</translation>
     </message>
     <message>
         <location line="+48"/>
         <source>Spacing dx / dy   </source>
-        <translation type="unfinished">Odsazení dx / dy   </translation>
+        <translation>Odsazení dx / dy   </translation>
     </message>
     <message>
-        <location line="+45"/>
-        <source>Show hidden lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+7"/>
-        <source>Show smooth lines</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+19"/>
+        <location line="+71"/>
         <source> Axis out and right</source>
-        <translation type="unfinished"> Osa ven a doprava</translation>
+        <translation> Osa ven a doprava</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Vertical tilt</source>
-        <translation type="unfinished"> Svislý sklon</translation>
+        <translation> Svislý sklon</translation>
     </message>
     <message>
         <location line="+11"/>
         <location line="+200"/>
         <source>X +ve</source>
-        <translation type="unfinished">X+ve</translation>
+        <translation>X+ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Y +ve</source>
-        <translation type="unfinished">Y+ve</translation>
+        <translation>Y+ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+75"/>
         <location line="+125"/>
         <source>Z +ve</source>
-        <translation type="unfinished">Z +ve</translation>
+        <translation>Z +ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+200"/>
         <source>X -ve</source>
-        <translation type="unfinished">X -ve</translation>
+        <translation>X -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Y -ve</source>
-        <translation type="unfinished">Y -ve</translation>
+        <translation>Y -ve</translation>
     </message>
     <message>
         <location line="-195"/>
         <location line="+70"/>
         <location line="+130"/>
         <source>Z -ve</source>
-        <translation type="unfinished">Z -ve</translation>
+        <translation>Z -ve</translation>
     </message>
     <message>
         <location line="-188"/>
         <source>Isometric</source>
-        <translation type="unfinished">Izometrie</translation>
+        <translation>Izometrie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Dimetric</source>
-        <translation type="unfinished">Dimetrie</translation>
+        <translation>Dimetrie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Trimetric</source>
-        <translation type="unfinished">Trimetrie</translation>
+        <translation>Trimetrie</translation>
     </message>
     <message>
         <location line="+8"/>
         <source> Scale</source>
-        <translation type="unfinished"> Měřítko</translation>
+        <translation> Měřítko</translation>
     </message>
     <message>
         <location line="+7"/>
         <source> View projection   </source>
-        <translation type="unfinished"> Projekce pohledu   </translation>
+        <translation> Projekce pohledu   </translation>
     </message>
     <message>
         <location line="+7"/>
         <source> Axis aligned up</source>
-        <translation type="unfinished"> Osa směřující nahoru</translation>
+        <translation> Osa směřující nahoru</translation>
     </message>
     <message>
         <location line="+41"/>
         <location line="+23"/>
         <source>Flip</source>
-        <translation type="unfinished">Překlopit</translation>
+        <translation>Překlopit</translation>
     </message>
     <message>
         <location line="-10"/>
         <source> Trimetric</source>
-        <translation type="unfinished"> Trimetrie</translation>
+        <translation> Trimetrie</translation>
     </message>
     <message>
         <location line="+28"/>
@@ -487,12 +510,12 @@ Chcete pokračovat?</translation>
     <message>
         <location line="+19"/>
         <source>View from:</source>
-        <translation type="unfinished">Pohled od osy:</translation>
+        <translation>Pohled od osy:</translation>
     </message>
     <message>
         <location line="+47"/>
         <source>Axis aligned right:</source>
-        <translation type="unfinished">Osa směřující doprava:</translation>
+        <translation>Osa směřující doprava:</translation>
     </message>
     <message>
         <source>Primary View</source>
@@ -572,15 +595,17 @@ Chcete pokračovat?</translation>
         <translation type="obsolete">Sekundární dx / dy</translation>
     </message>
     <message>
-        <source>Show hidden</source>
-        <translation type="obsolete">Zobrazit skryté</translation>
+        <location line="+125"/>
+        <source>Show hidden lines</source>
+        <translation>Zobrazit skryté čáry</translation>
     </message>
     <message>
-        <source>Show smooth</source>
-        <translation type="obsolete">Zobrazit hladké</translation>
+        <location line="+7"/>
+        <source>Show smooth lines</source>
+        <translation>Zobrazit hladké čáry</translation>
     </message>
     <message>
-        <location line="+143"/>
+        <location line="+11"/>
         <source>Axonometric</source>
         <translation>Axonometrický</translation>
     </message>
@@ -588,7 +613,7 @@ Chcete pokračovat?</translation>
 <context>
     <name>DrawingGui::TaskProjection</name>
     <message>
-        <location filename="../../TaskDialog.cpp" line="+50"/>
+        <location filename="../../TaskDialog.cpp" line="+51"/>
         <source>Visible sharp edges</source>
         <translation>Viditelné ostré hrany</translation>
     </message>
@@ -641,6 +666,26 @@ Chcete pokračovat?</translation>
         <location line="+17"/>
         <source>Project shapes</source>
         <translation>Projekce tvaru</translation>
+    </message>
+    <message>
+        <location line="+14"/>
+        <source>No active document</source>
+        <translation>Žádný aktivní dokument</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active document to complete the operation</source>
+        <translation>Pro dokončení operace není žádný aktivní dokument</translation>
+    </message>
+    <message>
+        <location line="+5"/>
+        <source>No active view</source>
+        <translation>Není aktivní pohled</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>There is currently no active view to complete the operation</source>
+        <translation>Pro dokončení operace není žádný aktivní pohled</translation>
     </message>
 </context>
 <context>
@@ -696,39 +741,39 @@ Chcete pokračovat?</translation>
     <message>
         <location filename="../../Command.cpp" line="-355"/>
         <source>Landscape</source>
-        <translation type="unfinished">Na šířku</translation>
+        <translation>Na šířku</translation>
     </message>
     <message>
         <location line="+2"/>
         <source>Portrait</source>
-        <translation type="unfinished">Na výšku</translation>
+        <translation>Na výšku</translation>
     </message>
     <message>
         <location line="+4"/>
         <source>%1%2 %3</source>
-        <translation type="unfinished">%1%2 %3</translation>
+        <translation>%1%2 %3</translation>
     </message>
     <message>
-        <location line="+6"/>
+        <location line="+5"/>
         <source>Insert new %1%2 %3 drawing</source>
-        <translation type="unfinished">Vložit nový %1%2 %3 výkres</translation>
-    </message>
-    <message>
-        <location line="+8"/>
-        <source>%1%2 %3 (%4)</source>
-        <translation type="unfinished">%1%2 %3 (%4)</translation>
+        <translation>Vložit nový %1%2 %3 výkres</translation>
     </message>
     <message>
         <location line="+7"/>
+        <source>%1%2 %3 (%4)</source>
+        <translation>%1%2 %3 (%4)</translation>
+    </message>
+    <message>
+        <location line="+6"/>
         <source>Insert new %1%2 %3 (%4) drawing</source>
-        <translation type="unfinished">Vložit nový %1%2 %3 (%4) výkres</translation>
+        <translation>Vložit nový %1%2 %3 (%4) výkres</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
-        <location line="-174"/>
-        <location line="+519"/>
+        <location line="-169"/>
+        <location line="+517"/>
         <source>Choose an SVG file to open</source>
         <translation>Zvolte soubor SVG pro otevření</translation>
     </message>
@@ -737,21 +782,20 @@ Chcete pokračovat?</translation>
         <translation type="obsolete">Prohlížeč výkresů</translation>
     </message>
     <message>
-        <location line="-518"/>
-        <location line="+519"/>
         <source>Scalable Vector Graphics (*.svg *.svgz)</source>
-        <translation>Scalable Vector Graphics (*.svg *.svgz)</translation>
+        <translation type="obsolete">Scalable Vector Graphics (*.svg *.svgz)</translation>
     </message>
     <message>
-        <location line="-267"/>
-        <location line="+78"/>
-        <location line="+49"/>
-        <location line="+186"/>
+        <location line="-268"/>
+        <location line="+79"/>
+        <location line="+50"/>
+        <location line="+187"/>
+        <location line="+119"/>
         <source>Wrong selection</source>
         <translation>Neplatný výběr</translation>
     </message>
     <message>
-        <location line="-312"/>
+        <location line="-434"/>
         <source>Select a Part object.</source>
         <translation>Vybrat díl.</translation>
     </message>
@@ -768,55 +812,72 @@ Chcete pokračovat?</translation>
         <translation type="obsolete">Vytvoří stránku pro vkládání pohledů.</translation>
     </message>
     <message>
-        <location line="+8"/>
-        <location line="+78"/>
-        <location line="+80"/>
+        <location line="-249"/>
+        <location line="+517"/>
+        <location line="+53"/>
+        <source>Scalable Vector Graphic</source>
+        <translation>Škálovatelná vektorová grafika</translation>
+    </message>
+    <message>
+        <location line="-313"/>
+        <location line="+79"/>
+        <location line="+81"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+179"/>
         <source>No page found</source>
-        <translation type="unfinished">Stránka nebyla nalezena</translation>
+        <translation>Stránka nebyla nalezena</translation>
     </message>
     <message>
-        <location line="-250"/>
-        <location line="+78"/>
-        <location line="+80"/>
+        <location line="-431"/>
+        <location line="+79"/>
+        <location line="+81"/>
         <location line="+48"/>
         <location line="+45"/>
+        <location line="+179"/>
         <source>Create a page first.</source>
-        <translation type="unfinished">Vytvořte nejprve stránku.</translation>
+        <translation>Vytvořte nejprve stránku.</translation>
     </message>
     <message>
-        <location line="-182"/>
+        <location line="-362"/>
         <source>Select exactly one Part object.</source>
-        <translation type="unfinished">Vyberte právě jednu součást.</translation>
+        <translation>Vyberte právě jednu součást.</translation>
     </message>
     <message>
-        <location line="+49"/>
-        <location line="+186"/>
+        <location line="+50"/>
+        <location line="+187"/>
         <source>Select one Page object.</source>
         <translation>Vyberte jeden objekt stránky.</translation>
     </message>
     <message>
-        <location line="+5"/>
+        <location line="+6"/>
+        <source>All Files</source>
+        <translation>Všechny soubory</translation>
+    </message>
+    <message>
+        <location line="+113"/>
+        <source>Select exactly one Spreadsheet object.</source>
+        <translation>Vyberte právě jeden objekt Tabulky.</translation>
+    </message>
+    <message>
         <source>SVG (*.svg)</source>
-        <translation type="unfinished">SVG (*.svg)</translation>
+        <translation type="obsolete">SVG (*.svg)</translation>
     </message>
     <message>
         <source>SVG(*.svg)</source>
         <translation type="obsolete">SVG(*.svg)</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>All Files (*.*)</source>
-        <translation>Všechny soubory (*.*)</translation>
+        <translation type="obsolete">Všechny soubory (*.*)</translation>
     </message>
     <message>
-        <location line="+2"/>
+        <location line="-111"/>
         <source>Export page</source>
         <translation>Exportovat stránku</translation>
     </message>
     <message>
-        <location filename="../../ViewProviderPage.cpp" line="+155"/>
+        <location filename="../../ViewProviderPage.cpp" line="+152"/>
         <source>Show drawing</source>
         <translation>Zobrazit výkres</translation>
     </message>
@@ -845,22 +906,22 @@ Chcete pokračovat?</translation>
         <translation type="obsolete">Dole</translation>
     </message>
     <message>
-        <location filename="../../TaskOrthoViews.cpp" line="+48"/>
-        <location line="+929"/>
+        <location filename="../../TaskOrthoViews.cpp" line="+51"/>
+        <location line="+926"/>
         <source>Make axonometric...</source>
-        <translation type="unfinished">Změnit na axonometrický</translation>
+        <translation>Změnit na axonometrický</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-925"/>
+        <location line="+926"/>
         <source>Edit axonometric settings...</source>
-        <translation type="unfinished">Upravit nastavení axonometrie...</translation>
+        <translation>Upravit nastavení axonometrie...</translation>
     </message>
     <message>
-        <location line="-928"/>
-        <location line="+929"/>
+        <location line="-925"/>
+        <location line="+926"/>
         <source>Make orthographic</source>
-        <translation type="unfinished">Změnit na ortografický</translation>
+        <translation>Změnit na ortografický</translation>
     </message>
 </context>
 <context>

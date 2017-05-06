@@ -58,7 +58,7 @@ struct GroupMap_find {
  *  name 'name' and widget flags set to 'f'
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
   : CustomizeActionPage(parent)
@@ -116,7 +116,11 @@ DlgCustomCommandsImp::DlgCustomCommandsImp( QWidget* parent  )
     commandTreeWidget->setHeaderLabels(labels);
     commandTreeWidget->header()->hide();
     commandTreeWidget->setIconSize(QSize(32, 32));
+#if QT_VERSION >= 0x050000
+    commandTreeWidget->header()->setSectionResizeMode(0, QHeaderView::ResizeToContents);
+#else
     commandTreeWidget->header()->setResizeMode(0, QHeaderView::ResizeToContents);
+#endif
 
     categoryTreeWidget->setCurrentItem(categoryTreeWidget->topLevelItem(0));
 }
@@ -146,7 +150,7 @@ void DlgCustomCommandsImp::onGroupActivated(QTreeWidgetItem* item)
     commandTreeWidget->clear();
 
     CommandManager & cCmdMgr = Application::Instance->commandManager();
-    std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(group.toAscii());
+    std::vector<Command*> aCmds = cCmdMgr.getGroupCommands(group.toLatin1());
     if (group == QLatin1String("Macros")) {
         for (std::vector<Command*>::iterator it = aCmds.begin(); it != aCmds.end(); ++it) {
             QTreeWidgetItem* item = new QTreeWidgetItem(commandTreeWidget);

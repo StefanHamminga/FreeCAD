@@ -4,7 +4,7 @@
 <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-        <location filename="../../Command.cpp" line="+503"/>
+        <location filename="../../Command.cpp" line="+496"/>
         <source>File</source>
         <translation>Datoteka</translation>
     </message>
@@ -26,9 +26,9 @@
 <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+204"/>
+        <location line="+207"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Metode trasiranja putem zrake</translation>
+        <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -54,7 +54,7 @@
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-338"/>
+        <location line="-341"/>
         <source>Raytracing</source>
         <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -76,7 +76,7 @@
 <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-        <location line="-107"/>
+        <location line="-100"/>
         <source>Raytracing</source>
         <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -112,9 +112,9 @@
 <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+201"/>
+        <location line="+196"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Metode trasiranja putem zrake</translation>
+        <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -130,9 +130,9 @@
 <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-        <location line="+249"/>
+        <location line="+243"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Metode trasiranja putem zrake</translation>
+        <translation>Metode trasiranja putem zrake</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -148,7 +148,7 @@
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-734"/>
+        <location line="-723"/>
         <source>Raytracing</source>
         <translation>Metode trasiranja putem zrake</translation>
     </message>
@@ -159,8 +159,12 @@
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation type="obsolete">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -203,12 +207,12 @@
         <location line="-79"/>
         <location line="+139"/>
         <location line="+93"/>
-        <location line="+395"/>
+        <location line="+391"/>
         <source>No perspective camera</source>
         <translation>Nema perspektivne kamere</translation>
     </message>
     <message>
-        <location line="-626"/>
+        <location line="-622"/>
         <location line="+139"/>
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
@@ -246,7 +250,7 @@ Do you want to continue?</source>
         <translation type="obsolete">Napišite aktivni 3D prikaz s kamerom i sve njezine sadržaje u povray datoteke</translation>
     </message>
     <message>
-        <location line="+505"/>
+        <location line="+501"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
         <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
@@ -260,43 +264,35 @@ Do you want to continue?</translation>
         <translation type="obsolete">Povray (*. pov)</translation>
     </message>
     <message>
-        <location line="-591"/>
-        <location line="+51"/>
         <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
     </message>
     <message>
-        <location line="-50"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+281"/>
-        <location line="+109"/>
         <source>All Files (*.*)</source>
-        <translation>Sve datoteke (*.*)</translation>
+        <translation type="obsolete">Sve datoteke (*.*)</translation>
     </message>
     <message>
-        <location line="-502"/>
+        <location line="-585"/>
         <location line="+51"/>
         <location line="+63"/>
-        <location line="+281"/>
+        <location line="+276"/>
         <source>Export page</source>
         <translation>Izvezi stranicu</translation>
     </message>
     <message>
-        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished">POV-Ray(*.pov)</translation>
+        <translation type="obsolete">POV-Ray(*.pov)</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="-103"/>
         <location line="+87"/>
-        <location line="+61"/>
-        <location line="+249"/>
+        <location line="+63"/>
+        <location line="+243"/>
         <source>Wrong selection</source>
         <translation>Pogrešan odabir</translation>
     </message>
     <message>
-        <location line="-396"/>
+        <location line="-392"/>
         <source>Select a Part object.</source>
         <translation>Odaberite dio objekta.</translation>
     </message>
@@ -318,13 +314,18 @@ Do you want to continue?</translation>
     </message>
     <message>
         <location line="+64"/>
-        <location line="+61"/>
-        <location line="+249"/>
+        <location line="+63"/>
+        <location line="+243"/>
         <source>Select one Raytracing project object.</source>
         <translation type="unfinished">Select one Raytracing project object.</translation>
     </message>
     <message>
-        <location line="-234"/>
+        <location line="-302"/>
+        <source>Luxrender</source>
+        <translation type="unfinished">Luxrender</translation>
+    </message>
+    <message>
+        <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
         <translation type="unfinished">POV-Ray not found</translation>
@@ -340,12 +341,7 @@ Do you want to continue?</translation>
         <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Rendered image (*.bmp *.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
+        <location line="+75"/>
         <source>Lux project file missing</source>
         <translation type="unfinished">Lux project file missing</translation>
     </message>
@@ -355,13 +351,30 @@ Do you want to continue?</translation>
         <translation type="unfinished">The Lux project file doesn&apos;t exist.</translation>
     </message>
     <message>
-        <location line="-68"/>
+        <location line="-69"/>
         <location line="+6"/>
         <source>Luxrender not found</source>
         <translation type="unfinished">Luxrender not found</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-475"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+272"/>
+        <source>POV-Ray</source>
+        <translation type="unfinished">POV-Ray</translation>
+    </message>
+    <message>
+        <location line="-384"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+276"/>
+        <location line="+109"/>
+        <source>All Files</source>
+        <translation type="unfinished">All Files</translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
         <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
     </message>
@@ -385,11 +398,12 @@ Do you want to continue?</translation>
         <translation type="obsolete">Rendered image (*.bmp)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">Rendered image (*.png)</translation>
+        <translation type="obsolete">Rendered image (*.png)</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
         <translation type="unfinished">Rendered image</translation>
@@ -454,7 +468,12 @@ Do you want to continue?</translation>
         <translation>Kamera, ime datoteke:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
         <translation type="unfinished">Render</translation>
     </message>
@@ -521,12 +540,11 @@ Do you want to continue?</translation>
         <translation>Izvoz postavki mreže</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>max devijacija mreže:</translation>
+        <translation type="obsolete">max devijacija mreže:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Ne izračunati vrh normale </translation>
     </message>

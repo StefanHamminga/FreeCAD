@@ -28,6 +28,7 @@
 #elif defined (FC_OS_MACOSX)
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
+# include <GLKit/GLKMatrix4.h>
 #elif defined (FC_OS_WIN32)
 # include <Windows.h>
 # include <GL/gl.h>
@@ -50,7 +51,7 @@ bool GLImageBox::haveMesa = false;
 /* TRANSLATOR ImageGui::GLImageBox */
 
 // Constructor
-GLImageBox::GLImageBox(QWidget * parent, const QGLWidget * shareWidget, Qt::WFlags f)
+GLImageBox::GLImageBox(QWidget * parent, const QGLWidget * shareWidget, Qt::WindowFlags f)
     : QGLWidget(parent, shareWidget, f)
 {
     // uses default display format for the OpenGL rendering context
@@ -99,7 +100,12 @@ void GLImageBox::resizeGL( int w, int h )
     glViewport( 0, 0, (GLint)w, (GLint)h );
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
+#if defined (FC_OS_MACOSX)
+    GLKMatrix4 orthoMat = GLKMatrix4MakeOrtho(0, width() - 1, height() - 1, 0, -1, 1);
+    glLoadMatrixf(orthoMat.m);
+#else
     gluOrtho2D(0, width() - 1, height() - 1, 0);
+#endif
     glMatrixMode(GL_MODELVIEW);
 }
 
@@ -188,12 +194,10 @@ void GLImageBox::drawImage()
         else
         {
             glPixelTransferf(GL_MAP_COLOR, 0.0);
-            float zero = 0.0;
-            float one = 1.0;
-            glPixelMapfv(GL_PIXEL_MAP_R_TO_R, 1, &zero);
-            glPixelMapfv(GL_PIXEL_MAP_G_TO_G, 1, &zero);
-            glPixelMapfv(GL_PIXEL_MAP_B_TO_B, 1, &zero);
-            glPixelMapfv(GL_PIXEL_MAP_A_TO_A, 1, &one);
+            glPixelMapfv(GL_PIXEL_MAP_R_TO_R, 0, NULL);
+            glPixelMapfv(GL_PIXEL_MAP_G_TO_G, 0, NULL);
+            glPixelMapfv(GL_PIXEL_MAP_B_TO_B, 0, NULL);
+            glPixelMapfv(GL_PIXEL_MAP_A_TO_A, 0, NULL);
         }
 
         // Get the pixel format

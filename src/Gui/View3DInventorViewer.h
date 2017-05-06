@@ -52,7 +52,6 @@ class SbSphereSheetProjector;
 class SoEventCallback;
 class SbBox2s;
 class SoVectorizeAction;
-class QGLFramebufferObject;
 class QImage;
 class SoGroup;
 
@@ -85,23 +84,23 @@ public:
         Clip        = 4,  /**< Clip objects using a lasso. */
     };
     /** @name Modus handling of the viewer
-      * Here the you can switch on/off several features
-      * and modies of the Viewer
+      * Here you can switch several features on/off
+      * and modes of the Viewer
       */
     //@{
     enum ViewerMod {
         ShowCoord=1,       /**< Enables the Coordinate system in the corner. */
         ShowFPS  =2,       /**< Enables the Frams per Second counter. */
         SimpleBackground=4,/**< switch to a simple background. */
-        DisallowRotation=8,/**< switch of the rotation. */
-        DisallowPanning=16,/**< switch of the panning. */
-        DisallowZooming=32,/**< switch of the zooming. */
+        DisallowRotation=8,/**< switch off the rotation. */
+        DisallowPanning=16,/**< switch off the panning. */
+        DisallowZooming=32,/**< switch off the zooming. */
     };
     //@}
     
     /** @name Anti-Aliasing modes of the rendered 3D scene
       * Specifies Anti-Aliasing (AA) method
-      * - Smoothing enables OpenGL line and vertex smoothing (basicly depreciated)
+      * - Smoothing enables OpenGL line and vertex smoothing (basically depreciated)
       * - MSAA is hardware multi sampling (with 2, 4 or 8 passes), a quite commom and efficient AA technique
       */
     //@{
@@ -124,8 +123,8 @@ public:
     };
     //@}
 
-    View3DInventorViewer (QWidget *parent, const QGLWidget* sharewidget = 0);
-    View3DInventorViewer (const QGLFormat& format, QWidget *parent, const QGLWidget* sharewidget = 0);
+    View3DInventorViewer (QWidget *parent, const QtGLWidget* sharewidget = 0);
+    View3DInventorViewer (const QtGLFormat& format, QWidget *parent, const QtGLWidget* sharewidget = 0);
     virtual ~View3DInventorViewer();
     
     void init();
@@ -138,6 +137,7 @@ public:
     void setBacklight(SbBool on);
     SbBool isBacklight(void) const;
     void setSceneGraph (SoNode *root);
+    SbBool searchNode(SoNode*) const;
 
     void setAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled(void) const;
@@ -155,8 +155,11 @@ public:
     void setFeedbackSize(const int size);
     int getFeedbackSize(void) const;
 
+    int getNumSamples() const;
     void setRenderType(const RenderType type);
-    void renderToFramebuffer(QGLFramebufferObject*);
+    RenderType getRenderType() const;
+    void renderToFramebuffer(QtGLFramebufferObject*);
+    QImage grabFramebuffer();
 
     virtual void setViewing(SbBool enable);
     virtual void setCursorEnabled(SbBool enable);
@@ -224,13 +227,12 @@ public:
     void setEditing(SbBool edit);
     SbBool isEditing() const { return this->editing; }
     void setEditingCursor (const QCursor& cursor);
+    void setComponentCursor(const QCursor& cursor);
     void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
     SbBool isRedirectedToSceneGraph() const { return this->redirected; }
     void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
     SbBool isRedirectToSceneGraphEnabled(void) const { return this->allowredir; }
     //@}
-    
-    void setComponentCursor(QCursor cursor);
 
     /** @name Pick actions */
     //@{
@@ -299,7 +301,7 @@ public:
 
     /**
      * Set the camera's orientation. If isAnimationEnabled() returns
-     * \a TRUE the reorientation is animated, otherwise its directly
+     * \a true the reorientation is animated, otherwise its directly
      * set.
      */
     void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
@@ -337,12 +339,16 @@ public:
     void setAxisCross(bool b);
     bool hasAxisCross(void);
     
+
     void setEnabledFPSCounter(bool b);
+    void setEnabledVBO(bool b);
+    bool isEnabledVBO() const;
 
     NavigationStyle* navigationStyle() const;
 
     void setDocument(Gui::Document *pcDocument);
-    
+    Gui::Document* getDocument();
+
     virtual PyObject *getPyObject(void);
 
 protected:
@@ -354,6 +360,10 @@ protected:
     virtual void setSeekMode(SbBool enable);
     virtual void afterRealizeHook(void);
     virtual bool processSoEvent(const SoEvent * ev);
+    void dropEvent (QDropEvent * e);
+    void dragEnterEvent (QDragEnterEvent * e);
+    void dragMoveEvent(QDragMoveEvent *e);
+    void dragLeaveEvent(QDragLeaveEvent *e);
     SbBool processSoEventBase(const SoEvent * const ev);
     void printDimension();
     void selectAll();
@@ -400,8 +410,9 @@ private:
     SoFCUnifiedSelection* selectionRoot;
 
     RenderType renderType;
-    QGLFramebufferObject* framebuffer;
+    QtGLFramebufferObject* framebuffer;
     QImage glImage;
+    SbBool shading;
     SoSwitch *dimensionRoot;
 
     // small axis cross in the corner
@@ -413,7 +424,7 @@ private:
     
     //stuff needed to draw the fps counter
     bool fpsEnabled;
-    SoSeparator* fpsRoot;
+    bool vboEnabled;
 
     SbBool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;
@@ -421,6 +432,7 @@ private:
     SbBool allowredir;
 
     std::string overrideMode;
+    Gui::Document* guiDocument = nullptr;
     
     ViewerEventFilter* viewerEventFilter;
     

@@ -14,24 +14,42 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include "ImagePlane.h"
 
 
-/* registration table  */
-static struct PyMethodDef Image_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+namespace Image {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("Image")
+    {
+        initialize("This module is the Image module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
 };
 
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace Image
+
 /* Python entry */
-extern "C" {
-void ImageExport initImage() {
-    (void) Py_InitModule("Image", Image_methods);   /* mod name, table ptr */
+PyMOD_INIT_FUNC(Image)
+{
+    PyObject* mod = Image::initModule();
     Base::Console().Log("Loading Image module... done\n");
 
     Image::ImagePlane::init();
 
-    return;
+    PyMOD_Return(mod);
 }
-
-} // extern "C"

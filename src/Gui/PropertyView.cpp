@@ -70,7 +70,9 @@ PropertyView::PropertyView(QWidget *parent)
     tabs = new QTabWidget (this);
     tabs->setObjectName(QString::fromUtf8("propertyTab"));
     tabs->setTabPosition(QTabWidget::South);
+#if defined(Q_OS_WIN32)
     tabs->setTabShape(QTabWidget::Triangular);
+#endif
     pLayout->addWidget(tabs, 0, 0);
 
     propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
@@ -105,6 +107,9 @@ PropertyView::PropertyView(QWidget *parent)
     this->connectPropRemove =
     App::GetApplication().signalRemoveDynamicProperty.connect(boost::bind
         (&PropertyView::slotRemoveDynamicProperty, this, _1));
+    this->connectPropChange =
+    App::GetApplication().signalChangePropertyEditor.connect(boost::bind
+        (&PropertyView::slotChangePropertyEditor, this, _1));
 }
 
 PropertyView::~PropertyView()
@@ -113,6 +118,7 @@ PropertyView::~PropertyView()
     this->connectPropView.disconnect();
     this->connectPropAppend.disconnect();
     this->connectPropRemove.disconnect();
+    this->connectPropChange.disconnect();
 }
 
 void PropertyView::slotChangePropertyData(const App::DocumentObject&, const App::Property& prop)
@@ -128,13 +134,13 @@ void PropertyView::slotChangePropertyView(const Gui::ViewProvider&, const App::P
 void PropertyView::slotAppendDynamicProperty(const App::Property& prop)
 {
     App::PropertyContainer* parent = prop.getContainer();
-    if (parent->isHidden(&prop) || prop.StatusBits.test(3))
+    if (parent->isHidden(&prop))
         return;
 
-    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
         propertyEditorData->appendProperty(prop);
     }
-    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+    else if (parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
         propertyEditorView->appendProperty(prop);
     }
 }
@@ -147,6 +153,17 @@ void PropertyView::slotRemoveDynamicProperty(const App::Property& prop)
     }
     else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
         propertyEditorView->removeProperty(prop);
+    }
+}
+
+void PropertyView::slotChangePropertyEditor(const App::Property& prop)
+{
+    App::PropertyContainer* parent = prop.getContainer();
+    if (parent && parent->isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+        propertyEditorData->updateEditorMode(prop);
+    }
+    else if (parent && parent->isDerivedFrom(Gui::ViewProvider::getClassTypeId())) {
+        propertyEditorView->updateEditorMode(prop);
     }
 }
 
@@ -205,7 +222,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                 nameType.propName = ob->getPropertyName(*pt);
                 nameType.propId = (*pt)->getTypeId().getKey();
 
-                if (!ob->isHidden(*pt) && !(*pt)->StatusBits.test(3)) {
+                if (!ob->isHidden(*pt)) {
                     std::vector<PropInfo>::iterator pi = std::find_if(propDataMap.begin(), propDataMap.end(), PropFind(nameType));
                     if (pi != propDataMap.end()) {
                         pi->propList.push_back(*pt);
@@ -225,7 +242,7 @@ void PropertyView::onSelectionChanged(const SelectionChanges& msg)
                 nameType.propName = pt->first;
                 nameType.propId = pt->second->getTypeId().getKey();
 
-                if (!vp->isHidden(pt->second) && !pt->second->StatusBits.test(3)) {
+                if (!vp->isHidden(pt->second)) {
                     std::vector<PropInfo>::iterator pi = std::find_if(propViewMap.begin(), propViewMap.end(), PropFind(nameType));
                     if (pi != propViewMap.end()) {
                         pi->propList.push_back(pt->second);

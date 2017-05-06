@@ -57,7 +57,7 @@
     </message>
     <message>
         <source>&lt;font color=&quot;#0000ff&quot;&gt;0&lt;/font&gt;</source>
-        <translation>&lt;font color=&quot;#0000ff&quot;&gt; 0&lt;/font&gt;</translation>
+        <translation type="obsolete">&lt;font color=&quot;#0000ff&quot;&gt; 0&lt;/font&gt;</translation>
     </message>
     <message>
         <source>Remaining:</source>
@@ -98,13 +98,15 @@
         <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for own modules.</source>
-        <translation>Copyright (c) Werner Mayer FreeCAD unittest jest częścią FreeCAD i wspiera pisanie testów jednostkowych dla własnych modułów.</translation>
+        <translation>Copyright (c) Werner Mayer
+
+FreeCAD UnitTest jest częścią FreeCAD i wspiera pisanie testów jednostkowych dla własnych modułów.</translation>
     </message>
     <message>
         <source>Enter the name of a callable object which, when called, will return a TestCase.Click &apos;start&apos;, and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it,including the stack trace.</source>
-        <translation>Wprowadź nazwę obiektu, który po odwołaniu się do niego zwróci TestCase.Click &apos;start&apos; i utworzony w ten sposób test zostanie uruchomiony.
+        <translation>Wprowadź nazwę wywoływalnego obiektu, który po odwołaniu się do niego zwróci PrzypadekTestu. Kliknij &apos;start&apos;, a utworzony w ten sposób test zostanie uruchomiony.
 
 Kliknij dwukrotnie na błąd w widoku drzewa, aby uzyskać więcej informacji, w tym zapis stosu.</translation>
     </message>

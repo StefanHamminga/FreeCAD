@@ -26,7 +26,6 @@
 #ifndef _PreComp_
 #endif
 
-#include <QGLWidget>
 #include "GLPainter.h"
 #include "View3DInventorViewer.h"
 #include <Base/Console.h>
@@ -35,7 +34,7 @@ using namespace Gui;
 
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::GLGraphicsItem, Base::BaseClass);
 
-GLPainter::GLPainter() : viewer(0), logicOp(false), lineStipple(false)
+GLPainter::GLPainter() : viewer(0), width(0), height(0), logicOp(false), lineStipple(false)
 {
 }
 
@@ -49,7 +48,7 @@ bool GLPainter::begin(QPaintDevice * device)
     if (viewer)
         return false;
 
-    viewer = dynamic_cast<QGLWidget*>(device);
+    viewer = dynamic_cast<QtGLWidget*>(device);
     if (!viewer)
         return false;
 
@@ -62,6 +61,7 @@ bool GLPainter::begin(QPaintDevice * device)
 
     glMatrixMode(GL_PROJECTION);
     glPushMatrix();
+
     glLoadIdentity();
     glOrtho(0, this->width, 0, this->height, -1, 1);
 
@@ -81,7 +81,9 @@ bool GLPainter::begin(QPaintDevice * device)
     glLineWidth(1.0f);
     glColor4f(1.0, 1.0, 1.0, 0.0);
     glViewport(0, 0, this->width, this->height);
+#if !defined(HAVE_QT5_OPENGL)
     glDrawBuffer(GL_FRONT);
+#endif
 
     return true;
 }
@@ -208,13 +210,23 @@ Rubberband::Rubberband(View3DInventorViewer* v) : viewer(v)
     x_old = y_old = x_new = y_new = 0;
     working = false;
     stipple = true;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
-Rubberband::Rubberband()
+Rubberband::Rubberband() : viewer(0)
 {
     x_old = y_old = x_new = y_new = 0;
     working = false;
     stipple = true;
+
+    rgb_r = 1.0f;
+    rgb_g = 1.0f;
+    rgb_b = 1.0f;
+    rgb_a = 1.0f;
 }
 
 Rubberband::~Rubberband()
@@ -309,7 +321,7 @@ Polyline::Polyline(View3DInventorViewer* v) : viewer(v)
     rgb_a = 1.0f;
 }
 
-Polyline::Polyline()
+Polyline::Polyline() : viewer(0)
 {
     x_new = y_new = 0;
     working = false;

@@ -37,6 +37,7 @@
 # include <QTextDocumentFragment>
 # include <QTextStream>
 # include <QUrl>
+# include <QMimeData>
 #endif
 
 #include "PythonConsole.h"
@@ -48,7 +49,6 @@
 #include "DlgEditorImp.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
-
 
 #include <Base/Interpreter.h>
 #include <Base/Exception.h>
@@ -99,7 +99,13 @@ struct PythonConsoleP
     PythonConsoleP()
     {
         type = Normal;
+        _stdoutPy = 0;
+        _stderrPy = 0;
+        _stdinPy = 0;
+        _stdin = 0;
         interpreter = 0;
+        callTipsList = 0;
+        interactive = false;
         colormap[QLatin1String("Text")] = Qt::black;
         colormap[QLatin1String("Bookmark")] = Qt::cyan;
         colormap[QLatin1String("Breakpoint")] = Qt::red;
@@ -159,9 +165,17 @@ void InteractiveInterpreter::setPrompt()
     Base::PyGILStateLocker lock;
     d->sysmodule = PyImport_ImportModule("sys");
     if (!PyObject_HasAttrString(d->sysmodule, "ps1"))
+#if PY_MAJOR_VERSION >= 3
+        PyObject_SetAttrString(d->sysmodule, "ps1", PyUnicode_FromString(">>> "));
+#else
         PyObject_SetAttrString(d->sysmodule, "ps1", PyString_FromString(">>> "));
+#endif
     if (!PyObject_HasAttrString(d->sysmodule, "ps2"))
+#if PY_MAJOR_VERSION >= 3
+        PyObject_SetAttrString(d->sysmodule, "ps2", PyUnicode_FromString("... "));
+#else
         PyObject_SetAttrString(d->sysmodule, "ps2", PyString_FromString("... "));
+#endif
 }
 
 /**
@@ -189,7 +203,7 @@ PyObject* InteractiveInterpreter::compile(const char* source) const
         return eval;
     } else {
         // do not throw Base::PyException as this clears the error indicator
-        throw Base::Exception();
+        throw Base::RuntimeError("Code evaluation failed");
     }
 
     // can never happen
@@ -295,7 +309,11 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
         throw Base::PyException();                 /* not incref'd */
 
     // It seems that the return value is always 'None' or Null
+#if PY_MAJOR_VERSION >= 3
+    presult = PyEval_EvalCode((PyObject*)code, dict, dict); /* run compiled bytecode */
+#else
     presult = PyEval_EvalCode(code, dict, dict); /* run compiled bytecode */
+#endif
     Py_XDECREF(code);                            /* decref the code object */
     if (!presult) {
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
@@ -315,11 +333,11 @@ void InteractiveInterpreter::runCode(PyCodeObject* code) const
  */
 bool InteractiveInterpreter::push(const char* line)
 {
-    d->buffer.append(QString::fromAscii(line));
+    d->buffer.append(QString::fromLatin1(line));
     QString source = d->buffer.join(QLatin1String("\n"));
     try {
-        // Source is already UTF-8, so we can use toAscii()
-        bool more = runSource(source.toAscii());
+        // Source is already UTF-8, so we can use toLatin1()
+        bool more = runSource(source.toLatin1());
         if (!more)
             d->buffer.clear();
         return more;
@@ -366,13 +384,12 @@ PythonConsole::PythonConsole(QWidget *parent)
   : TextEdit(parent), WindowParameter( "Editor" ), _sourceDrain(NULL)
 {
     d = new PythonConsoleP();
-    d->interactive = false;
 
     // create an instance of InteractiveInterpreter
     try { 
         d->interpreter = new InteractiveInterpreter();
     } catch (const Base::Exception& e) {
-        setPlainText(QString::fromAscii(e.what()));
+        setPlainText(QString::fromLatin1(e.what()));
         setEnabled(false);
     }
 
@@ -409,11 +426,16 @@ PythonConsole::PythonConsole(QWidget *parent)
     d->_stdin  = PySys_GetObject("stdin");
     PySys_SetObject("stdin", d->_stdinPy);
 
+#if PY_MAJOR_VERSION >= 3
+    const char* version  = PyUnicode_AsUTF8(PySys_GetObject("version"));
+    const char* platform = PyUnicode_AsUTF8(PySys_GetObject("platform"));
+#else
     const char* version  = PyString_AsString(PySys_GetObject("version"));
     const char* platform = PyString_AsString(PySys_GetObject("platform"));
-    d->info = QString::fromAscii("Python %1 on %2\n"
+#endif
+    d->info = QString::fromLatin1("Python %1 on %2\n"
     "Type 'help', 'copyright', 'credits' or 'license' for more information.")
-    .arg(QString::fromAscii(version)).arg(QString::fromAscii(platform));
+    .arg(QString::fromLatin1(version)).arg(QString::fromLatin1(platform));
     d->output = d->info;
     printPrompt(PythonConsole::Complete);
 }
@@ -434,11 +456,21 @@ PythonConsole::~PythonConsole()
 /** Set new font and colors according to the paramerts. */  
 void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sReason )
 {
+    Q_UNUSED(rCaller); 
     ParameterGrp::handle hPrefGrp = getWindowParameter();
+
+    bool pythonWordWrap = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
+
+    if (pythonWordWrap) {
+      this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    } else {
+      this->setWordWrapMode(QTextOption::NoWrap);
+    }
 
     if (strcmp(sReason, "FontSize") == 0 || strcmp(sReason, "Font") == 0) {
         int fontSize = hPrefGrp->GetInt("FontSize", 10);
-        QString fontFamily = QString::fromAscii(hPrefGrp->GetASCII("Font", "Courier").c_str());
+        QString fontFamily = QString::fromLatin1(hPrefGrp->GetASCII("Font", "Courier").c_str());
         
         QFont font(fontFamily, fontSize);
         setFont(font);
@@ -446,13 +478,13 @@ void PythonConsole::OnChange( Base::Subject<const char*> &rCaller,const char* sR
         int width = metric.width(QLatin1String("0000"));
         setTabStopWidth(width);
     } else {
-        QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromAscii(sReason));
+        QMap<QString, QColor>::ConstIterator it = d->colormap.find(QString::fromLatin1(sReason));
         if (it != d->colormap.end()) {
             QColor color = it.value();
             unsigned long col = (color.red() << 24) | (color.green() << 16) | (color.blue() << 8);
             col = hPrefGrp->GetUnsigned( sReason, col);
             color.setRgb((col>>24)&0xff, (col>>16)&0xff, (col>>8)&0xff);
-            pythonSyntax->setColor(QString::fromAscii(sReason), color);
+            pythonSyntax->setColor(QString::fromLatin1(sReason), color);
         }
     }
 }
@@ -522,7 +554,7 @@ void PythonConsole::keyPressEvent(QKeyEvent * e)
               if (!inputStrg.isEmpty())
               {
                   d->history.append( QLatin1String("# ") + inputStrg );  //< put commented string to history ...
-                  inputLineBegin.insertText( QString::fromAscii("# ") ); //< and comment it on console
+                  inputLineBegin.insertText( QString::fromLatin1("# ") ); //< and comment it on console
                   setTextCursor( inputLineBegin );
                   printPrompt(d->interpreter->hasPendingInput()          //< print adequate prompt
                       ? PythonConsole::Incomplete
@@ -676,10 +708,10 @@ void PythonConsole::printPrompt(PythonConsole::Prompt mode)
       switch (mode)
       {
       case PythonConsole::Incomplete:
-          cursor.insertText(QString::fromAscii("... "));
+          cursor.insertText(QString::fromLatin1("... "));
           break;
       case PythonConsole::Complete:
-          cursor.insertText(QString::fromAscii(">>> "));
+          cursor.insertText(QString::fromLatin1(">>> "));
           break;
       default:
           break;
@@ -892,7 +924,7 @@ void PythonConsole::dropEvent (QDropEvent * e)
         for (int i=0; i<ctActions; i++) {
             QString action;
             dataStream >> action;
-            printStatement(QString::fromAscii("Gui.runCommand(\"%1\")").arg(action));
+            printStatement(QString::fromLatin1("Gui.runCommand(\"%1\")").arg(action));
         }
 
         e->setDropAction(Qt::CopyAction);
@@ -1176,12 +1208,26 @@ void PythonConsole::contextMenuEvent ( QContextMenuEvent * e )
 
     QAction* wrap = menu.addAction(tr("Word wrap"));
     wrap->setCheckable(true);
-    wrap->setChecked(this->wordWrapMode() != QTextOption::NoWrap);
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General");
+    if (hGrp->GetBool("PythonWordWrap", true)) {
+        wrap->setChecked(true);
+        this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    } else {
+        wrap->setChecked(false);
+        this->setWordWrapMode(QTextOption::NoWrap);
+    }
 
     QAction* exec = menu.exec(e->globalPos());
     if (exec == wrap) {
-        this->setWordWrapMode(wrap->isChecked()
-            ? QTextOption::WrapAtWordBoundaryOrAnywhere : QTextOption::NoWrap);
+        if (wrap->isChecked()) {
+            this->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+            hGrp->SetBool("PythonWordWrap", true);
+        } else {
+            this->setWordWrapMode(QTextOption::NoWrap);
+            hGrp->SetBool("PythonWordWrap", false);
+        }
     }
 }
 
@@ -1195,7 +1241,7 @@ void PythonConsole::onClearConsole()
 void PythonConsole::onSaveHistoryAs()
 {
     QString cMacroPath = QString::fromUtf8(getDefaultParameter()->GetGroup( "Macro" )->
-        GetASCII("MacroPath",App::Application::getUserAppDataDir().c_str()).c_str());
+        GetASCII("MacroPath",App::Application::getUserMacroDir().c_str()).c_str());
     QString fn = FileDialog::getSaveFileName(this, tr("Save History"), cMacroPath,
         QString::fromLatin1("%1 (*.FCMacro *.py)").arg(tr("Macro Files")));
     if (!fn.isEmpty()) {
@@ -1258,7 +1304,7 @@ QString PythonConsole::readline( void )
     if (loop.exec() != 0)
       { PyErr_SetInterrupt(); }            //< send SIGINT to python
     this->_sourceDrain = NULL;             //< disable source drain
-    return inputBuffer.append(QChar::fromAscii('\n')); //< pass a newline here, since the readline-caller may need it!
+    return inputBuffer.append(QChar::fromLatin1('\n')); //< pass a newline here, since the readline-caller may need it!
 }
 
 // ---------------------------------------------------------------------
@@ -1306,6 +1352,8 @@ void PythonConsoleHighlighter::highlightBlock(const QString& text)
 
 void PythonConsoleHighlighter::colorChanged(const QString& type, const QColor& col)
 {
+    Q_UNUSED(type); 
+    Q_UNUSED(col); 
 }
 
 // ---------------------------------------------------------------------

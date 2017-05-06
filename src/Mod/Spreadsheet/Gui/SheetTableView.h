@@ -25,8 +25,8 @@
 
 #include <QTableView>
 #include <QHeaderView>
+#include <QKeyEvent>
 #include <boost/signals/connection.hpp>
-#include "PreCompiled.h"
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Mod/Spreadsheet/App/Utils.h>
 
@@ -36,7 +36,11 @@ class SheetViewHeader : public QHeaderView {
     Q_OBJECT
 public:
     SheetViewHeader(Qt::Orientation o) : QHeaderView(o) {
+#if QT_VERSION >= 0x050000
+        setSectionsClickable(true);
+#else
         setClickable(true);
+#endif
     }
 Q_SIGNALS:
     void resizeFinished();
@@ -53,10 +57,10 @@ public:
     
     void edit(const QModelIndex &index);
     void setSheet(Spreadsheet::Sheet *_sheet);
-    std::vector<Spreadsheet::Range> selectedRanges() const;
+    std::vector<App::Range> selectedRanges() const;
 protected Q_SLOTS:
     void commitData(QWidget *editor);
-    void updateCellSpan(Spreadsheet::CellAddress address);
+    void updateCellSpan(App::CellAddress address);
     void insertRows();
     void removeRows();
     void insertColumns();
@@ -64,6 +68,8 @@ protected Q_SLOTS:
     void cellProperties();
 protected:
     bool edit(const QModelIndex &index, EditTrigger trigger, QEvent *event);
+    bool event(QEvent *event);
+    void closeEditor(QWidget *editor, QAbstractItemDelegate::EndEditHint hint);
 
     QModelIndex currentEditIndex;
     Spreadsheet::Sheet * sheet;

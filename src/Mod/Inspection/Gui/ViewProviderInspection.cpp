@@ -41,6 +41,7 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoMaterialBinding.h>
+#include <Inventor/nodes/SoNormal.h>
 #include <Inventor/errors/SoDebugError.h>
 
 #include <Base/Exception.h>
@@ -54,6 +55,7 @@
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
+#include <Mod/Points/App/Properties.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
 
 #include "ViewProviderInspection.h"
@@ -191,68 +193,86 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             Base::Type pointId = Base::Type::fromName("Points::Feature");
             Base::Type propId  = App::PropertyComplexGeoData::getClassTypeId();
 
+            std::vector<Base::Vector3d> points;
+            std::vector<Base::Vector3f> normals;
+            std::vector<Data::ComplexGeoData::Facet> faces;
+
             // set the Distance property to the correct size to sync size of material node with number
             // of vertices/points of the referenced geometry
-            const Data::ComplexGeoData* data = 0;
             if (object->getTypeId().isDerivedFrom(meshId)) {
                 App::Property* prop = object->getPropertyByName("Mesh");
                 if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    data->getFaces(points, faces, accuracy);
                 }
             }
             else if (object->getTypeId().isDerivedFrom(shapeId)) {
                 App::Property* prop = object->getPropertyByName("Shape");
                 if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
                     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
                         ("User parameter:BaseApp/Preferences/Mod/Part");
                     float deviation = hGrp->GetFloat("MeshDeviation",0.2);
 
                     Base::BoundBox3d bbox = data->getBoundBox();
                     accuracy = (float)((bbox.LengthX() + bbox.LengthY() + bbox.LengthZ())/300.0 * deviation);
+                    data->getFaces(points, faces, accuracy);
                 }
             }
             else if (object->getTypeId().isDerivedFrom(pointId)) {
                 App::Property* prop = object->getPropertyByName("Points");
                 if (prop && prop->getTypeId().isDerivedFrom(propId)) {
-                    data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    const Data::ComplexGeoData* data = static_cast<App::PropertyComplexGeoData*>(prop)->getComplexData();
+                    std::vector<Base::Vector3d> normals;
+                    data->getPoints(points, normals, accuracy);
+                }
+                App::Property* propN = object->getPropertyByName("Normal");
+                if (propN && propN->getTypeId().isDerivedFrom(Points::PropertyNormalList::getClassTypeId())) {
+                    normals = static_cast<Points::PropertyNormalList*>(propN)->getValues();
                 }
             }
 
-            if (data) {
-                this->pcLinkRoot->removeAllChildren();
-                std::vector<Base::Vector3d> points;
-                std::vector<Data::ComplexGeoData::Facet> faces;
-                data->getFaces(points, faces, accuracy);
+            this->pcLinkRoot->removeAllChildren();
+            this->pcLinkRoot->addChild(this->pcCoords);
+            this->pcCoords->point.setNum(points.size());
+            SbVec3f* pts = this->pcCoords->point.startEditing();
+            for (size_t i=0; i < points.size(); i++) {
+                const Base::Vector3d& p = points[i];
+                pts[i].setValue((float)p.x,(float)p.y,(float)p.z);
+            }
+            this->pcCoords->point.finishEditing();
 
-                this->pcLinkRoot->addChild(this->pcCoords);
-                this->pcCoords->point.setNum(points.size());
-                SbVec3f* pts = this->pcCoords->point.startEditing();
-                for (size_t i=0; i < points.size(); i++) {
-                    const Base::Vector3d& p = points[i];
-                    pts[i].setValue((float)p.x,(float)p.y,(float)p.z);
+            if (!faces.empty()) {
+                SoIndexedFaceSet* face = new SoIndexedFaceSet();
+                this->pcLinkRoot->addChild(face);
+                face->coordIndex.setNum(4*faces.size());
+                int32_t* indices = face->coordIndex.startEditing();
+                unsigned long j=0;
+                std::vector<Data::ComplexGeoData::Facet>::iterator it;
+                for (it = faces.begin(); it != faces.end(); ++it,j++) {
+                    indices[4*j+0] = it->I1;
+                    indices[4*j+1] = it->I2;
+                    indices[4*j+2] = it->I3;
+                    indices[4*j+3] = SO_END_FACE_INDEX;
                 }
-                this->pcCoords->point.finishEditing();
+                face->coordIndex.finishEditing();
+            }
+            else {
+                if (!normals.empty() && normals.size() == points.size()) {
+                    SoNormal* normalNode = new SoNormal();
+                    normalNode->vector.setNum(normals.size());
+                    SbVec3f* norm = normalNode->vector.startEditing();
 
-                if (!faces.empty()) {
-                    SoIndexedFaceSet* face = new SoIndexedFaceSet();
-                    this->pcLinkRoot->addChild(face);
-                    face->coordIndex.setNum(4*faces.size());
-                    int32_t* indices = face->coordIndex.startEditing();
-                    unsigned long j=0;
-                    std::vector<Data::ComplexGeoData::Facet>::iterator it;
-                    for (it = faces.begin(); it != faces.end(); ++it,j++) {
-                        indices[4*j+0] = it->I1;
-                        indices[4*j+1] = it->I2;
-                        indices[4*j+2] = it->I3;
-                        indices[4*j+3] = SO_END_FACE_INDEX;
+                    std::size_t i=0;
+                    for (std::vector<Base::Vector3f>::const_iterator it = normals.begin(); it != normals.end(); ++it) {
+                        norm[i++].setValue(it->x, it->y, it->z);
                     }
-                    face->coordIndex.finishEditing();
+
+                    normalNode->vector.finishEditing();
+                    this->pcLinkRoot->addChild(normalNode);
                 }
-                else {
-                    this->pcLinkRoot->addChild(this->pcPointStyle);
-                    this->pcLinkRoot->addChild(new SoPointSet());
-                }
+                this->pcLinkRoot->addChild(this->pcPointStyle);
+                this->pcLinkRoot->addChild(new SoPointSet());
             }
         }
     }
@@ -260,9 +280,10 @@ void ViewProviderInspection::updateData(const App::Property* prop)
         // force an update of the Inventor data nodes
         if (this->pcObject) {
             App::Property* link = this->pcObject->getPropertyByName("Actual");
-            if (link) updateData(link);
+            if (link)
+                updateData(link);
+            setDistances();
         }
-        setDistances();
     }
     else if (prop->getTypeId() == App::PropertyFloat::getClassTypeId()) {
         if (strcmp(prop->getName(), "SearchRadius") == 0) {
@@ -281,6 +302,9 @@ SoSeparator* ViewProviderInspection::getFrontRoot(void) const
 
 void ViewProviderInspection::setDistances()
 {
+    if (!pcObject)
+        return;
+
     App::Property* pDistances = pcObject->getPropertyByName("Distances");
     if (!pDistances) {
         SoDebugError::post("ViewProviderInspection::setDistances", "Unknown property 'Distances'");
@@ -299,10 +323,10 @@ void ViewProviderInspection::setDistances()
         return;
     }
 
-    if (pcColorMat->diffuseColor.getNum() != (int)fValues.size())
-        pcColorMat->diffuseColor.setNum((int)fValues.size());
-    if (pcColorMat->transparency.getNum() != (int)fValues.size())
-        pcColorMat->transparency.setNum((int)fValues.size());
+    if (pcColorMat->diffuseColor.getNum() != static_cast<int>(fValues.size()))
+        pcColorMat->diffuseColor.setNum(static_cast<int>(fValues.size()));
+    if (pcColorMat->transparency.getNum() != static_cast<int>(fValues.size()))
+        pcColorMat->transparency.setNum(static_cast<int>(fValues.size()));
 
     SbColor * cols = pcColorMat->diffuseColor.startEditing();
     float   * tran = pcColorMat->transparency.startEditing();
@@ -311,10 +335,12 @@ void ViewProviderInspection::setDistances()
     for (std::vector<float>::const_iterator jt = fValues.begin(); jt != fValues.end(); ++jt, j++) {
         App::Color col = pcColorBar->getColor(*jt);
         cols[j] = SbColor(col.r, col.g, col.b);
-        if (pcColorBar->isVisible(*jt))
+        if (pcColorBar->isVisible(*jt)) {
             tran[j] = 0.0f;
-        else
+        }
+        else {
             tran[j] = 0.8f;
+        }
     }
 
     pcColorMat->diffuseColor.finishEditing();
@@ -357,7 +383,7 @@ std::vector<std::string> ViewProviderInspection::getDisplayModes(void) const
     return StrList;
 }
 
-void ViewProviderInspection::OnChange(Base::Subject<int> &rCaller,int rcReason)
+void ViewProviderInspection::OnChange(Base::Subject<int> &/*rCaller*/, int /*rcReason*/)
 {
     setActiveMode();
 }
@@ -446,7 +472,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
                 view->getWidget()->setCursor(QCursor(Qt::ArrowCursor));
                 view->setRedirectToSceneGraph(false);
                 view->setRedirectToSceneGraphEnabled(false);
-                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback);
+                view->removeEventCallback(SoButtonEvent::getClassTypeId(), inspectCallback, ud);
             }
         }
         else if (mbe->getButton() == SoMouseButtonEvent::BUTTON1 && mbe->getState() == SoButtonEvent::UP) {
@@ -472,7 +498,7 @@ void ViewProviderInspection::inspectCallback(void * ud, SoEventCallback * n)
             else {
                 // the nearest picked point was not part of the view provider
                 SoRayPickAction action(view->getSoRenderManager()->getViewportRegion());
-                action.setPickAll(TRUE);
+                action.setPickAll(true);
                 action.setPoint(mbe->getPosition());
                 action.apply(view->getSoRenderManager()->getSceneGraph());
 

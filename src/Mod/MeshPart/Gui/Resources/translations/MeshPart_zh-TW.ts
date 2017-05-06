@@ -4,9 +4,9 @@
 <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+46"/>
+        <location filename="../../Command.cpp" line="+50"/>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -17,6 +17,43 @@
         <location line="+1"/>
         <source>Tessellate shape</source>
         <translation>格紋造型</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartSection</name>
+    <message>
+        <location line="+106"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartTrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Trim mesh with a plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Trims a mesh with a plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -34,108 +71,118 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">網格選項</translation>
+        <translation>網格選項</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">標準</translation>
+        <translation>標準</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+54"/>
+        <source>Define segments by face colors</source>
+        <translation type="unfinished">Define segments by face colors</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Apply face colors to mesh</source>
+        <translation type="unfinished">Apply face colors to mesh</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">最大邊界長度:</translation>
+        <translation>最大邊之長度：</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">精細度:</translation>
+        <translation>精細度：</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">非常粗糙</translation>
+        <translation>非常粗糙</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">粗糙</translation>
+        <translation>粗糙</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">中等</translation>
+        <translation>中等</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">細緻</translation>
+        <translation>細緻</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">非常細緻</translation>
+        <translation>非常細緻</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">使用者定義</translation>
+        <translation>使用者定義</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">網格尺寸分級:</translation>
+        <translation>網格尺寸分級：</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">每個邊界多少元素:</translation>
+        <translation>每個邊多少元素：</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">每個曲率半徑多少元素:</translation>
+        <translation>每個曲率半徑多少元素：</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">最佳化面</translation>
+        <translation>最佳化面</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">二階元素</translation>
+        <translation>二階元素</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">主要為四邊形</translation>
+        <translation>主要為四邊形</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation type="obsolete">設定</translation>
     </message>
     <message>
-        <location line="-246"/>
+        <location line="-247"/>
         <source>Surface deviation:</source>
-        <translation>表面偏差:</translation>
+        <translation>表面偏差：</translation>
     </message>
     <message>
         <source>Max. edge length:</source>
         <translation type="obsolete">最大邊緣長度:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+222"/>
+        <location filename="../../Tessellation.cpp" line="+224"/>
         <source>Select a shape for meshing, first.</source>
         <translation>請先選擇造型來產生網格</translation>
     </message>
@@ -143,6 +190,32 @@
         <location line="+7"/>
         <source>No such document &apos;%1&apos;.</source>
         <translation>無此檔案 &apos;%1&apos;</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_Section</name>
+    <message>
+        <location filename="../../Command.cpp" line="+93"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you section the mesh.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_TrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you trim the mesh.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

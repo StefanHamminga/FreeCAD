@@ -32,19 +32,25 @@ def replaceobj(parent,oldchild,newchild):
     for propname in parent.PropertiesList:
         propvalue=parent.getPropertyByName(propname)
         if type(propvalue) == list:
+            bModified = False
             for dontcare in range(propvalue.count(oldchild)):
                 propvalue[propvalue.index(oldchild)] = newchild
-            setattr(parent,propname,propvalue)
-            #print propname, parent.getPropertyByName(propname)
+                bModified = True
+            if bModified:
+                if propname == "ExpressionEngine":
+                    # fixme: proper handling?
+                    FreeCAD.Console.PrintWarning("Expressions in "+parent.Name+" need to be modified, but they were not. Please do that manually.")
+                    continue
+                setattr(parent,propname,propvalue)
         else:
             if propvalue == oldchild:
                 setattr(parent,propname,newchild)
-                print propname, parent.getPropertyByName(propname)
-            #else: print propname,propvalue
+                print(propname, parent.getPropertyByName(propname))
+            #else: print(propname,propvalue)
     parent.touch()
 
 def replaceobjfromselection(objs):
-    # The Parent can be ommited as long as one object is orphaned
+    # The Parent can be omitted as long as one object is orphaned
     if len(objs)==2:
         InListLength= tuple((len(obj.InList)) for obj in objs)
         if InListLength == (0,1):
@@ -64,7 +70,7 @@ def replaceobjfromselection(objs):
         elif objs[1] in objs[2].InList: newchild, parent, oldchild = objs
         elif objs[2] in objs[1].InList: newchild, oldchild, parent = objs
         else:
-            raise ValueError("Cannot determin current parent-child relationship")
+            raise ValueError("Cannot determine current parent-child relationship")
     else:
         raise ValueError("Wrong number of selected objects")
     replaceobj(parent,oldchild,newchild)

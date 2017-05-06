@@ -4,7 +4,7 @@
 <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+46"/>
+        <location filename="../../Command.cpp" line="+50"/>
         <source>Mesh</source>
         <translation>Nät</translation>
     </message>
@@ -17,6 +17,43 @@
         <location line="+1"/>
         <source>Tessellate shape</source>
         <translation>Tessellera form</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartSection</name>
+    <message>
+        <location line="+106"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Nät</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartTrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Nät</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Trim mesh with a plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Trims a mesh with a plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -39,7 +76,7 @@
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standard</translation>
+        <translation>Standard</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -52,44 +89,54 @@
         <translation type="unfinished">Netgen</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+54"/>
+        <source>Define segments by face colors</source>
+        <translation type="unfinished">Define segments by face colors</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Apply face colors to mesh</source>
+        <translation type="unfinished">Apply face colors to mesh</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maximum edge length:</translation>
+        <translation>Maximal kantlängd:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Fineness:</translation>
+        <translation>Finhet:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Väldigt grov</translation>
+        <translation>Väldigt grov</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Grov</translation>
+        <translation>Grov</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Måttlig</translation>
+        <translation>Måttlig</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Fin</translation>
+        <translation>Fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Very fine</translation>
+        <translation>Mycket fin</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">User defined</translation>
+        <translation>Användardefinierad</translation>
     </message>
     <message>
         <location line="+10"/>
@@ -99,7 +146,7 @@
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elements per edge:</translation>
+        <translation>Element per kant:</translation>
     </message>
     <message>
         <location line="+29"/>
@@ -109,12 +156,12 @@
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optimize surface</translation>
+        <translation>Optimera yta</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Second order elements</translation>
+        <translation>Andra ordningens element</translation>
     </message>
     <message>
         <location line="+7"/>
@@ -126,7 +173,7 @@
         <translation type="obsolete">Inställningar</translation>
     </message>
     <message>
-        <location line="-246"/>
+        <location line="-247"/>
         <source>Surface deviation:</source>
         <translation>Ytavvikelse:</translation>
     </message>
@@ -135,7 +182,7 @@
         <translation type="obsolete">Max. kantlängd:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+222"/>
+        <location filename="../../Tessellation.cpp" line="+224"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Markera en form för nät, först.</translation>
     </message>
@@ -143,6 +190,32 @@
         <location line="+7"/>
         <source>No such document &apos;%1&apos;.</source>
         <translation>Inget sådant dokument &apos;%1&apos;.</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_Section</name>
+    <message>
+        <location filename="../../Command.cpp" line="+93"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you section the mesh.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_TrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you trim the mesh.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

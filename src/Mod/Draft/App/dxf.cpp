@@ -806,19 +806,19 @@ bool CDxfRead::ReadText()
                 get_line();
                 ss.str(m_str); ss >> c[2]; c[2] = mm(c[2]); if(ss.fail()) return false;
                 break;
-                case 40:
+            case 40:
                 // text height
                 get_line();
                 ss.str(m_str); ss >> height; height = mm(height); if(ss.fail()) return false;
                 break;
-                       case 1:
+            case 1:
                 // text
                 get_line();
                 DerefACI();
                 OnReadText(c, height * 25.4 / 72.0, m_str);
                 return(true);
 
-                case 62:
+            case 62:
                 // color index
                 get_line();
                 ss.str(m_str); ss >> m_aci; if(ss.fail()) return false;
@@ -1050,7 +1050,6 @@ bool CDxfRead::ReadLwPolyLine()
                 get_line();
                 strcpy(m_layer_name, m_str);
                 break;
-
             case 10:
                 // x
                 get_line();
@@ -1069,6 +1068,11 @@ bool CDxfRead::ReadLwPolyLine()
                 get_line();
                 ss.str(m_str); ss >> y; y = mm(y); if(ss.fail()) return false;
                 y_found = true;
+                break;
+            case 38: 
+                // elevation
+                get_line();
+                ss.str(m_str); ss >> z; z = mm(z); if(ss.fail()) return false;
                 break;
             case 42:
                 // bulge
@@ -1193,7 +1197,7 @@ bool CDxfRead::ReadPolyLine()
     bool closed = false;
     int flags;
     bool first_vertex_section_found = false;
-    double first_vertex[3];
+    double first_vertex[3] = {0,0,0};
     bool bulge_found;
     double bulge;
 
@@ -1412,7 +1416,7 @@ bool CDxfRead::ReadDimension()
     double s[3]; // startpoint
     double e[3]; // endpoint
     double p[3]; // dimpoint
-    double rot = 0.0; // rotation
+    double rot = -1.0; // rotation
 
     while(!((*m_ifs).eof()))
     {
@@ -1436,47 +1440,47 @@ bool CDxfRead::ReadDimension()
                 get_line();
                 strcpy(m_layer_name, m_str);
                 break;
-            case 12:
+            case 13:
                 // start x
                 get_line();
                 ss.str(m_str); ss >> s[0]; s[0] = mm(s[0]); if(ss.fail()) return false;
                 break;
-            case 22:
+            case 23:
                 // start y
                 get_line();
                 ss.str(m_str); ss >> s[1]; s[1] = mm(s[1]); if(ss.fail()) return false;
                 break;
-            case 32:
+            case 33:
                 // start z
                 get_line();
                 ss.str(m_str); ss >> s[2]; s[2] = mm(s[2]); if(ss.fail()) return false;
                 break;
-            case 13:
+            case 14:
                 // end x
                 get_line();
                 ss.str(m_str); ss >> e[0]; e[0] = mm(e[0]); if(ss.fail()) return false;
                 break;
-            case 23:
+            case 24:
                 // end y
                 get_line();
                 ss.str(m_str); ss >> e[1]; e[1] = mm(e[1]); if(ss.fail()) return false;
                 break;
-            case 33:
+            case 34:
                 // end z
                 get_line();
                 ss.str(m_str); ss >> e[2]; e[2] = mm(e[2]); if(ss.fail()) return false;
                 break;
-            case 14:
+            case 10:
                 // dimline x
                 get_line();
                 ss.str(m_str); ss >> p[0]; p[0] = mm(p[0]); if(ss.fail()) return false;
                 break;
-            case 24:
+            case 20:
                 // dimline y
                 get_line();
                 ss.str(m_str); ss >> p[1]; p[1] = mm(p[1]); if(ss.fail()) return false;
                 break;
-            case 34:
+            case 30:
                 // dimline z
                 get_line();
                 ss.str(m_str); ss >> p[2]; p[2] = mm(p[2]); if(ss.fail()) return false;
@@ -1499,6 +1503,40 @@ bool CDxfRead::ReadDimension()
                 // skip the next line
                 get_line();
                 break;
+            default:
+                // skip the next line
+                get_line();
+                break;
+        }
+    }
+    return false;
+}
+
+
+bool CDxfRead::ReadBlockInfo()
+{
+    while(!((*m_ifs).eof()))
+    {
+        get_line();
+        int n;
+        if(sscanf(m_str, "%d", &n) != 1)
+        {
+            printf("CDxfRead::ReadBlockInfo() Failed to read integer from '%s'\n", m_str);
+            return false;
+        }
+        std::istringstream ss;
+        ss.imbue(std::locale("C"));
+        switch(n){
+            case 2:
+                // block name
+                get_line();
+                strcpy(m_block_name, m_str);
+                return true;
+            case 3:
+                // block name too???
+                get_line();
+                strcpy(m_block_name, m_str);
+                return true;
             default:
                 // skip the next line
                 get_line();
@@ -1563,7 +1601,7 @@ bool CDxfRead::ReadUnits()
 
 bool CDxfRead::ReadLayer()
 {
-        std::string layername;
+    std::string layername;
     int aci = -1;
 
     while(!((*m_ifs).eof()))
@@ -1642,23 +1680,15 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
             }
             continue;
         } // End if - then
-
-        else if (!strcmp( m_str, "AcDbBlockBegin" )){
-            get_line();
-
-            if (! strcmp(m_str,"2"))
-            {
-                get_line();
-                strcpy(m_block_name, m_str);
-            }
-        } // End if - then
+        
         else if(!strcmp(m_str, "0"))
         {
             get_line();
             if (!strcmp( m_str, "SECTION" )){
               get_line();
               get_line();
-              strcpy(m_section_name, m_str);
+              if (strcmp( m_str, "ENTITIES" ))
+                strcpy(m_section_name, m_str);
               strcpy(m_block_name, "");
 
         } // End if - then
@@ -1675,7 +1705,17 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
                   printf("CDxfRead::DoRead() Failed to read layer\n");
                   //return; Some objects or tables can have "LAYER" as name...
                 }
-              continue;     }
+              continue;     
+        }
+        
+        else if (!strcmp( m_str, "BLOCK" )) {
+            if(!ReadBlockInfo())
+            {
+                printf("CDxfRead::DoRead() Failed to read block info\n");
+                return;
+            }
+            continue;
+        } // End if - then
 
         else if (!strcmp( m_str, "ENDSEC" )){
                     strcpy(m_section_name, "");
@@ -1706,6 +1746,14 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
                 continue;
             }
             else if(!strcmp(m_str, "MTEXT")){
+                if(!ReadText())
+                {
+                    printf("CDxfRead::DoRead() Failed to read text\n");
+                    return;
+                }
+                continue;
+            }
+            else if(!strcmp(m_str, "TEXT")){
                 if(!ReadText())
                 {
                     printf("CDxfRead::DoRead() Failed to read text\n");
@@ -1761,6 +1809,14 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */ )
                 }
                 continue;
             }
+            else if (!strcmp(m_str, "DIMENSION")) {
+                if(!ReadDimension())
+                {
+                    printf("CDxfRead::DoRead() Failed to read Dimension\n");
+                    return;
+                }
+                continue;
+            }
         }
 
         get_line();
@@ -1785,17 +1841,17 @@ std::string CDxfRead::LayerName() const
     if (strlen(m_section_name) > 0)
     {
         result.append(m_section_name);
+        result.append(" ");
     }
 
     if (strlen(m_block_name) > 0)
     {
-        result.append(" ");
         result.append(m_block_name);
+        result.append(" ");
     }
 
     if (strlen(m_layer_name) > 0)
     {
-        result.append(" ");
         result.append(m_layer_name);
     }
 

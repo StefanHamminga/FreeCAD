@@ -26,8 +26,7 @@
 
 
 #include <cmath>
-
-#define FLOAT_EPS   1.0e-4f 
+#include <cfloat>
 
 #ifndef  F_PI
 # define F_PI  3.1415926f
@@ -36,9 +35,13 @@
 #ifndef  D_PI
 # define D_PI  3.141592653589793
 #endif
-  
+
 #ifndef  FLOAT_MAX
-# define FLOAT_MAX 1e30f
+# define FLOAT_MAX 3.402823466E+38F
+#endif
+
+#ifndef  FLOAT_MIN
+# define FLOAT_MIN 1.175494351E-38F
 #endif
 
 #ifndef  DOUBLE_MAX
@@ -58,16 +61,16 @@ template <>
 struct float_traits<float> {
     typedef float float_type;
     static inline float_type pi() { return F_PI; }
-    static inline float_type epsilon() { return FLOAT_EPS; }
-    static inline float_type maximum() { return FLOAT_MAX; }
+    static inline float_type epsilon() { return FLT_EPSILON; }
+    static inline float_type maximum() { return FLT_MAX; }
 };
 
 template <>
 struct float_traits<double> {
     typedef double float_type;
     static inline float_type pi() { return D_PI; }
-    static inline float_type epsilon() { return FLOAT_EPS; }
-    static inline float_type maximum() { return FLOAT_MAX; }
+    static inline float_type epsilon() { return DBL_EPSILON; }
+    static inline float_type maximum() { return DBL_MAX; }
 };
 
 /** The Vector Base class. */
@@ -117,8 +120,13 @@ public:
     Vector3 & operator =  (const Vector3<_Precision>& rcVct);
     /// Scalar product
     _Precision operator *  (const Vector3<_Precision>& rcVct) const;
+    /// Scalar product
+    _Precision Dot (const Vector3<_Precision>& rcVct) const;
     /// Cross product
     Vector3 operator %  (const Vector3<_Precision>& rcVct) const;
+    /// Cross product
+    Vector3 Cross (const Vector3<_Precision>& rcVct) const;
+
     /// Comparing for inequality
     bool operator != (const Vector3<_Precision>& rcVct) const;
     /// Comparing for equality
@@ -152,25 +160,38 @@ public:
     Vector3 & Normalize (void);
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
     _Precision GetAngle (const Vector3 &rcVect) const;
-    /** Transforms this point to the coordinate system defined by origin \a rclBase, 
-    * vector \a vector rclDirX and vector \a vector rclDirY. 
+    /** Transforms this point to the coordinate system defined by origin \a rclBase,
+    * vector \a vector rclDirX and vector \a vector rclDirY.
     * \note \a rclDirX must be perpendicular to \a rclDirY, i.e. \a rclDirX * \a rclDirY = 0..
     */
     void TransformToCoordinateSystem (const Vector3 &rclBase, const Vector3 &rclDirX, const Vector3 &rclDirY);
-    //bool Equal(const Vector3 &rclVect) const;
+    /**
+     * @brief IsEqual
+     * @param rclPnt
+     * @param tol
+     * @return true or false
+     * If the distance to point \a rclPnt is within the tolerance \a tol both points are considered
+     * equal.
+     */
+    bool IsEqual(const Vector3 &rclPnt, _Precision tol) const;
     /// Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm.
-    Vector3 & ProjToPlane (const Vector3 &rclBase, const Vector3 &rclNorm);
+    Vector3 & ProjectToPlane (const Vector3 &rclBase, const Vector3 &rclNorm);
+    /**
+     * Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm
+     * and stores the result in rclProj.
+     */
+    void ProjectToPlane (const Vector3 &rclBase, const Vector3 &rclNorm, Vector3 &rclProj) const;
     /// Projects this point onto the line given by the base \a rclPoint and the direction \a rclLine.
     /**
      * Projects a point \a rclPoint onto the line defined by the origin and the direction \a rclLine.
-     * The result is a vector from \a rclPoint to the point on the line. The length of this vector 
+     * The result is a vector from \a rclPoint to the point on the line. The length of this vector
      * is the distance from \a rclPoint to the line.
      * Note: The resulting vector does not depend on the current vector.
      */
-    Vector3 & ProjToLine (const Vector3 &rclPoint, const Vector3 &rclLine);
+    Vector3 & ProjectToLine (const Vector3 &rclPoint, const Vector3 &rclLine);
     /**
      * Get the perpendicular of this point to the line defined by rclBase and rclDir.
-     * Note: Do not mix up this method with ProjToLine.
+     * Note: Do not mix up this method with ProjectToLine.
      */
     Vector3 Perpendicular(const Vector3 &rclBase, const Vector3 &rclDir) const;
     /** Computes the distance to the given plane. Depending on the side this point is located
@@ -266,4 +287,3 @@ inline _Vec1 convertTo(const _Vec2& v)
 } // namespace Base
 
 #endif // BASE_VECTOR3D_H
-

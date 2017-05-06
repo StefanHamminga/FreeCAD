@@ -29,10 +29,9 @@
 # include <QByteArray>
 # include <QDateTime>
 # include <QImage>
-# include <QGLFramebufferObject>
-# include <QGLPixelBuffer>
 #endif
 
+#include <QtOpenGL.h>
 #include "Thumbnail.h"
 #include "BitmapFactory.h"
 #include "View3DInventorViewer.h"
@@ -79,6 +78,7 @@ void Thumbnail::Save (Base::Writer &writer) const
 
 void Thumbnail::Restore(Base::XMLReader &reader)
 {
+    Q_UNUSED(reader); 
     //reader.addFile("Thumbnail.png",this);
 }
 
@@ -87,7 +87,11 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!this->viewer)
         return;
     QImage img;
+#if !defined(HAVE_QT5_OPENGL)
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    bool pbuffer = false;
+#endif
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         this->createThumbnailFromFramebuffer(img);
@@ -101,13 +105,14 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
         }
     }
 
-    if (!img.isNull()) {
-        QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    QPixmap px = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());
+    if (!img.isNull())
         px = BitmapFactory().merge(QPixmap::fromImage(img),px,BitmapFactoryInst::BottomRight);
 
+    if (!px.isNull()) {
         // according to specification add some meta-information to the image
         uint mt = QDateTime::currentDateTime().toTime_t();
-        QString mtime = QString::fromAscii("%1").arg(mt);
+        QString mtime = QString::fromLatin1("%1").arg(mt);
         img.setText(QLatin1String("Software"), qApp->applicationName());
         img.setText(QLatin1String("Thumb::Mimetype"), QLatin1String("application/x-extension-fcstd"));
         img.setText(QLatin1String("Thumb::MTime"), mtime);
@@ -123,13 +128,23 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
 
 void Thumbnail::RestoreDocFile(Base::Reader &reader)
 {
+    Q_UNUSED(reader); 
 }
 
 void Thumbnail::createThumbnailFromFramebuffer(QImage& img) const
 {
     // Alternative way of off-screen rendering
-    QGLFramebufferObject fbo(this->size, this->size,QGLFramebufferObject::Depth);
     if (this->viewer->isActiveWindow()) {
+        static_cast<QtGLWidget*>(this->viewer->getGLWidget())->makeCurrent();
+
+        QtGLFramebufferObjectFormat format;
+        format.setAttachment(QtGLFramebufferObject::Depth);
+#if defined(HAVE_QT5_OPENGL)
+        format.setInternalTextureFormat(GL_RGB32F_ARB);
+#else
+        format.setInternalTextureFormat(GL_RGB);
+#endif
+        QtGLFramebufferObject fbo(this->size, this->size, format);
         this->viewer->renderToFramebuffer(&fbo);
         img = fbo.toImage();
     }

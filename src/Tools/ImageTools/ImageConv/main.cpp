@@ -136,12 +136,12 @@ int main( int argc, char **argv )
     }
     catch(const CICException& e)
     {
-        cerr << (const char*)e.what().toAscii() << endl;
+        cerr << (const char*)e.what().toLatin1() << endl;
         CImageConvApp::Error();
     }
     catch(...)
     {
-        cerr << "An unknown exception has occured!!!" << endl;
+        cerr << "An unknown exception has occurred!!!" << endl;
     }
 
     return 0;

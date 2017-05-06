@@ -4,19 +4,56 @@
 <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+46"/>
+        <location filename="../../Command.cpp" line="+50"/>
         <source>Mesh</source>
         <translation>siatka</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create mesh from shape...</source>
-        <translation>Utwórz siatkę z obwiedni...</translation>
+        <translation>Utwórz siatkę z kształtu...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tessellate shape</source>
         <translation>Tesselacja obwiedni</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartSection</name>
+    <message>
+        <location line="+106"/>
+        <source>Mesh</source>
+        <translation type="unfinished">siatka</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartTrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Mesh</source>
+        <translation type="unfinished">siatka</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Trim mesh with a plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Trims a mesh with a plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -34,99 +71,109 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">Opcje tworzenia siatki</translation>
+        <translation>Opcje tworzenia siatki</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">Standardowy</translation>
+        <translation>Standardowy</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+54"/>
+        <source>Define segments by face colors</source>
+        <translation type="unfinished">Define segments by face colors</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Apply face colors to mesh</source>
+        <translation type="unfinished">Apply face colors to mesh</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">Maksymalna długość krawędzi:</translation>
+        <translation>Maksymalna długość krawędzi:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">Stopień rozdrobnienia:</translation>
+        <translation>Stopień rozdrobnienia:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">Bardzo zgrubna</translation>
+        <translation>Bardzo zgrubna</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">Zgrubnie</translation>
+        <translation>Zgrubnie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">Umiarkowanie</translation>
+        <translation>Umiarkowanie</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">Drobno</translation>
+        <translation>Drobno</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">Bardzo dokładna</translation>
+        <translation>Bardzo dokładna</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">Zdefiniowana przez użytkownika</translation>
+        <translation>Zdefiniowana przez użytkownika</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">Stopnie rozmiaru siatki:</translation>
+        <translation>Stopnie rozmiaru siatki:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">Elementy na krawędź:</translation>
+        <translation>Elementy na krawędź:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">Elementy na promień krzywizny:</translation>
+        <translation>Elementy na promień krzywizny:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">Optymalizuj powirzchnię</translation>
+        <translation>Optymalizuj powirzchnię</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">Elementy drugiego rzędu</translation>
+        <translation>Elementy drugiego rzędu</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">Dominujące czworokąty</translation>
+        <translation>Dominujące czworokąty</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation type="obsolete">Ustawienia</translation>
     </message>
     <message>
-        <location line="-246"/>
+        <location line="-247"/>
         <source>Surface deviation:</source>
         <translation>Odchylenie powierzchni</translation>
     </message>
@@ -135,7 +182,7 @@
         <translation type="obsolete">Max. Długość krawędzi:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+222"/>
+        <location filename="../../Tessellation.cpp" line="+224"/>
         <source>Select a shape for meshing, first.</source>
         <translation>Zaznacz najpierw obwiednię w celu utworzenia siatki</translation>
     </message>
@@ -143,6 +190,32 @@
         <location line="+7"/>
         <source>No such document &apos;%1&apos;.</source>
         <translation>Brak dokumentu &apos;%1&apos;.</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_Section</name>
+    <message>
+        <location filename="../../Command.cpp" line="+93"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you section the mesh.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_TrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you trim the mesh.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

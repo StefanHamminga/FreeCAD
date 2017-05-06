@@ -21,6 +21,7 @@
 #***************************************************************************
 
 import FreeCAD, Material
+import os
 
 __title__="FreeCAD material card importer"
 __author__ = "Juergen Riegel"
@@ -46,7 +47,7 @@ def open(filename):
     "called when freecad wants to open a file"
     docname = os.path.splitext(os.path.basename(filename))[0]
     doc = FreeCAD.newDocument(docname)
-    doc.Label = decode(docname)
+    doc.Label = docname
     FreeCAD.ActiveDocument = doc
     read(filename)
     return doc
@@ -79,6 +80,9 @@ def decode(name):
 
 def read(filename):
     "reads a FCMat file and returns a dictionary from it"
+    if isinstance(filename,unicode): 
+        import sys
+        filename = filename.encode(sys.getfilesystemencoding())
     f = pythonopen(filename)
     d = {}
     l = 0
@@ -118,16 +122,21 @@ def write(filename,dictionary):
             user[k] = i
     # write header
     rev = FreeCAD.ConfigGet("BuildVersionMajor")+"."+FreeCAD.ConfigGet("BuildVersionMinor")+" "+FreeCAD.ConfigGet("BuildRevision")
+    filename = filename[0]
+    if isinstance(filename,unicode): 
+        import sys
+        filename = filename.encode(sys.getfilesystemencoding())
+    print(filename)
     f = pythonopen(filename,"wb")
-    f.write("; " + header["CardName"] + "\n")
-    f.write("; " + header["AuthorAndLicense"] + "\n")
+    f.write("; " + header["CardName"].encode("utf8") + "\n")
+    f.write("; " + header["AuthorAndLicense"].encode("utf8") + "\n")
     f.write("; file produced by FreeCAD " + rev + "\n")
     f.write("; information about the content of this card can be found here:\n")
     f.write("; http://www.freecadweb.org/wiki/index.php?title=Material\n")
     f.write("\n")
     if header["Source"]:
         f.write("; source of the data provided in this card:\n")
-        f.write("; " + header["Source"] + "\n")
+        f.write("; " + header["Source"].encode("utf8") + "\n")
         f.write("\n")
     # write sections
     for s in contents:

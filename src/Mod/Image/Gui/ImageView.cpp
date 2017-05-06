@@ -28,7 +28,6 @@
 #endif
 
 #include "ImageView.h"
-#include "GLImageBox.h"
 #include "../App/ImageBase.h"
 #include "XpmImages.h"
 
@@ -40,6 +39,41 @@ using namespace ImageGui;
 ImageView::ImageView(QWidget* parent)
   : MDIView(0, parent), _ignoreCloseEvent(false)
 {
+  // Create an OpenGL widget for displaying images
+#if QT_VERSION >=0x050000
+    // Since Qt5 there is a weird behaviour when creating a GLImageBox.
+    // It works correctly for the first time when creating an image view
+    // but only when no 3d view is created. For the second time or if a
+    // 3d view is created it fails with an assert() inside the function
+    // QWindowPrivate::create because QWindowsIntegration::createPlatformWindow
+    // fails to create an instance of QPlatformWindow.
+    // The reason for the failure is that for the passed parent widget
+    // i.e. this ImageView the QPlatformWindow is also null.
+    // As said above it works the very first time because at construction time
+    // of GLImageBox it doesn't set the ImageView as parent but the parent of
+    // the ImageView, i.e. the main window. This mafic happens inside the
+    // function QWidgetPrivate::setParent_sys at this line:
+    //        QWidget *parentWithWindow =
+    //            newparent ? (newparent->windowHandle() ? newparent : newparent->nativeParentWidget()) : 0;
+    // where newparent->nativeParentWidget() returns the main window.
+    // For the second time this magic fails. Interesting in this context is
+    // that for the 3d view this magic always works.
+    // In order to fix this problem we directly pass the pointer of the parent
+    // of this ImageView, i.e. the main window.
+    // Note:
+    // Since Qt the class QGLWidget is marked as deprecated and should be
+    // replaced by QOpenGLWidget.
+
+#if defined(HAVE_QT5_OPENGL)
+  _pGLImageBox = new GLImageBox(this);
+#else
+  _pGLImageBox = new GLImageBox(parent);
+#endif // HAVE_QT5_OPENGL
+#else
+  _pGLImageBox = new GLImageBox(this);
+#endif
+  setCentralWidget(_pGLImageBox);
+
   // enable mouse tracking when moving even if no buttons are pressed
   setMouseTracking(true);
 
@@ -48,10 +82,6 @@ ImageView::ImageView(QWidget* parent)
 
   // Create the default status bar for displaying messages
   enableStatusBar(true);
-
-  // Create an OpenGL widget for displaying images
-  _pGLImageBox = new GLImageBox(this);
-  setCentralWidget(_pGLImageBox);
 
   _currMode = nothing;
   _currX = 0;
@@ -123,7 +153,7 @@ void ImageView::enableStatusBar(bool Enable)
 // Enable or disable the toolbar
 void ImageView::enableToolBar(bool Enable)
 {
-  _pStdToolBar->setShown(Enable);
+  _pStdToolBar->setVisible(Enable);
 }
 
 // Enable or disable the mouse events
@@ -457,9 +487,9 @@ void ImageView::wheelEvent(QWheelEvent * cEvent)
    }
 }
 
-void ImageView::showEvent (QShowEvent * e)
+void ImageView::showEvent (QShowEvent *)
 {
-    _pGLImageBox->setFocus();
+    //_pGLImageBox->setFocus();
 }
 
 // Update the status bar with the image parameters for the current mouse position
@@ -497,12 +527,12 @@ QString ImageView::createStatusBarText()
     {
         double grey_value;
         if (_pGLImageBox->getImageSample(pixX, pixY, 0, grey_value) == 0)
-            txt = QString::fromAscii("x,y = %1,%2  |  %3 = %4  |  %5 = %6")
+            txt = QString::fromLatin1("x,y = %1,%2  |  %3 = %4  |  %5 = %6")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg(tr("grey")).arg((int)grey_value)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
     }
     else if ((colorFormat == IB_CF_RGB24) || 
@@ -512,10 +542,10 @@ QString ImageView::createStatusBarText()
         if ((_pGLImageBox->getImageSample(pixX, pixY, 0, red) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
@@ -527,10 +557,10 @@ QString ImageView::createStatusBarText()
         if ((_pGLImageBox->getImageSample(pixX, pixY, 0, blue) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgb = %3,%4,%5  |  %6 = %7")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
@@ -543,10 +573,10 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, blue) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue).arg((int)alpha)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
@@ -559,10 +589,10 @@ QString ImageView::createStatusBarText()
             (_pGLImageBox->getImageSample(pixX, pixY, 1, green) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 2, red) != 0) ||
             (_pGLImageBox->getImageSample(pixX, pixY, 3, alpha) != 0))
-            txt = QString::fromAscii("x,y = %1  |  %2 = %3")
+            txt = QString::fromLatin1("x,y = %1  |  %2 = %3")
                   .arg(tr("outside image")).arg(tr("zoom")).arg(zoomFactor,0,'f',1);
         else
-            txt = QString::fromAscii("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
+            txt = QString::fromLatin1("x,y = %1,%2  |  rgba = %3,%4,%5,%6  |  %7 = %8")
                   .arg(icX,0,'f',2).arg(icY,0,'f',2)
                   .arg((int)red).arg((int)green).arg((int)blue).arg((int)alpha)
                   .arg(tr("zoom")).arg(zoomFactor,0,'f',1);
@@ -607,6 +637,8 @@ void ImageView::select(int currX, int currY)
 {
     // base class implementation does nothing
     // override this method and implement selection capability if required
+    Q_UNUSED(currX);
+    Q_UNUSED(currY);
 }
 
 // Add selection at the given position
@@ -614,6 +646,8 @@ void ImageView::addSelect(int currX, int currY)
 {
     // base class implementation does nothing
     // override this method and implement selection capability if required
+    Q_UNUSED(currX);
+    Q_UNUSED(currY);
 }
 
 // Draw any 2D graphics necessary

@@ -114,8 +114,8 @@ void ViewProviderMeshFaceSet::attach(App::DocumentObject *pcFeat)
 {
     ViewProviderMesh::attach(pcFeat);
 
-    pcHighlight->addChild(pcMeshCoord);
-    pcHighlight->addChild(pcMeshFaces);
+    pcShapeGroup->addChild(pcMeshCoord);
+    pcShapeGroup->addChild(pcMeshFaces);
 
     // read the threshold from the preferences
     Base::Reference<ParameterGrp> hGrp = Gui::WindowParameter::getDefaultParameter()->GetGroup("Mod/Mesh");
@@ -128,7 +128,7 @@ void ViewProviderMeshFaceSet::attach(App::DocumentObject *pcFeat)
 
 void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
 {
-    Gui::ViewProviderGeometryObject::updateData(prop);
+    ViewProviderMesh::updateData(prop);
     if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
         const Mesh::MeshObject* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop)->getValuePtr();
 
@@ -147,15 +147,15 @@ void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
 
         if (direct != directRendering) {
             directRendering = direct;
-            pcHighlight->removeAllChildren();
+            pcShapeGroup->removeAllChildren();
 
             if (directRendering) {
-                pcHighlight->addChild(pcMeshNode);
-                pcHighlight->addChild(pcMeshShape);
+                pcShapeGroup->addChild(pcMeshNode);
+                pcShapeGroup->addChild(pcMeshShape);
             }
             else {
-                pcHighlight->addChild(pcMeshCoord);
-                pcHighlight->addChild(pcMeshFaces);
+                pcShapeGroup->addChild(pcMeshCoord);
+                pcShapeGroup->addChild(pcMeshFaces);
             }
         }
 

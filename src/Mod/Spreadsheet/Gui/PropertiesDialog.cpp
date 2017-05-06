@@ -20,10 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+
+#include "PreCompiled.h"
 #include "PropertiesDialog.h"
 #include <Base/Tools.h>
-#include <Mod/Spreadsheet/App/SpreadsheetExpression.h>
-#include <Mod/Spreadsheet/App/Range.h>
+#include <App/Range.h>
 #include <Gui/Command.h>
 #include "ui_PropertiesDialog.h"
 
@@ -47,12 +48,16 @@ PropertiesDialog::PropertiesDialog(Sheet *_sheet, const std::vector<Range> &_ran
     assert(ranges.size() > 0);
     Range range = ranges[0];
 
-    sheet->getNewCell(*range)->getForeground(foregroundColor);
-    sheet->getCell(*range)->getBackground(backgroundColor);
-    sheet->getCell(*range)->getAlignment(alignment);
-    sheet->getCell(*range)->getStyle(style);
-    sheet->getCell(*range)->getDisplayUnit(displayUnit);
-    sheet->getCell(*range)->getAlias(alias);
+    Cell * cell = sheet->getNewCell(*range);
+
+    assert(cell != 0);
+
+    (void)cell->getForeground(foregroundColor);
+    (void)cell->getBackground(backgroundColor);
+    (void)cell->getAlignment(alignment);
+    (void)cell->getStyle(style);
+    (void)cell->getDisplayUnit(displayUnit);
+    (void)cell->getAlias(alias);
 
     orgForegroundColor = foregroundColor;
     orgBackgroundColor = backgroundColor;
@@ -175,7 +180,7 @@ void PropertiesDialog::styleChanged()
 
 void PropertiesDialog::displayUnitChanged(const QString & text)
 {
-    if (text == "") {
+    if (text.isEmpty()) {
         displayUnit = DisplayUnit();
         ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(true);
         return;
@@ -183,7 +188,7 @@ void PropertiesDialog::displayUnitChanged(const QString & text)
 
     QPalette palette = ui->displayUnit->palette();
     try {
-        std::auto_ptr<UnitExpression> e(Spreadsheet::ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
+        std::unique_ptr<UnitExpression> e(App::ExpressionParser::parseUnit(sheet, text.toUtf8().constData()));
 
         displayUnit = DisplayUnit(text.toUtf8().constData(), e->getUnit(), e->getScaler());
         palette.setColor(QPalette::Text, Qt::black);
@@ -202,33 +207,10 @@ void PropertiesDialog::aliasChanged(const QString & text)
 {
     QPalette palette = ui->alias->palette();
 
-    if (text.indexOf(QRegExp("^[A-Za-z][_A-Za-z0-9]*$")) >= 0) {
-        try {
-            CellAddress address(text.toUtf8().constData());
+    aliasOk = text.isEmpty() || sheet->isValidAlias(Base::Tools::toStdString(text));
 
-            palette.setColor(QPalette::Text, Qt::red);
-            aliasOk = false;
-            alias = "";
-        }
-        catch (...) {
-            aliasOk = true;
-            palette.setColor(QPalette::Text, Qt::black);
-            alias = Base::Tools::toStdString(text);
-        }
-    }
-    else {
-        if (text == "") {
-            aliasOk = true;
-            palette.setColor(QPalette::Text, Qt::black);
-        }
-        else {
-            aliasOk = false;
-            ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-            palette.setColor(QPalette::Text, Qt::red);
-        }
-        alias = "";
-    }
-
+    alias = aliasOk ? Base::Tools::toStdString(text) : "";
+    palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
     ui->alias->setPalette(palette);
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }

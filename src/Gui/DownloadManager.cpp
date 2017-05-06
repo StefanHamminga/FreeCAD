@@ -33,7 +33,12 @@
 #include <QMetaEnum>
 #include <QSettings>
 #include <QFileIconProvider>
+#if QT_VERSION < 0x050000
 #include <QWebSettings>
+#endif
+#if QT_VERSION >= 0x050000
+#include <QUrlQuery>
+#endif
 
 #include "DownloadItem.h"
 #include "DownloadManager.h"
@@ -71,8 +76,6 @@ DownloadManager::DownloadManager(QWidget *parent)
     m_model = new DownloadModel(this);
     ui->downloadsView->setModel(m_model);
     connect(ui->cleanupButton, SIGNAL(clicked()), this, SLOT(cleanup()));
-    connect(m_manager, SIGNAL(finished(QNetworkReply*)),
-            this, SLOT(replyFinished(QNetworkReply*)));
     load();
 
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
@@ -114,14 +117,39 @@ QUrl DownloadManager::redirectUrl(const QUrl& url) const
 {
     QUrl redirectUrl = url;
     if (url.host() == QLatin1String("www.dropbox.com")) {
-        QList< QPair<QString, QString> > query = url.queryItems();
+#if QT_VERSION >= 0x050000
+        QUrlQuery urlQuery(url);
+        QList< QPair<QString, QString> > query = urlQuery.queryItems();
         for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
-            if (it->first == QLatin1String("dl") && it->second == QLatin1String("0\r\n")) {
-                redirectUrl.removeQueryItem(QLatin1String("dl"));
-                redirectUrl.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
+            if (it->first == QLatin1String("dl")) {
+                if (it->second == QLatin1String("0\r\n")) {
+                    urlQuery.removeQueryItem(QLatin1String("dl"));
+                    urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
+                }
+                else if (it->second == QLatin1String("0")) {
+                    urlQuery.removeQueryItem(QLatin1String("dl"));
+                    urlQuery.addQueryItem(QLatin1String("dl"), QLatin1String("1"));
+                }
                 break;
             }
         }
+        redirectUrl.setQuery(urlQuery);
+#else
+        QList< QPair<QString, QString> > query = url.queryItems();
+        for (QList< QPair<QString, QString> >::iterator it = query.begin(); it != query.end(); ++it) {
+            if (it->first == QLatin1String("dl")) {
+                if (it->second == QLatin1String("0\r\n")) {
+                    redirectUrl.removeQueryItem(QLatin1String("dl"));
+                    redirectUrl.addQueryItem(QLatin1String("dl"), QLatin1String("1\r\n"));
+                }
+                else if (it->second == QLatin1String("0")) {
+                    redirectUrl.removeQueryItem(QLatin1String("dl"));
+                    redirectUrl.addQueryItem(QLatin1String("dl"), QLatin1String("1"));
+                }
+                break;
+            }
+        }
+#endif
     }
     else {
         // When the url comes from drag and drop it may end with CR+LF. This may cause problems
@@ -136,42 +164,13 @@ QUrl DownloadManager::redirectUrl(const QUrl& url) const
     return redirectUrl;
 }
 
-void DownloadManager::replyFinished(QNetworkReply* reply)
-{
-    // The 'requestFileName' is used to store the argument passed by 'download()'
-    // and to also distinguish between replies created by 'download()' and
-    // this method.
-    // Replies from this method shouldn't be further examined because it's not
-    // assumed to get re-directed urls over several steps.
-    QVariant var = reply->property("requestFileName");
-    if (var.isValid()) {
-        bool requestFileName = reply->property("requestFileName").toBool();
-
-        QUrl url = reply->url();
-
-        // If this is a redirected url use this instead
-        QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
-        if (!redirectUrl.isEmpty()) {
-            url = redirectUrl;
-        }
-
-        // start the actual download now
-        handleUnsupportedContent(m_manager->get(QNetworkRequest(url)), requestFileName);
-    }
-
-    reply->deleteLater();
-}
-
 void DownloadManager::download(const QNetworkRequest &request, bool requestFileName)
 {
     if (request.url().isEmpty())
         return;
-        
-    std::cout << request.url().toString().toStdString() << std::endl;
 
-    // postpone this reply until we can examine it in replyFinished
-    QNetworkReply* reply = m_manager->get(request);
-    reply->setProperty("requestFileName", QVariant(requestFileName));
+    std::cout << request.url().toString().toStdString() << std::endl;
+    handleUnsupportedContent(m_manager->get(request), requestFileName);
 }
 
 void DownloadManager::handleUnsupportedContent(QNetworkReply *reply, bool requestFileName)
@@ -218,10 +217,12 @@ void DownloadManager::updateRow()
     ui->downloadsView->setRowHeight(row, item->minimumSizeHint().height());
 
     bool remove = false;
+#if QT_VERSION < 0x050000
     QWebSettings *globalSettings = QWebSettings::globalSettings();
     if (!item->downloading()
         && globalSettings->testAttribute(QWebSettings::PrivateBrowsingEnabled))
         remove = true;
+#endif
 
     if (item->downloadedSuccessfully()
         && removePolicy() == DownloadManager::SuccessFullDownload) {

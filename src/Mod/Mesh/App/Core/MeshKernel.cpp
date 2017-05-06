@@ -43,6 +43,7 @@
 #include "Evaluation.h"
 #include "Builder.h"
 #include "Smoothing.h"
+#include "MeshIO.h"
 
 using namespace MeshCore;
 
@@ -172,12 +173,29 @@ void MeshKernel::AddFacets(const std::vector<MeshGeomFacet> &rclFAry)
     Merge(tmp);
 }
 
-unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
+unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
+                                    bool checkManifolds)
 {
     // Build map of edges of the referencing facets we want to append
 #ifdef FC_DEBUG
     unsigned long countPoints = CountPoints();
 #endif
+
+    // if the manifold check shouldn't be done then just add all faces
+    if (!checkManifolds) {
+        unsigned long countFacets = CountFacets();
+        unsigned long countValid = rclFAry.size();
+        _aclFacetArray.reserve(countFacets + countValid);
+
+        // just add all faces now
+        for (std::vector<MeshFacet>::const_iterator pF = rclFAry.begin(); pF != rclFAry.end(); ++pF) {
+            _aclFacetArray.push_back(*pF);
+        }
+
+        RebuildNeighbours(countFacets);
+        return _aclFacetArray.size();
+    }
+
     this->_aclPointArray.ResetInvalid();
     unsigned long k = CountFacets();
     std::map<std::pair<unsigned long, unsigned long>, std::list<unsigned long> > edgeMap;
@@ -315,12 +333,14 @@ unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry)
     return _aclFacetArray.size();
 }
 
-unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry, const std::vector<Base::Vector3f>& rclPAry)
+unsigned long MeshKernel::AddFacets(const std::vector<MeshFacet> &rclFAry,
+                                    const std::vector<Base::Vector3f>& rclPAry,
+                                    bool checkManifolds)
 {
     for (std::vector<Base::Vector3f>::const_iterator it = rclPAry.begin(); it != rclPAry.end(); ++it)
         _clBoundBox.Add(*it);
     this->_aclPointArray.insert(this->_aclPointArray.end(), rclPAry.begin(), rclPAry.end());
-    return this->AddFacets(rclFAry);
+    return this->AddFacets(rclFAry, checkManifolds);
 }
 
 void MeshKernel::Merge(const MeshKernel& rKernel)
@@ -383,6 +403,12 @@ void MeshKernel::Merge(const MeshPointArray& rPoints, const MeshFacetArray& rFac
     // scratch. Fortunately, this needs only to be done for the newly inserted
     // facets -- not for all
     RebuildNeighbours(countFacets);
+}
+
+void MeshKernel::Cleanup()
+{
+    MeshCleanup meshCleanup(_aclPointArray, _aclFacetArray);
+    meshCleanup.RemoveInvalids();
 }
 
 void MeshKernel::Clear (void)
@@ -691,7 +717,7 @@ void MeshKernel::RemoveInvalids ()
 }
 
 void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclProj, 
-                           const Base::Polygon2D& rclPoly, bool bCutInner, std::vector<MeshGeomFacet> &raclFacets) 
+                           const Base::Polygon2d& rclPoly, bool bCutInner, std::vector<MeshGeomFacet> &raclFacets)
 {
     std::vector<unsigned long> aulFacets;
 
@@ -704,7 +730,7 @@ void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMet
 }
 
 void MeshKernel::CutFacets(const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclProj,
-                           const Base::Polygon2D& rclPoly, bool bInner, std::vector<unsigned long> &raclCutted)
+                           const Base::Polygon2d& rclPoly, bool bInner, std::vector<unsigned long> &raclCutted)
 {
     MeshAlgorithm(*this).CheckFacets(rclGrid, pclProj, rclPoly, bInner, raclCutted);
     DeleteFacets(raclCutted);
@@ -878,7 +904,7 @@ void MeshKernel::Read (std::istream &rclIn)
         }
         catch (std::exception&) {
             // Special handling of std::length_error
-            throw Base::Exception("Reading from stream failed");
+            throw Base::BadFormatError("Reading from stream failed");
         }
     }
     else {
@@ -918,6 +944,7 @@ void MeshKernel::Transform (const Base::Matrix4D &rclMat)
 
 void MeshKernel::Smooth(int iterations, float stepsize)
 {
+    (void)stepsize;
     LaplaceSmoothing(*this).Smooth(iterations);
 }
 
@@ -974,9 +1001,9 @@ float MeshKernel::GetSurface( const std::vector<unsigned long>& aSegment ) const
 
 float MeshKernel::GetVolume() const
 {
-    MeshEvalSolid cSolid(*this);
-    if ( !cSolid.Evaluate() )
-        return 0.0f; // no solid
+    //MeshEvalSolid cSolid(*this);
+    //if ( !cSolid.Evaluate() )
+    //    return 0.0f; // no solid
 
     float fVolume = 0.0;
     MeshFacetIterator cIter(*this);

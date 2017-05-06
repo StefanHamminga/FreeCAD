@@ -56,15 +56,15 @@ public:
     /// return the active schema
     static UnitSystem getSchema(void){return actSystem;}
 
-	static QString schemaTranslate(Base::Quantity quant,double &factor,QString &unitString);
-    static QString schemaTranslate(Base::Quantity quant){ // to satisfy GCC
+    static QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString);
+    static QString schemaTranslate(const Base::Quantity& quant) { // to satisfy GCC
         double  dummy1;
         QString dummy2;
-        return UnitsApi::schemaTranslate(quant,dummy1,dummy2);
+        return UnitsApi::schemaTranslate(quant, dummy1, dummy2);
     }
-    /// generate a value for a quantity with default user prefered system
+    /// generate a value for a quantity with default user preferred system
     static double toDbl(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
-    /// generate a value for a quantity with default user prefered system
+    /// generate a value for a quantity with default user preferred system
     static Quantity toQuantity(PyObject *ArgObj,const Base::Unit &u=Base::Unit());
 
     // set the number of decimals

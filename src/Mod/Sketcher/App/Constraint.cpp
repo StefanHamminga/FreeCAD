@@ -28,6 +28,8 @@
 
 #include <Base/Writer.h>
 #include <Base/Reader.h>
+#include <Base/Tools.h>
+#include <App/Property.h>
 #include <QDateTime>
 
 #include "Constraint.h"
@@ -55,7 +57,8 @@ Constraint::Constraint()
   ThirdPos(none),
   LabelDistance(10.f),
   LabelPosition(0.f),
-  isDriving(true)
+  isDriving(true),
+  InternalAlignmentIndex(-1)
 {
     // Initialize a random number generator, to avoid Valgrind false positives.
     static boost::mt19937 ran;
@@ -84,6 +87,7 @@ Constraint::Constraint(const Constraint& from)
   LabelDistance(from.LabelDistance),
   LabelPosition(from.LabelPosition),
   isDriving(from.isDriving),
+  InternalAlignmentIndex(from.InternalAlignmentIndex),
   tag(from.tag)
 {
 }
@@ -95,6 +99,27 @@ Constraint::~Constraint()
 Constraint *Constraint::clone(void) const
 {
     return new Constraint(*this);
+}
+
+Constraint *Constraint::copy(void) const
+{
+    Constraint *temp = new Constraint();
+    temp->Value = this->Value;
+    temp->Type = this->Type;
+    temp->AlignmentType = this->AlignmentType;
+    temp->Name = this->Name;
+    temp->First = this->First;
+    temp->FirstPos = this->FirstPos;
+    temp->Second = this->Second;
+    temp->SecondPos = this->SecondPos;
+    temp->Third = this->Third;
+    temp->ThirdPos = this->ThirdPos;
+    temp->LabelDistance = this->LabelDistance;
+    temp->LabelPosition = this->LabelPosition;
+    temp->isDriving = this->isDriving;
+    temp->InternalAlignmentIndex = this->InternalAlignmentIndex;
+    // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
+    return temp;
 }
 
 PyObject *Constraint::getPyObject(void)
@@ -112,24 +137,35 @@ double Constraint::getValue() const
     return Value;
 }
 
-double Constraint::getPresentationValue() const
+Quantity Constraint::getPresentationValue() const
 {
+    Quantity quantity;
     switch (Type) {
     case Distance:
     case Radius:
-        return std::abs(Value);
     case DistanceX:
     case DistanceY:
-        if (FirstPos == Sketcher::none || Second != Sketcher::Constraint::GeoUndef)
-            return std::abs(Value);
-        else
-            return Value;
+        quantity.setValue(Value);
+        quantity.setUnit(Unit::Length);
+        break;
     case Angle:
+        quantity.setValue(toDegrees<double>(Value));
+        quantity.setUnit(Unit::Angle);
+        break;
     case SnellsLaw:
-        return Value;
+        quantity.setValue(Value);
+        break;
     default:
-        return Value;
+        quantity.setValue(Value);
+        break;
     }
+
+    QuantityFormat format = quantity.getFormat();
+    format.option = QuantityFormat::None;
+    format.format = QuantityFormat::Default;
+    format.precision = 6; // QString's default
+    quantity.setFormat(format);
+    return quantity;
 }
 
 unsigned int Constraint::getMemSize (void) const
@@ -139,23 +175,26 @@ unsigned int Constraint::getMemSize (void) const
 
 void Constraint::Save (Writer &writer) const
 {
+    std::string encodeName = App::Property::encodeAttribute(Name);
     writer.Stream() << writer.ind()     << "<Constrain "
-    << "Name=\""                        <<  Name                << "\" "
-    << "Type=\""                        <<  (int)Type           << "\" ";
+    << "Name=\""                        <<  encodeName              << "\" "
+    << "Type=\""                        <<  (int)Type               << "\" ";
     if(this->Type==InternalAlignment)
         writer.Stream() 
-        << "InternalAlignmentType=\""   <<  (int)AlignmentType  << "\" ";
+        << "InternalAlignmentType=\""   <<  (int)AlignmentType      << "\" "
+        << "InternalAlignmentIndex=\""  <<  InternalAlignmentIndex  << "\" ";
     writer.Stream()     
-    << "Value=\""                       <<  Value               << "\" "
-    << "First=\""                       <<  First               << "\" "
-    << "FirstPos=\""                    <<  (int)  FirstPos     << "\" "
-    << "Second=\""                      <<  Second              << "\" "
-    << "SecondPos=\""                   <<  (int) SecondPos     << "\" "
-    << "Third=\""                       <<  Third               << "\" "
-    << "ThirdPos=\""                    <<  (int) ThirdPos      << "\" "
-    << "LabelDistance=\""               <<  LabelDistance       << "\" "
-    << "LabelPosition=\""               <<  LabelPosition       << "\" "
-    << "IsDriving=\""                   <<  (int)isDriving      << "\" />"
+    << "Value=\""                       <<  Value                   << "\" "
+    << "First=\""                       <<  First                   << "\" "
+    << "FirstPos=\""                    <<  (int)  FirstPos         << "\" "
+    << "Second=\""                      <<  Second                  << "\" "
+    << "SecondPos=\""                   <<  (int) SecondPos         << "\" "
+    << "Third=\""                       <<  Third                   << "\" "
+    << "ThirdPos=\""                    <<  (int) ThirdPos          << "\" "
+    << "LabelDistance=\""               <<  LabelDistance           << "\" "
+    << "LabelPosition=\""               <<  LabelPosition           << "\" "
+    << "IsDriving=\""                   <<  (int)isDriving          << "\" />"
+
     << std::endl;
 }
 
@@ -170,10 +209,15 @@ void Constraint::Restore(XMLReader &reader)
     Second    = reader.getAttributeAsInteger("Second");
     SecondPos = (PointPos)  reader.getAttributeAsInteger("SecondPos");
 
-    if(this->Type==InternalAlignment)
+    if(this->Type==InternalAlignment) {
         AlignmentType = (InternalAlignmentType) reader.getAttributeAsInteger("InternalAlignmentType");
-    else
+
+        if (reader.hasAttribute("InternalAlignmentIndex"))
+            InternalAlignmentIndex = reader.getAttributeAsInteger("InternalAlignmentIndex");
+    }
+    else {
         AlignmentType = Undef;
+    }
 
     // read the third geo group if present
     if (reader.hasAttribute("Third")) {

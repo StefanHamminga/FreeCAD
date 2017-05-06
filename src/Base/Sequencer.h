@@ -46,7 +46,7 @@ class SequencerLauncher;
  *  #include <Base/Sequencer.h>
  *
  *  //first example
- *  Base::SequencerLauncher seq("my text", 10))
+ *  Base::SequencerLauncher seq("my text", 10)
  *  for (int i=0; i<10; i++)
  *  {
  *    // do something
@@ -54,7 +54,7 @@ class SequencerLauncher;
  *  }
  *
  *  //second example
- *  Base::SequencerLauncher seq("my text", 10))
+ *  Base::SequencerLauncher seq("my text", 10)
  *  do
  *  {
  *    // do something
@@ -397,7 +397,7 @@ private:
     static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
 
 private:
-    std::auto_ptr<SequencerLauncher> _seq;
+    std::unique_ptr<SequencerLauncher> _seq;
 };
 
 } // namespace Base

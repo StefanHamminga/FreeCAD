@@ -94,7 +94,7 @@
 <context>
     <name>CmdRobotExportKukaFull</name>
     <message>
-        <location line="+63"/>
+        <location line="+60"/>
         <source>Robot</source>
         <translation>Robot</translation>
     </message>
@@ -246,7 +246,7 @@
     <message>
         <location line="+1"/>
         <source>set the default orientation for subsequent commands for waypoint creation</source>
-        <translation>set the default orientation for subsequent commands for waypoint creation</translation>
+        <translation>standaard oriëntatie instellen voor latere waypoint opdrachten</translation>
     </message>
 </context>
 <context>
@@ -264,7 +264,7 @@
     <message>
         <location line="+1"/>
         <source>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</source>
-        <translation>set the default values for speed, acceleration and continuity for subsequent commands of waypoint creation</translation>
+        <translation>Standaardwaarden instellen voor snelheid, versnelling en continuïteit van latere waypoint opdrachten</translation>
     </message>
 </context>
 <context>
@@ -309,12 +309,12 @@
     <message>
         <location line="+1"/>
         <source>Trajectory compound...</source>
-        <translation>Trajectory compound...</translation>
+        <translation>Traject samengestelde...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Group and connect some trajectories to one</source>
-        <translation>Group and connect some trajectories to one</translation>
+        <translation>Verscheiden trajecten groeperen en verbinden</translation>
     </message>
 </context>
 <context>
@@ -327,12 +327,12 @@
     <message>
         <location line="+1"/>
         <source>Dress-up trajectory...</source>
-        <translation type="unfinished">Dress-up trajectory...</translation>
+        <translation>Verkledingstraject...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create a dress-up object which overrides some aspects of a trajectory</source>
-        <translation type="unfinished">Create a dress-up object which overrides some aspects of a trajectory</translation>
+        <translation>Een verkleding-object maken, die bepaalde aspecten van een traject wijzigt</translation>
     </message>
     <message>
         <source>Dress up trajectory...</source>
@@ -348,7 +348,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+53"/>
         <source>Trajectory tools</source>
-        <translation>Trajectory tools</translation>
+        <translation>Trajectwerktuigen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -368,8 +368,8 @@
         <location line="+49"/>
         <location line="+100"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-52"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-49"/>
+        <location line="+62"/>
         <location filename="../../CommandInsertRobot.cpp" line="+181"/>
         <location filename="../../CommandTrajectory.cpp" line="-276"/>
         <location line="+56"/>
@@ -379,10 +379,15 @@
         <translation>Verkeerde selectie</translation>
     </message>
     <message>
-        <location line="-28"/>
+        <location line="-177"/>
+        <source>Select one Robot to set home position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+149"/>
         <location line="+29"/>
-        <location filename="../../CommandExport.cpp" line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-61"/>
+        <location line="+62"/>
         <location filename="../../CommandTrajectory.cpp" line="-301"/>
         <source>Select one Robot and one Trajectory object.</source>
         <translation>Selecteer één robot en één traject-object.</translation>
@@ -398,20 +403,28 @@
         <translation>Je moet ten minste twee punten in een traject hebben om te kunnen simuleren.</translation>
     </message>
     <message>
-        <location filename="../../CommandExport.cpp" line="-43"/>
-        <location line="+65"/>
         <source>KRL file(*.src)</source>
-        <translation>KRL-bestand (*.src)</translation>
+        <translation type="obsolete">KRL-bestand (*.src)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
         <source>All Files (*.*)</source>
-        <translation>Alle bestanden (*.*)</translation>
+        <translation type="obsolete">Alle bestanden (*.*)</translation>
     </message>
     <message>
-        <location line="-64"/>
-        <location line="+65"/>
+        <location filename="../../CommandExport.cpp" line="-40"/>
+        <location line="+62"/>
+        <source>KRL file</source>
+        <translation>KRL bestand</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
+        <source>All Files</source>
+        <translation>Alle bestanden</translation>
+    </message>
+    <message>
+        <location line="-61"/>
+        <location line="+62"/>
         <source>Export program</source>
         <translation>Exporteer programma</translation>
     </message>
@@ -431,12 +444,11 @@
         <translation>Je moet zweven boven een geometrie (Voorselectie) met de muis om dit commando te gebruiken. Zie documentatie voor details.</translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="-155"/>
         <source>Select one Robot to set home postion</source>
-        <translation>Selecteer een Robot om thuispositie te bepalen</translation>
+        <translation type="obsolete">Selecteer een Robot om thuispositie te bepalen</translation>
     </message>
     <message>
-        <location line="+49"/>
+        <location filename="../../Command.cpp" line="-106"/>
         <source>Select one Robot</source>
         <translation>Selecteer een Robot</translation>
     </message>
@@ -479,7 +491,7 @@
     <message>
         <location line="+127"/>
         <source>Select the Trajectory which you want to dress up.</source>
-        <translation>Select the Trajectory which you want to dress up.</translation>
+        <translation>Selecteer het traject dat u wilt aankleden.</translation>
     </message>
     <message>
         <location filename="../../Workbench.cpp" line="+26"/>

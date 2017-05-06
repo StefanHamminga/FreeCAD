@@ -33,12 +33,27 @@
 # imports the one and only
 import FreeCAD
 
+def removeFromPath(module_name):
+	"""removes the module from the sys.path. The entry point for imports
+		will therfor always be FreeCAD.
+		eg.: from FreeCAD.Module.submodule import function"""
+	import sys, os
+	paths = sys.path
+	for path in paths:
+		if module_name in path:
+			sys.path.remove(path)
+			return
+	else:
+		Wrn(module_name + " not found in sys.path\n")
+
+FreeCAD._importFromFreeCAD = removeFromPath
+
 
 def InitApplications():
 	try:
-		import sys,os
+		import sys,os,traceback,io
 	except ImportError:
-		FreeCAD.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
+		FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
 		raise
 	# Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
 	ModDir = FreeCAD.getHomePath()+'Mod'
@@ -47,11 +62,15 @@ def InitApplications():
 	BinDir = os.path.realpath(BinDir)
 	LibDir = FreeCAD.getHomePath()+'lib'
 	LibDir = os.path.realpath(LibDir)
+	Lib64Dir = FreeCAD.getHomePath()+'lib64'
+	Lib64Dir = os.path.realpath(Lib64Dir)
 	AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";")
 	HomeMod = FreeCAD.ConfigGet("UserAppData")+"Mod"
 	HomeMod = os.path.realpath(HomeMod)
 	MacroDir = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro").GetString("MacroPath")
 	MacroMod = os.path.realpath(MacroDir+"/Mod")
+	SystemWideMacroDir = FreeCAD.getHomePath()+'Macro'
+	SystemWideMacroDir = os.path.realpath(SystemWideMacroDir)
 
 	#print FreeCAD.getHomePath()
 	if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
@@ -82,9 +101,23 @@ def InitApplications():
 	# add also this path so that all modules search for libraries
 	# they depend on first here
 	PathExtension = BinDir + os.pathsep
+
 	# prepend all module paths to Python search path
 	Log('Init:   Searching for modules...\n')
-	FreeCAD.__path__ = ModDict.values()
+
+
+	# to have all the module-paths available in FreeCADGuiInit.py:
+	FreeCAD.__ModDirs__ = list(ModDict.values())
+
+	# this allows importing with:
+	# from FreeCAD.Module import package
+	FreeCAD.__path__ = [ModDir, Lib64Dir, LibDir, HomeMod]
+
+	# also add these directories to the sys.path to 
+	# not change the old behaviour. once we have moved to 
+	# proper python modules this can eventuelly be removed.
+	sys.path = [ModDir, Lib64Dir, LibDir] + sys.path
+
 	for Dir in ModDict.values():
 		if ((Dir != '') & (Dir != 'CVS') & (Dir != '__init__.py')):
 			sys.path.insert(0,Dir)
@@ -92,17 +125,22 @@ def InitApplications():
 			InstallFile = os.path.join(Dir,"Init.py")
 			if (os.path.exists(InstallFile)):
 				try:
-					#execfile(InstallFile)
-					exec open(InstallFile).read()
-				except Exception, inst:
+					# XXX: This looks scary securitywise...
+
+					with open(InstallFile) as f:
+						exec(f.read())
+				except Exception as inst:
 					Log('Init:      Initializing ' + Dir + '... failed\n')
+					Log('-'*100+'\n')
+					Log(traceback.format_exc())
+					Log('-'*100+'\n')
 					Err('During initialization the error ' + str(inst) + ' occurred in ' + InstallFile + '\n')
+					Err('Please look into the log file for further information')
 				else:
 					Log('Init:      Initializing ' + Dir + '... done\n')
 			else:
 				Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
-	sys.path.insert(0,LibDir)
-	sys.path.insert(0,ModDir)
+
 	Log("Using "+ModDir+" as module path!\n")
 	# new paths must be prepended to avoid to load a wrong version of a library
 	try:
@@ -125,6 +163,8 @@ def InitApplications():
 		Log("   " + i + "\n")
 	# add MacroDir to path (RFE #0000504)
 	sys.path.append(MacroDir)
+	# add SystemWideMacroDir to path
+	sys.path.append(SystemWideMacroDir)
 	# add special path for MacOSX (bug #0000307)
 	import platform
 	if len(platform.mac_ver()[0]) > 0:
@@ -137,6 +177,9 @@ Msg = FreeCAD.Console.PrintMessage
 Err = FreeCAD.Console.PrintError
 Wrn = FreeCAD.Console.PrintWarning
 test_ascii = lambda s: all(ord(c) < 128 for c in s)
+
+#store the cmake variales
+App.__cmake__ = cmake;
 
 Log ('Init: starting App::FreeCADInit.py\n')
 
@@ -250,7 +293,3 @@ del(InitApplications)
 del(test_ascii)
 
 Log ('Init: App::FreeCADInit.py done\n')
-
-
-
-

@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -26,6 +26,7 @@ import FreeCADGui as Gui
 import Units
 from PySide import QtGui, QtCore
 import Preview
+import Tools
 import Instance
 from shipUtils import Paths
 import shipUtils.Units as USys
@@ -40,19 +41,16 @@ class TaskPanel:
     def accept(self):
         """Create the ship instance"""
         self.preview.clean()
-        obj = App.ActiveDocument.addObject("Part::FeaturePython", "Ship")
-        ship = Instance.Ship(obj, self.solids)
-        Instance.ViewProviderShip(obj.ViewObject)
         mw = self.getMainWindow()
         form = mw.findChild(QtGui.QWidget, "TaskPanel")
         form.length = self.widget(QtGui.QLineEdit, "Length")
         form.breadth = self.widget(QtGui.QLineEdit, "Breadth")
         form.draft = self.widget(QtGui.QLineEdit, "Draft")
 
-        obj.Length = Locale.fromString(form.length.text())
-        obj.Breadth = Locale.fromString(form.breadth.text())
-        obj.Draft = Locale.fromString(form.draft.text())
-        App.ActiveDocument.recompute()
+        Tools.createShip(self.solids,
+                         Locale.fromString(form.length.text()),
+                         Locale.fromString(form.breadth.text()),
+                         Locale.fromString(form.draft.text()))
         return True
 
     def reject(self):
@@ -135,15 +133,13 @@ class TaskPanel:
                 "ship_console",
                 "Ship objects can only be created on top of hull geometry"
                 " (no objects selected)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "Please create or load a ship hull geometry before using"
                 " this tool",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
         self.solids = []
@@ -156,15 +152,13 @@ class TaskPanel:
                 "ship_console",
                 "Ship objects can only be created on top of hull geometry"
                 " (no solid found at selected objects)",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "Please create or load a ship hull geometry before using"
                 " this tool",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             App.Console.PrintError(msg + '\n')
             return True
         # Get the ship bounds. The ship instance can not have dimensions
@@ -222,26 +216,22 @@ class TaskPanel:
         self.form.setWindowTitle(QtGui.QApplication.translate(
             "ship_create",
             "Create a new ship",
-            None,
-            QtGui.QApplication.UnicodeUTF8))
+            None))
         self.widget(QtGui.QLabel, "LengthLabel").setText(
             QtGui.QApplication.translate(
                 "ship_create",
                 "Length",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "BreadthLabel").setText(
             QtGui.QApplication.translate(
                 "ship_create",
                 "Breadth",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
         self.widget(QtGui.QLabel, "DraftLabel").setText(
             QtGui.QApplication.translate(
                 "ship_create",
                 "Draft",
-                None,
-                QtGui.QApplication.UnicodeUTF8))
+                None))
 
     def clampVal(self, widget, val_min, val_max, val):
         if val >= val_min and val <= val_max:

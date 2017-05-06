@@ -4,19 +4,56 @@
 <context>
     <name>CmdMeshPartMesher</name>
     <message>
-        <location filename="../../Command.cpp" line="+46"/>
+        <location filename="../../Command.cpp" line="+50"/>
         <source>Mesh</source>
-        <translation>Mesh</translation>
+        <translation type="unfinished">Mesh</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Create mesh from shape...</source>
-        <translation>シェイプからメッシュを作成する...</translation>
+        <translation>シェイプからメッシュを作成...</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Tessellate shape</source>
         <translation>シェイプをテッセレーションします。</translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartSection</name>
+    <message>
+        <location line="+106"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Create section from mesh and plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Section</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>CmdMeshPartTrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Mesh</source>
+        <translation type="unfinished">Mesh</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Trim mesh with a plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Trims a mesh with a plane</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -34,99 +71,109 @@
     <message>
         <location line="+8"/>
         <source>Meshing options</source>
-        <translation type="unfinished">メッシュ作成オプション</translation>
+        <translation>メッシュ作成オプション</translation>
     </message>
     <message>
         <location line="+6"/>
         <source>Standard</source>
-        <translation type="unfinished">標準</translation>
+        <translation>標準</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Mefisto</source>
-        <translation type="unfinished">Mefisto</translation>
+        <translation>Mefisto</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Netgen</source>
-        <translation type="unfinished">Netgen</translation>
+        <translation>Netgen</translation>
     </message>
     <message>
-        <location line="+60"/>
+        <location line="+54"/>
+        <source>Define segments by face colors</source>
+        <translation>面の色で区分を設定</translation>
+    </message>
+    <message>
+        <location line="+7"/>
+        <source>Apply face colors to mesh</source>
+        <translation>メッシュに面の色を適用</translation>
+    </message>
+    <message>
+        <location line="+13"/>
         <source>Maximum edge length:</source>
-        <translation type="unfinished">最大エッジ長さ:</translation>
+        <translation>最大エッジ長さ:</translation>
     </message>
     <message>
         <location line="+44"/>
         <source>Fineness:</source>
-        <translation type="unfinished">細かさ:</translation>
+        <translation>細かさ:</translation>
     </message>
     <message>
         <location line="+17"/>
         <source>Very coarse</source>
-        <translation type="unfinished">非常に粗い</translation>
+        <translation>非常に粗い</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Coarse</source>
-        <translation type="unfinished">粗い</translation>
+        <translation>粗い</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Moderate</source>
-        <translation type="unfinished">中程度</translation>
+        <translation>中程度</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Fine</source>
-        <translation type="unfinished">細かい</translation>
+        <translation>細かい</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>Very fine</source>
-        <translation type="unfinished">非常に細かい</translation>
+        <translation>非常に細かい</translation>
     </message>
     <message>
         <location line="+5"/>
         <source>User defined</source>
-        <translation type="unfinished">ユーザー定義</translation>
+        <translation>ユーザー定義</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Mesh size grading:</source>
-        <translation type="unfinished">メッシュサイズの程度</translation>
+        <translation>メッシュサイズの程度</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per edge:</source>
-        <translation type="unfinished">エッジあたりの要素:</translation>
+        <translation>エッジあたりの要素:</translation>
     </message>
     <message>
         <location line="+29"/>
         <source>Elements per curvature radius:</source>
-        <translation type="unfinished">曲率半径あたりの要素:</translation>
+        <translation>曲率半径あたりの要素:</translation>
     </message>
     <message>
         <location line="+31"/>
         <source>Optimize surface</source>
-        <translation type="unfinished">サーフェスを最適化</translation>
+        <translation>サーフェスを最適化</translation>
     </message>
     <message>
         <location line="+10"/>
         <source>Second order elements</source>
-        <translation type="unfinished">2次要素</translation>
+        <translation>2次要素</translation>
     </message>
     <message>
         <location line="+7"/>
         <source>Quad dominated</source>
-        <translation type="unfinished">四角形優占</translation>
+        <translation>四角形優占</translation>
     </message>
     <message>
         <source>Settings</source>
         <translation type="obsolete">設定</translation>
     </message>
     <message>
-        <location line="-246"/>
+        <location line="-247"/>
         <source>Surface deviation:</source>
         <translation>サーフェス偏差:</translation>
     </message>
@@ -135,7 +182,7 @@
         <translation type="obsolete">最大のエッジの長さ:</translation>
     </message>
     <message>
-        <location filename="../../Tessellation.cpp" line="+222"/>
+        <location filename="../../Tessellation.cpp" line="+224"/>
         <source>Select a shape for meshing, first.</source>
         <translation>最初にメッシュにする図形を選択します。</translation>
     </message>
@@ -143,6 +190,32 @@
         <location line="+7"/>
         <source>No such document &apos;%1&apos;.</source>
         <translation>&apos;%1&apos; というドキュメントがありません</translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_Section</name>
+    <message>
+        <location filename="../../Command.cpp" line="+93"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you section the mesh.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MeshPart_TrimByPlane</name>
+    <message>
+        <location line="-85"/>
+        <source>Select plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Please select a plane at which you trim the mesh.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

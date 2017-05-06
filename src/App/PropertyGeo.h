@@ -263,6 +263,10 @@ public:
     /// Get valid paths for this property; used by auto completer
     void getPaths(std::vector<ObjectIdentifier> &paths) const;
 
+    void setPathValue(const ObjectIdentifier &path, const boost::any &value);
+
+    const boost::any getPathValue(const ObjectIdentifier &path) const;
+
     const char* getEditorName(void) const {
         return "Gui::PropertyEditor::PropertyPlacementItem";
     }
@@ -314,6 +318,62 @@ public:
     virtual void Paste(const Property &from);
 };
 
+
+class AppExport PropertyPlacementList: public PropertyLists
+{
+    TYPESYSTEM_HEADER();
+
+public:
+    /**
+     * A property that stores a list of placements
+     */
+    PropertyPlacementList();
+
+    virtual ~PropertyPlacementList();
+
+    virtual void setSize(int newSize);
+    virtual int getSize(void) const;
+
+    /** Sets the property
+     */
+    void setValue(const Base::Placement&);
+
+    /// index operator
+    const Base::Placement& operator[] (const int idx) const {
+        return _lValueList.operator[] (idx);
+    }
+
+    void set1Value (const int idx, const Base::Placement& value) {
+        _lValueList.operator[] (idx) = value;
+    }
+
+    void setValues (const std::vector<Base::Placement>& values);
+
+    void setValue (void){}
+
+    const std::vector<Base::Placement> &getValues(void) const {
+        return _lValueList;
+    }
+
+    virtual PyObject *getPyObject(void);
+    virtual void setPyObject(PyObject *);
+
+    virtual void Save (Base::Writer &writer) const;
+    virtual void Restore(Base::XMLReader &reader);
+
+    virtual void SaveDocFile (Base::Writer &writer) const;
+    virtual void RestoreDocFile(Base::Reader &reader);
+
+    virtual Property *Copy(void) const;
+    virtual void Paste(const Property &from);
+
+    virtual unsigned int getMemSize (void) const;
+
+private:
+    std::vector<Base::Placement> _lValueList;
+};
+
+
 /** The base class for all basic geometry properties.
  * @author Werner Mayer
  */
@@ -355,9 +415,6 @@ public:
     //@{
     virtual const Data::ComplexGeoData* getComplexData() const = 0;
     virtual Base::BoundBox3d getBoundingBox() const = 0;
-    virtual void getFaces(std::vector<Base::Vector3d> &Points,
-        std::vector<Data::ComplexGeoData::Facet> &Topo,
-        float Accuracy, uint16_t flags=0) const  = 0;
     //@}
 };
 

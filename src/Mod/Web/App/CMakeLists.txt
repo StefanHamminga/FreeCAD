@@ -6,13 +6,22 @@ include_directories(
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
 )
 
-set(Web_LIBS
-     FreeCADApp
-     ${QT_LIBRARIES}
-)
+if(BUILD_QT5)
+    include_directories(
+        ${Qt5Network_INCLUDE_DIRS}
+    )
+    set(Web_LIBS
+         FreeCADApp
+         ${Qt5Network_LIBRARIES}
+    )
+else()
+    set(Web_LIBS
+         FreeCADApp
+         ${QT_LIBRARIES}
+    )
+endif()
 
 set(Web_MOC_HDRS
     Server.h
@@ -22,7 +31,6 @@ SOURCE_GROUP("Moc" FILES ${Web_MOC_SRCS})
 
 SET(Web_SRCS
     AppWeb.cpp
-    AppWebPy.cpp
     PreCompiled.cpp
     PreCompiled.h
     Server.cpp

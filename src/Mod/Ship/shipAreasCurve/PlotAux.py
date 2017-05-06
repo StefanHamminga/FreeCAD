@@ -1,6 +1,6 @@
 #***************************************************************************
 #*                                                                         *
-#*   Copyright (c) 2011, 2012                                              *
+#*   Copyright (c) 2011, 2016                                              *
 #*   Jose Luis Cercos Pita <jlcercos@gmail.com>                            *
 #*                                                                         *
 #*   This program is free software; you can redistribute it and/or modify  *
@@ -34,7 +34,7 @@ class Plot(object):
         @param x X coordinates.
         @param y Transversal computed areas.
         @param disp Ship displacement.
-        @param xcb Bouyancy center length.
+        @param xcb Buoyancy center length.
         @param ship Active ship instance.
         """
         self.plot(x, y, disp, xcb, ship)
@@ -45,7 +45,7 @@ class Plot(object):
         @param x X coordinates.
         @param y Transversal areas.
         @param disp Ship displacement.
-        @param xcb Bouyancy center length.
+        @param xcb Buoyancy center length.
         @param ship Active ship instance.
         @return True if error happens.
         """
@@ -56,8 +56,7 @@ class Plot(object):
             msg = QtGui.QApplication.translate(
                 "ship_console",
                 "Plot module is disabled, so I cannot perform the plot",
-                None,
-                QtGui.QApplication.UnicodeUTF8)
+                None)
             FreeCAD.Console.PrintWarning(msg + '\n')
             return True
         # Plot areas curve
@@ -89,9 +88,9 @@ class Plot(object):
         addInfo = ("$XCB = {0} \\; \\mathrm{{m}}$\n"
                    "$Area_{{max}} = {1} \\; \\mathrm{{m}}^2$\n"
                    "$\\bigtriangleup = {2} \\; \\mathrm{{tons}}$".format(
-                   xcb,
+                   xcb.getValueAs("m").Value,
                    maxArea,
-                   disp))
+                   disp.getValueAs("kg").Value / 1000.0))
         ax.text(0.0,
                 0.01 * maxArea,
                 addInfo,

@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "Command.h"
@@ -41,26 +42,34 @@
 #include "PropertyTooltable.h"
 #include "FeaturePathCompound.h"
 #include "FeaturePathShape.h"
+#include "AreaPy.h"
+#include "FeatureArea.h"
 
-extern struct PyMethodDef Path_methods[];
-
-PyDoc_STRVAR(module_Path_doc,
-"This module is the Path module.");
-
+namespace Path {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void PathExport initPath()
+PyMOD_INIT_FUNC(Path)
 {
-    PyObject* pathModule = Py_InitModule3("Path", Path_methods, module_Path_doc);   /* mod name, table ptr */
+    // load dependent module
+    try {
+        Base::Interpreter().runString("import Part");
+    }
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(NULL);
+    }
+
+    PyObject* pathModule = Path::initModule();
     Base::Console().Log("Loading Path module... done\n");
 
-
     // Add Types to module
-    Base::Interpreter().addType(&Path::CommandPy            ::Type,pathModule,"Command");
-    Base::Interpreter().addType(&Path::PathPy               ::Type,pathModule,"Path");
-    Base::Interpreter().addType(&Path::ToolPy               ::Type,pathModule,"Tool");
-    Base::Interpreter().addType(&Path::TooltablePy          ::Type,pathModule,"Tooltable");
+    Base::Interpreter().addType(&Path::CommandPy    ::Type, pathModule, "Command");
+    Base::Interpreter().addType(&Path::PathPy       ::Type, pathModule, "Path");
+    Base::Interpreter().addType(&Path::ToolPy       ::Type, pathModule, "Tool");
+    Base::Interpreter().addType(&Path::TooltablePy  ::Type, pathModule, "Tooltable");
+    Base::Interpreter().addType(&Path::AreaPy       ::Type, pathModule, "Area");
 
     // NOTE: To finish the initialization of our own type objects we must
     // call PyType_Ready, otherwise we run into a segmentation fault, later on.
@@ -77,6 +86,11 @@ void PathExport initPath()
     Path::FeatureCompoundPython  ::init();
     Path::FeatureShape           ::init();
     Path::FeatureShapePython     ::init();
-}
+    Path::Area                   ::init();
+    Path::FeatureArea            ::init();
+    Path::FeatureAreaPython      ::init();
+    Path::FeatureAreaView        ::init();
+    Path::FeatureAreaViewPython  ::init();
 
-} // extern "C"
+    PyMOD_Return(pathModule);
+}

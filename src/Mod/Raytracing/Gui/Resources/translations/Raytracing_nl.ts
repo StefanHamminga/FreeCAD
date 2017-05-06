@@ -4,7 +4,7 @@
 <context>
     <name>CmdRaytracingExportProject</name>
     <message>
-        <location filename="../../Command.cpp" line="+503"/>
+        <location filename="../../Command.cpp" line="+496"/>
         <source>File</source>
         <translation>Bestand</translation>
     </message>
@@ -16,7 +16,7 @@
     <message>
         <location line="+1"/>
         <source>Export a Raytracing project to a file</source>
-        <translation type="unfinished">Een raytracing-project exporteren naar een bestand</translation>
+        <translation>Een raytracing-project exporteren naar een bestand</translation>
     </message>
     <message>
         <source>Export the Povray project file</source>
@@ -26,35 +26,35 @@
 <context>
     <name>CmdRaytracingNewLuxProject</name>
     <message>
-        <location line="+204"/>
+        <location line="+207"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Raytracing</translation>
+        <translation>Raytracing</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>New Luxrender project</source>
-        <translation type="unfinished">Nieuw Luxrender-project</translation>
+        <translation>Nieuw Luxrender-project</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new Luxrender project into the document</source>
-        <translation type="unfinished">Een nieuw LuxRender-project invoegen in het document</translation>
+        <translation>Een nieuw LuxRender-project invoegen in het document</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">Geen sjabloon</translation>
+        <translation>Geen sjabloon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">Geen sjabloon beschikbaar</translation>
+        <translation>Geen sjabloon beschikbaar</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingNewPartSegment</name>
     <message>
-        <location line="-338"/>
+        <location line="-341"/>
         <source>Raytracing</source>
         <translation>Raytracing</translation>
     </message>
@@ -76,7 +76,7 @@
 <context>
     <name>CmdRaytracingNewPovrayProject</name>
     <message>
-        <location line="-107"/>
+        <location line="-100"/>
         <source>Raytracing</source>
         <translation>Raytracing</translation>
     </message>
@@ -91,35 +91,35 @@
     <message>
         <location line="+1"/>
         <source>New POV-Ray project</source>
-        <translation type="unfinished">Nieuw POV-Ray project</translation>
+        <translation>Nieuw POV-Ray project</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Insert new POV-Ray project into the document</source>
-        <translation type="unfinished">Insert new POV-Ray project into the document</translation>
+        <translation>Een nieuw POV-Ray-project in het document invoegen</translation>
     </message>
     <message>
         <location line="+45"/>
         <source>No template</source>
-        <translation type="unfinished">Geen sjabloon</translation>
+        <translation>Geen sjabloon</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>No template available</source>
-        <translation type="unfinished">Geen sjabloon beschikbaar</translation>
+        <translation>Geen sjabloon beschikbaar</translation>
     </message>
 </context>
 <context>
     <name>CmdRaytracingRender</name>
     <message>
-        <location line="+201"/>
+        <location line="+196"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Raytracing</translation>
+        <translation>Raytracing</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Render</source>
-        <translation type="unfinished">&amp;Renderen</translation>
+        <translation>&amp;Renderen</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -130,14 +130,14 @@
 <context>
     <name>CmdRaytracingResetCamera</name>
     <message>
-        <location line="+249"/>
+        <location line="+243"/>
         <source>Raytracing</source>
-        <translation type="unfinished">Raytracing</translation>
+        <translation>Raytracing</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>&amp;Reset Camera</source>
-        <translation type="unfinished">&amp;Reset Camera</translation>
+        <translation>Camera &amp;reset</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -148,19 +148,23 @@
 <context>
     <name>CmdRaytracingWriteCamera</name>
     <message>
-        <location line="-734"/>
+        <location line="-723"/>
         <source>Raytracing</source>
         <translation>Raytracing</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Export camera to POV-Ray...</source>
-        <translation type="unfinished">Export camera to POV-Ray...</translation>
+        <translation>Camera exporteren naar POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
+        <source>Export the camera position of the active 3D view in POV-Ray format to a file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Export the camera positon of the active 3D view in POV-Ray format to a file</source>
-        <translation type="unfinished">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
+        <translation type="obsolete">Export the camera positon of the active 3D view in POV-Ray format to a file</translation>
     </message>
     <message>
         <source>Export camera to povray...</source>
@@ -203,12 +207,12 @@
         <location line="-79"/>
         <location line="+139"/>
         <location line="+93"/>
-        <location line="+395"/>
+        <location line="+391"/>
         <source>No perspective camera</source>
         <translation>Geen perspectiefcamera</translation>
     </message>
     <message>
-        <location line="-626"/>
+        <location line="-622"/>
         <location line="+139"/>
         <location line="+93"/>
         <source>The current view camera is not perspective and thus the result of the POV-Ray image later might look different to what you expect.
@@ -219,7 +223,7 @@ Do you want to continue?</translation>
     <message>
         <location line="-109"/>
         <source>Export view to POV-Ray...</source>
-        <translation type="unfinished">Export view to POV-Ray...</translation>
+        <translation>Weergave exporteren naar POV-Ray...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -246,7 +250,7 @@ Wil je doorgaan?</translation>
         <translation type="obsolete">De actieve 3D-weergave met camera en alle inhoud als een Povray bestand opslaan</translation>
     </message>
     <message>
-        <location line="+505"/>
+        <location line="+501"/>
         <source>The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
 Do you want to continue?</source>
         <translation type="unfinished">The current view camera is not perspective and thus the result of the luxrender image later might look different to what you expect.
@@ -260,43 +264,35 @@ Do you want to continue?</translation>
         <translation type="obsolete">Povray (*.pov)</translation>
     </message>
     <message>
-        <location line="-591"/>
-        <location line="+51"/>
         <source>POV-Ray (*.pov)</source>
-        <translation type="unfinished">POV-Ray (*.pov)</translation>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
     </message>
     <message>
-        <location line="-50"/>
-        <location line="+51"/>
-        <location line="+62"/>
-        <location line="+281"/>
-        <location line="+109"/>
         <source>All Files (*.*)</source>
-        <translation>Alle bestanden (*.*)</translation>
+        <translation type="obsolete">Alle bestanden (*.*)</translation>
     </message>
     <message>
-        <location line="-502"/>
+        <location line="-585"/>
         <location line="+51"/>
         <location line="+63"/>
-        <location line="+281"/>
+        <location line="+276"/>
         <source>Export page</source>
         <translation>Exporteer pagina</translation>
     </message>
     <message>
-        <location line="-284"/>
         <source>POV-Ray(*.pov)</source>
-        <translation type="unfinished">POV-Ray(*.pov)</translation>
+        <translation type="obsolete">POV-Ray (*.pov)</translation>
     </message>
     <message>
-        <location line="+183"/>
+        <location line="-103"/>
         <location line="+87"/>
-        <location line="+61"/>
-        <location line="+249"/>
+        <location line="+63"/>
+        <location line="+243"/>
         <source>Wrong selection</source>
         <translation>Verkeerde selectie</translation>
     </message>
     <message>
-        <location line="-396"/>
+        <location line="-392"/>
         <source>Select a Part object.</source>
         <translation>Selecteer een object.</translation>
     </message>
@@ -318,16 +314,21 @@ Do you want to continue?</translation>
     </message>
     <message>
         <location line="+64"/>
-        <location line="+61"/>
-        <location line="+249"/>
+        <location line="+63"/>
+        <location line="+243"/>
         <source>Select one Raytracing project object.</source>
         <translation type="unfinished">Select one Raytracing project object.</translation>
     </message>
     <message>
-        <location line="-234"/>
+        <location line="-302"/>
+        <source>Luxrender</source>
+        <translation>Luxrender</translation>
+    </message>
+    <message>
+        <location line="+74"/>
         <location line="+6"/>
         <source>POV-Ray not found</source>
-        <translation type="unfinished">POV-Ray not found</translation>
+        <translation>POV-Ray niet gevonden</translation>
     </message>
     <message>
         <location line="-5"/>
@@ -340,12 +341,7 @@ Do you want to continue?</translation>
         <translation type="unfinished">Please correct the path to the POV-Ray executable in the preferences.</translation>
     </message>
     <message>
-        <location line="+33"/>
-        <source>Rendered image (*.bmp *.png)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location line="+41"/>
+        <location line="+75"/>
         <source>Lux project file missing</source>
         <translation type="unfinished">Lux project file missing</translation>
     </message>
@@ -355,13 +351,30 @@ Do you want to continue?</translation>
         <translation type="unfinished">The Lux project file doesn&apos;t exist.</translation>
     </message>
     <message>
-        <location line="-68"/>
+        <location line="-69"/>
         <location line="+6"/>
         <source>Luxrender not found</source>
-        <translation type="unfinished">LuxRender niet gevonden</translation>
+        <translation>LuxRender niet gevonden</translation>
     </message>
     <message>
-        <location line="-5"/>
+        <location line="-475"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+272"/>
+        <source>POV-Ray</source>
+        <translation>POV-Ray</translation>
+    </message>
+    <message>
+        <location line="-384"/>
+        <location line="+51"/>
+        <location line="+62"/>
+        <location line="+276"/>
+        <location line="+109"/>
+        <source>All Files</source>
+        <translation>Alle bestanden</translation>
+    </message>
+    <message>
+        <location line="-29"/>
         <source>Please set the path to the luxrender or luxconsole executable in the preferences.</source>
         <translation type="unfinished">Please set the path to the luxrender or luxconsole executable in the preferences.</translation>
     </message>
@@ -373,7 +386,7 @@ Do you want to continue?</translation>
     <message>
         <location line="+12"/>
         <source>POV-Ray file missing</source>
-        <translation type="unfinished">POV-Ray file missing</translation>
+        <translation>POV-Ray-bestand ontbreekt</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -385,11 +398,12 @@ Do you want to continue?</translation>
         <translation type="obsolete">Rendered image (*.bmp)</translation>
     </message>
     <message>
-        <location line="+8"/>
         <source>Rendered image (*.png)</source>
-        <translation type="unfinished">Rendered image (*.png)</translation>
+        <translation type="obsolete">Rendered image (*.png)</translation>
     </message>
     <message>
+        <location line="+6"/>
+        <location line="+2"/>
         <location line="+3"/>
         <source>Rendered image</source>
         <translation type="unfinished">Rendered image</translation>
@@ -454,9 +468,14 @@ Do you want to continue?</translation>
         <translation>Camera-bestand naam:</translation>
     </message>
     <message>
-        <location line="-159"/>
+        <location line="-216"/>
+        <source>Max mesh deviation:</source>
+        <translation type="unfinished">Max mesh deviation:</translation>
+    </message>
+    <message>
+        <location line="+57"/>
         <source>Render</source>
-        <translation type="unfinished">Renderen</translation>
+        <translation>Renderen</translation>
     </message>
     <message>
         <location line="+40"/>
@@ -521,12 +540,11 @@ Do you want to continue?</translation>
         <translation>Maas exportinstellingen</translation>
     </message>
     <message>
-        <location line="+26"/>
         <source>max mesh deviation:</source>
-        <translation>Max. maas-afwijking:</translation>
+        <translation type="obsolete">Max. maas-afwijking:</translation>
     </message>
     <message>
-        <location line="+28"/>
+        <location line="+54"/>
         <source>Do not calculate vertex normals</source>
         <translation>Bereken niet de vertex-normalen</translation>
     </message>
@@ -541,17 +559,17 @@ Do you want to continue?</translation>
     <message>
         <location filename="../../ViewProvider.cpp" line="+68"/>
         <source>Edit LuxRender project</source>
-        <translation type="unfinished">LuxRender-project bewerken</translation>
+        <translation>LuxRender-project bewerken</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>LuxRender template</source>
-        <translation type="unfinished">LuxRender-sjabloon</translation>
+        <translation>LuxRender-sjabloon</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a LuxRender template</source>
-        <translation type="unfinished">Selecteer een LuxRender-sjabloon</translation>
+        <translation>Selecteer een LuxRender-sjabloon</translation>
     </message>
 </context>
 <context>
@@ -559,17 +577,17 @@ Do you want to continue?</translation>
     <message>
         <location line="+48"/>
         <source>Edit Povray project</source>
-        <translation type="unfinished">Edit Povray project</translation>
+        <translation>POV-Ray-project bewerken</translation>
     </message>
     <message>
         <location line="+24"/>
         <source>Povray template</source>
-        <translation type="unfinished">POV-Ray-sjabloon</translation>
+        <translation>POV-Ray-sjabloon</translation>
     </message>
     <message>
         <location line="+0"/>
         <source>Select a Povray template</source>
-        <translation type="unfinished">Select a Povray template</translation>
+        <translation>POV-Ray-sjabloon kiezen</translation>
     </message>
 </context>
 <context>

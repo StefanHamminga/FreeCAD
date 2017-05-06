@@ -12,7 +12,6 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYCXX_INCLUDE_DIR}
 )
@@ -23,7 +22,6 @@ if(MSVC)
         ${PYTHON_LIBRARIES}
         debug ${XercesC_DEBUG_LIBRARIES}
         optimized ${XercesC_LIBRARIES}
-        ${QT_QTCORE_LIBRARY}
         ${ZLIB_LIBRARIES}
         debug MSVCRTD.LIB
         debug MSVCPRTD.LIB
@@ -36,7 +34,6 @@ elseif(MINGW)
     set(FreeCADBase_LIBS
         ${PYTHON_LIBRARIES}
         ${XercesC_LIBRARIES}
-        ${QT_QTCORE_LIBRARY}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
         Rpcrt4.lib
@@ -45,19 +42,26 @@ else(MSVC)
     set(FreeCADBase_LIBS
         ${PYTHON_LIBRARIES}
         ${XercesC_LIBRARIES}
-        ${QT_QTCORE_LIBRARY}
         ${Boost_LIBRARIES}
         ${ZLIB_LIBRARIES}
     )
 endif(MSVC)
 
+if (BUILD_QT5)
+    include_directories(
+        ${Qt5Core_INCLUDE_DIRS}
+    )
+    list(APPEND FreeCADBase_LIBS ${Qt5Core_LIBRARIES})
+else()
+    include_directories(
+        ${QT_QTCORE_INCLUDE_DIR}
+    )
+    list(APPEND FreeCADBase_LIBS ${QT_QTCORE_LIBRARY})
+endif()
+
 # needed for OpenSUSE
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-    set(FreeCADBase_LIBS
-        ${FreeCADBase_LIBS}
-        -lutil
-        -ldl
-    )
+    list(APPEND FreeCADBase_LIBS -lutil -ldl)
 endif()
 
 generate_from_xml(BaseClassPy)
@@ -152,6 +156,7 @@ set(FreeCADBase_MOC_HDRS
     Debugger.h
     FutureWatcherProgress.h
 )
+
 fc_wrap_cpp(FreeCADBase_MOC_SRCS ${FreeCADBase_MOC_HDRS})
 
 SET(FreeCADBase_UNITAPI_SRCS
@@ -166,6 +171,8 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemaMKS.cpp
     UnitsSchemaImperial1.h
     UnitsSchemaImperial1.cpp
+    UnitsSchemaCentimeters.h
+    UnitsSchemaCentimeters.cpp
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp

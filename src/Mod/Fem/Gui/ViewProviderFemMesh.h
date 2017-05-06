@@ -26,13 +26,14 @@
 
 #include <Gui/ViewProviderGeometryObject.h>
 #include <Gui/ViewProviderBuilder.h>
+#include <Gui/ViewProviderPythonFeature.h>
 
 #include <CXX/Objects.hxx>
 
 class SoCoordinate3;
-class SoDrawStyle;  
-class SoIndexedFaceSet; 
-class SoIndexedLineSet; 
+class SoDrawStyle;
+class SoIndexedFaceSet;
+class SoIndexedLineSet;
 class SoShapeHints;
 class SoMaterialBinding;
 
@@ -45,14 +46,15 @@ public:
     ViewProviderFEMMeshBuilder(){}
     virtual ~ViewProviderFEMMeshBuilder(){}
     virtual void buildNodes(const App::Property*, std::vector<SoNode*>&) const;
-    void createMesh(const App::Property*, 
-                    SoCoordinate3*, 
+    void createMesh(const App::Property*,
+                    SoCoordinate3*,
                     SoIndexedFaceSet*,
                     SoIndexedLineSet*,
                     std::vector<unsigned long>&,
                     std::vector<unsigned long>&,
                     bool &edgeOnly,
-                    bool ShowInner
+                    bool ShowInner,
+                    int MaxFacesShowInner
                    ) const;
 };
 
@@ -73,6 +75,7 @@ public:
     App::PropertyFloatConstraint LineWidth;
     App::PropertyBool     BackfaceCulling;
     App::PropertyBool     ShowInner;
+    App::PropertyInteger  MaxFacesShowInner;
 
     void attach(App::DocumentObject *pcObject);
     void setDisplayMode(const char* ModeName);
@@ -82,7 +85,7 @@ public:
       /** @name Selection handling
       * This group of methodes do the selection handling.
       * Here you can define how the selection for your ViewProvider
-      * works. 
+      * works.
      */
     //@{
     /// indicates if the ViewProvider use the new Selection model
@@ -94,10 +97,10 @@ public:
     virtual std::vector<Base::Vector3d> getSelectionShape(const char* Element) const;
     //@}
 
-    // interface methodes 
+    // interface methodes
     void setHighlightNodes(const std::set<long>&);
     void resetHighlightNodes(void);
-    
+
     /** @name Postprocessing
       * this interfaces apply post processing stuff to the View-
       * Provider. They can override the positioning and the color
@@ -162,6 +165,9 @@ protected:
 private:
     class Private;
 };
+
+typedef Gui::ViewProviderPythonFeatureT<ViewProviderFemMesh> ViewProviderFemMeshPython;
+
 
 } //namespace FemGui
 

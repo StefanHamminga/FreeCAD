@@ -22,6 +22,7 @@
 
 
 #include "PreCompiled.h"
+#include "Tools.h"
 #include "Vector3D.h"
 
 using namespace Base;
@@ -95,7 +96,7 @@ Vector3<_Precision> Vector3<_Precision>::operator -  (const Vector3<_Precision>&
     cVctRes.z = z - rcVct.z;
     return cVctRes;
 }
- 
+
 template <class _Precision>
 Vector3<_Precision> Vector3<_Precision>::operator - (void) const
 {
@@ -116,7 +117,7 @@ Vector3<_Precision>& Vector3<_Precision>::operator -= (const Vector3<_Precision>
 {
     x -= rcVct.x;
     y -= rcVct.y;
-    z -= rcVct.z;                    
+    z -= rcVct.z;
     return *this;
 }
 
@@ -130,7 +131,7 @@ Vector3<_Precision>& Vector3<_Precision>::operator *= (_Precision fScale)
 }
 
 template <class _Precision>
-Vector3<_Precision>& Vector3<_Precision>::operator /= (_Precision fDiv) 
+Vector3<_Precision>& Vector3<_Precision>::operator /= (_Precision fDiv)
 {
     x /= fDiv;
     y /= fDiv;
@@ -166,6 +167,12 @@ _Precision Vector3<_Precision>::operator *  (const Vector3<_Precision>& rcVct) c
 }
 
 template <class _Precision>
+_Precision Vector3<_Precision>::Dot (const Vector3<_Precision>& rcVct) const
+{
+    return (x * rcVct.x) + (y * rcVct.y) + (z * rcVct.z);
+}
+
+template <class _Precision>
 Vector3<_Precision> Vector3<_Precision>::operator %  (const Vector3<_Precision>& rcVct) const
 {
     Vector3<_Precision> cVctRes;
@@ -176,8 +183,18 @@ Vector3<_Precision> Vector3<_Precision>::operator %  (const Vector3<_Precision>&
 }
 
 template <class _Precision>
+Vector3<_Precision> Vector3<_Precision>::Cross(const Vector3<_Precision>& rcVct) const
+{
+    Vector3<_Precision> cVctRes;
+    cVctRes.x = (y * rcVct.z) - (z * rcVct.y);
+    cVctRes.y = (z * rcVct.x) - (x * rcVct.z);
+    cVctRes.z = (x * rcVct.y) - (y * rcVct.x);
+    return cVctRes;
+}
+
+template <class _Precision>
 bool Vector3<_Precision>::operator != (const Vector3<_Precision>& rcVct) const
-{ 
+{
     return !((*this) == rcVct);
 }
 
@@ -187,11 +204,17 @@ bool Vector3<_Precision>::operator == (const Vector3<_Precision>& rcVct) const
     return (fabs (x - rcVct.x) <= traits_type::epsilon()) &&
            (fabs (y - rcVct.y) <= traits_type::epsilon()) &&
            (fabs (z - rcVct.z) <= traits_type::epsilon());
-}  
+}
 
 template <class _Precision>
-Vector3<_Precision>& Vector3<_Precision>::ProjToPlane (const Vector3<_Precision> &rclBase, 
-                                                       const Vector3<_Precision> &rclNorm)
+bool Vector3<_Precision>::IsEqual(const Vector3<_Precision> &rclPnt, _Precision tol) const
+{
+    return Distance(*this, rclPnt) <= tol;
+}
+
+template <class _Precision>
+Vector3<_Precision>& Vector3<_Precision>::ProjectToPlane (const Vector3<_Precision> &rclBase,
+                                                          const Vector3<_Precision> &rclNorm)
 {
     Vector3<_Precision> clTemp(rclNorm);
     *this = *this - (clTemp *= ((*this - rclBase) * clTemp) / clTemp.Sqr());
@@ -199,7 +222,16 @@ Vector3<_Precision>& Vector3<_Precision>::ProjToPlane (const Vector3<_Precision>
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclBase, 
+void Vector3<_Precision>::ProjectToPlane (const Vector3 &rclBase,
+                                          const Vector3 &rclNorm,
+                                          Vector3 &rclProj) const
+{
+    Vector3<_Precision> clTemp(rclNorm);
+    rclProj = *this - (clTemp *= ((*this - rclBase) * clTemp) / clTemp.Sqr());
+}
+
+template <class _Precision>
+_Precision Vector3<_Precision>::DistanceToPlane (const Vector3<_Precision> &rclBase,
                                                  const Vector3<_Precision> &rclNorm) const
 {
     return ((*this - rclBase) * rclNorm) / rclNorm.Length();
@@ -212,37 +244,31 @@ _Precision Vector3<_Precision>::Length (void) const
 }
 
 template <class _Precision>
-_Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBase, 
+_Precision Vector3<_Precision>::DistanceToLine (const Vector3<_Precision> &rclBase,
                                                 const Vector3<_Precision> &rclDirect) const
 {
     return (_Precision) fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length());
 }
 
 template <class _Precision>
-Vector3<_Precision> Vector3<_Precision>::DistanceToLineSegment (const Vector3& rclP1,
-                                                                const Vector3& rclP2) const
+Vector3<_Precision> Vector3<_Precision>::DistanceToLineSegment(const Vector3& rclP1,
+                                                               const Vector3& rclP2) const
 {
-    Vector3<_Precision> dir = rclP2-rclP1;
-    Vector3<_Precision> beg = *this-rclP1;
-    Vector3<_Precision> end = beg+dir;
+    _Precision len2 = Base::DistanceP2(rclP1, rclP2);
+    if (len2 == 0)
+        return rclP1;
 
-    Vector3<_Precision> proj, len;
-    proj.ProjToLine(beg, dir);
-    len = proj + beg;
-    if (len * dir < 0 || len.Length() > dir.Length()) {
-        if (beg.Length() < end.Length())
-            return beg;
-        else
-            return end;
-    }
-    else {
-        return proj;
-    }
+    Vector3<_Precision> p2p1 = rclP2-rclP1;
+    Vector3<_Precision> pXp1 = *this-rclP1;
+    _Precision dot = pXp1 * p2p1;
+    _Precision t = clamp<_Precision>(dot/len2, 0, 1);
+    Vector3<_Precision> dist = t * p2p1 - pXp1;
+    return dist;
 }
 
 template <class _Precision>
-Vector3<_Precision>& Vector3<_Precision>::ProjToLine (const Vector3<_Precision> &rclPoint,
-                                                      const Vector3<_Precision> &rclLine)
+Vector3<_Precision>& Vector3<_Precision>::ProjectToLine (const Vector3<_Precision> &rclPoint,
+                                                         const Vector3<_Precision> &rclLine)
 {
     return (*this = ((((rclPoint * rclLine) / rclLine.Sqr()) * rclLine) - rclPoint));
 }
@@ -375,7 +401,7 @@ _Precision Vector3<_Precision>::GetAngle (const Vector3 &rcVect) const
     _Precision divid, fNum;
 
     divid = Length() * ((Vector3<_Precision>&)rcVect).Length();
- 
+
     if ((divid < -1e-10f) || (divid > 1e-10f)) {
         fNum = (*this * rcVect) / divid;
         if (fNum < -1)

@@ -37,9 +37,6 @@
 #pragma warning( disable : 4786 )  // specifier longer then 255 chars
 #endif
 
-// Python
-#include <Python.h>
-
 // standard
 #include <stdio.h>
 #include <assert.h>
@@ -84,9 +81,13 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/exception.hpp>
-
+
+
 #include "InventorAll.h"
 #include "Qt4All.h"
+
+// Python
+#include <Python.h>
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>

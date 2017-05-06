@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
 #include "RayFeature.h"
@@ -35,11 +36,12 @@
 #include "LuxFeature.h"
 #include "LuxProject.h"
 
-extern struct PyMethodDef Raytracing_methods[];
+namespace Raytracing {
+    extern PyObject* initModule();
+}
 
 
-extern "C" {
-void AppRaytracingExport initRaytracing()
+PyMOD_INIT_FUNC(Raytracing)
 {
     // load dependent module
     try {
@@ -47,19 +49,17 @@ void AppRaytracingExport initRaytracing()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
-	Raytracing::RaySegment       ::init();
-	Raytracing::RayFeature       ::init();
-	Raytracing::RayProject       ::init();
+    Raytracing::RaySegment       ::init();
+    Raytracing::RayFeature       ::init();
+    Raytracing::RayProject       ::init();
     Raytracing::LuxFeature       ::init();
     Raytracing::LuxProject       ::init();
 
 
-    (void) Py_InitModule("Raytracing", Raytracing_methods);   /* mod name, table ptr */
+    PyObject* mod = Raytracing::initModule();
     Base::Console().Log("Loading Raytracing module... done\n");
-
+    PyMOD_Return(mod);
 }
-
-} // extern "C" {

@@ -66,8 +66,11 @@ FeatureTest::FeatureTest()
   ConstraintFloat.setConstraints(&floatPercent);
 
   App::Color c;
+  App::Material mat(App::Material::GOLD);
   ADD_PROPERTY(Colour      ,(c) );
   ADD_PROPERTY(ColourList  ,(c) );
+  ADD_PROPERTY(Material    ,(mat));
+  ADD_PROPERTY(MaterialList,(mat));
 
   ADD_PROPERTY(Distance,(47.11f) );
   ADD_PROPERTY(Angle   ,(3.0f) );
@@ -75,9 +78,10 @@ FeatureTest::FeatureTest()
   ADD_PROPERTY(IntegerList,(4711)  );
   ADD_PROPERTY(FloatList  ,(47.11f) );
   
-  ADD_PROPERTY(Link     ,(0));
-  ADD_PROPERTY(LinkSub,  (0));
-  ADD_PROPERTY(LinkList ,(0));
+  ADD_PROPERTY(Link       ,(0));
+  ADD_PROPERTY(LinkSub    ,(0));
+  ADD_PROPERTY(LinkList   ,(0));
+  ADD_PROPERTY(LinkSubList,(0));
 
   ADD_PROPERTY(Vector    ,(1.0,2.0,3.0));
   ADD_PROPERTY(VectorList,(3.0,2.0,1.0));
@@ -103,6 +107,8 @@ FeatureTest::FeatureTest()
  
   ADD_PROPERTY(QuantityLength,(1.0));
   QuantityLength.setUnit(Base::Unit::Length);
+  ADD_PROPERTY(QuantityOther,(5.0));
+  QuantityOther.setUnit(Base::Unit(-3,1));
   //ADD_PROPERTY(QuantityMass,(1.0));
   //QuantityMass.setUnit(Base::Unit::Mass);
   //ADD_PROPERTY(QuantityAngle,(1.0));
@@ -128,7 +134,7 @@ DocumentObjectExecReturn *FeatureTest::execute(void)
   {
     case 0: break;
     case 1: throw "Test Exeption";
-    case 2: throw Base::Exception("FeatureTestException::execute(): Testexception");
+    case 2: throw Base::RuntimeError("FeatureTestException::execute(): Testexception");
     case 3: *i=0;printf("%i",*i);break; // seg-vault
     case 4: j=0; printf("%i",1/j); break; // int devision by zero
     case 5: f=0.0; printf("%f",1/f); break; // float devision by zero
@@ -155,7 +161,7 @@ DocumentObjectExecReturn *FeatureTestException::execute(void)
 {
   //ExceptionType;
 
-  throw Base::Exception("FeatureTestException::execute(): Testexception  ;-)");
+  throw Base::RuntimeError("FeatureTestException::execute(): Testexception  ;-)");
 
   return 0;
 }

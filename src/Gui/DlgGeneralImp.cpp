@@ -35,6 +35,7 @@
 #include "DockWindowManager.h"
 #include "MainWindow.h"
 #include "PrefWidgets.h"
+#include "PythonConsole.h"
 #include "Language/Translator.h"
 
 using namespace Gui::Dialog;
@@ -46,7 +47,7 @@ using namespace Gui::Dialog;
  *  name 'name' and widget flags set to 'f' 
  *
  *  The dialog will by default be modeless, unless you set 'modal' to
- *  TRUE to construct a modal dialog.
+ *  true to construct a modal dialog.
  */
 DlgGeneralImp::DlgGeneralImp( QWidget* parent )
   : PreferencePage( parent ), watched(0)
@@ -121,11 +122,23 @@ void DlgGeneralImp::saveSettings()
     QVariant data = AutoloadModuleCombo->itemData(index);
     QString startWbName = data.toString();
     App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")->
-                          SetASCII("AutoloadModule", startWbName.toAscii());
+                          SetASCII("AutoloadModule", startWbName.toLatin1());
     
     AutoloadTabCombo->onSave();
     RecentFiles->onSave();
     SplashScreen->onSave();
+    PythonWordWrap->onSave();
+  
+    QWidget* pc = DockWindowManager::instance()->getDockWindow("Python console");
+    PythonConsole *pcPython = static_cast<PythonConsole*>(pc);
+    bool pythonWordWrap = App::GetApplication().GetUserParameter().
+        GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("General")->GetBool("PythonWordWrap", true);
+
+    if (pythonWordWrap) {
+      pcPython->setWordWrapMode(QTextOption::WrapAtWordBoundaryOrAnywhere);
+    } else {
+      pcPython->setWordWrapMode(QTextOption::NoWrap);
+    }
 
     // set new user defined style
     //(void)QApplication::setStyle(WindowStyle->currentText());
@@ -133,7 +146,7 @@ void DlgGeneralImp::saveSettings()
     setRecentFileSize();
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale::system().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str();
+    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     QByteArray current = Languages->itemData(Languages->currentIndex()).toByteArray();
     if (current != language)
     {
@@ -199,6 +212,7 @@ void DlgGeneralImp::loadSettings()
     AutoloadTabCombo->onRestore();
     RecentFiles->onRestore();
     SplashScreen->onRestore();
+    PythonWordWrap->onRestore();
 
     // fill up styles
     //
@@ -216,14 +230,14 @@ void DlgGeneralImp::loadSettings()
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
     QString lang = QLocale::languageToString(QLocale::system().language());
-    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toAscii()).c_str();
+    QByteArray language = hGrp->GetASCII("Language", (const char*)lang.toLatin1()).c_str();
     int index = 1;
-    Languages->addItem(QString::fromAscii("English"), QByteArray("English"));
+    Languages->addItem(QString::fromLatin1("English"), QByteArray("English"));
     TStringMap list = Translator::instance()->supportedLocales();
     for (TStringMap::iterator it = list.begin(); it != list.end(); ++it, index++) {
-        QLocale locale(QString::fromAscii(it->second.c_str()));
+        QLocale locale(QString::fromLatin1(it->second.c_str()));
         QByteArray lang = it->first.c_str();
-        QString langname = QString::fromAscii(lang.constData());
+        QString langname = QString::fromLatin1(lang.constData());
 #if QT_VERSION >= 0x040800
         QString native = locale.nativeLanguageName();
         if (!native.isEmpty()) {
@@ -238,14 +252,17 @@ void DlgGeneralImp::loadSettings()
         }
     }
 
-    int size = QApplication::style()->pixelMetric(QStyle::PM_ToolBarIconSize);
     int current = getMainWindow()->iconSize().width();
-    this->toolbarIconSize->addItem(tr("Default (%1 x %1)").arg(size), QVariant((int)size));
-    this->toolbarIconSize->addItem(tr("Small (%1 x %1)").arg(16), QVariant((int)16));
-    this->toolbarIconSize->addItem(tr("Large (%1 x %1)").arg(32), QVariant((int)32));
-    this->toolbarIconSize->addItem(tr("Extra large (%1 x %1)").arg(48), QVariant((int)48));
+    this->toolbarIconSize->addItem(tr("Small (%1px)").arg(16), QVariant((int)16));
+    this->toolbarIconSize->addItem(tr("Medium (%1px)").arg(24), QVariant((int)24));
+    this->toolbarIconSize->addItem(tr("Large (%1px)").arg(32), QVariant((int)32));
+    this->toolbarIconSize->addItem(tr("Extra large (%1px)").arg(48), QVariant((int)48));
     index = this->toolbarIconSize->findData(QVariant(current));
-    if (index > -1) this->toolbarIconSize->setCurrentIndex(index);
+    if (index < 0) {
+        this->toolbarIconSize->addItem(tr("Custom (%1px)").arg(current), QVariant((int)current));
+        index = this->toolbarIconSize->findData(QVariant(current));
+    } 
+    this->toolbarIconSize->setCurrentIndex(index);
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     this->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
@@ -254,8 +271,8 @@ void DlgGeneralImp::loadSettings()
     QMap<QString, QString> cssFiles;
     QDir dir;
     QStringList filter;
-    filter << QString::fromAscii("*.qss");
-    filter << QString::fromAscii("*.css");
+    filter << QString::fromLatin1("*.qss");
+    filter << QString::fromLatin1("*.css");
     QFileInfoList fileNames;
 
     // read from user, resource and built-in directory
@@ -271,12 +288,12 @@ void DlgGeneralImp::loadSettings()
     }
 
     // now add all unique items
-    this->StyleSheets->addItem(tr("No style sheet"), QString::fromAscii(""));
+    this->StyleSheets->addItem(tr("No style sheet"), QString::fromLatin1(""));
     for (QMap<QString, QString>::iterator it = cssFiles.begin(); it != cssFiles.end(); ++it) {
         this->StyleSheets->addItem(it.key(), it.value());
     }
 
-    this->selectedStyleSheet = QString::fromAscii(hGrp->GetASCII("StyleSheet").c_str());
+    this->selectedStyleSheet = QString::fromLatin1(hGrp->GetASCII("StyleSheet").c_str());
     index = this->StyleSheets->findData(this->selectedStyleSheet);
     if (index > -1) this->StyleSheets->setCurrentIndex(index);
 }

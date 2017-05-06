@@ -9,18 +9,24 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
-    ${QT_QTCORE_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
 )
 
-
 set(Mesh_LIBS
     ${Boost_LIBRARIES}
-    ${QT_QTCORE_LIBRARY}
     FreeCADBase
     FreeCADApp
 )
+
+if (BUILD_QT5)
+    include_directories(
+        ${Qt5Concurrent_INCLUDE_DIRS}
+    )
+    list(APPEND Mesh_LIBS
+        ${Qt5Concurrent_LIBRARIES}
+    )
+endif()
 
 generate_from_xml(FacetPy)
 generate_from_xml(MeshFeaturePy)
@@ -87,6 +93,10 @@ SOURCE_GROUP("Core" FILES ${Core_SRCS})
 SET(WildMagic4_SRCS
     WildMagic4/Wm4ApprCylinderFit3.cpp
     WildMagic4/Wm4ApprCylinderFit3.h
+    WildMagic4/Wm4ApprGaussPointsFit2.cpp
+    WildMagic4/Wm4ApprGaussPointsFit2.h
+    WildMagic4/Wm4ApprGaussPointsFit3.cpp
+    WildMagic4/Wm4ApprGaussPointsFit3.h
     WildMagic4/Wm4ApprLineFit3.cpp
     WildMagic4/Wm4ApprLineFit3.h
     WildMagic4/Wm4ApprPlaneFit3.cpp
@@ -99,8 +109,22 @@ SET(WildMagic4_SRCS
     WildMagic4/Wm4ApprSphereFit3.h
     WildMagic4/Wm4BandedMatrix.h
     WildMagic4/Wm4BandedMatrix.inl
+    WildMagic4/Wm4Box2.h
+    WildMagic4/Wm4Box2.inl
     WildMagic4/Wm4Box3.h
     WildMagic4/Wm4Box3.inl
+    WildMagic4/Wm4ContBox2.cpp
+    WildMagic4/Wm4ContBox2.h
+    WildMagic4/Wm4ContBox3.cpp
+    WildMagic4/Wm4ContBox3.h
+    WildMagic4/Wm4ConvexHull.cpp
+    WildMagic4/Wm4ConvexHull.h
+    WildMagic4/Wm4ConvexHull1.cpp
+    WildMagic4/Wm4ConvexHull1.h
+    WildMagic4/Wm4ConvexHull2.cpp
+    WildMagic4/Wm4ConvexHull2.h
+    WildMagic4/Wm4ConvexHull3.cpp
+    WildMagic4/Wm4ConvexHull3.h
     WildMagic4/Wm4DelPolygonEdge.cpp
     WildMagic4/Wm4DelPolygonEdge.h
     WildMagic4/Wm4DelPolyhedronFace.cpp
@@ -207,6 +231,9 @@ SET(WildMagic4_SRCS
     WildMagic4/Wm4Polynomial1.inl
     WildMagic4/Wm4QuadricSurface.cpp
     WildMagic4/Wm4QuadricSurface.h
+    WildMagic4/Wm4Quaternion.cpp
+    WildMagic4/Wm4Quaternion.h
+    WildMagic4/Wm4Quaternion.inl
     WildMagic4/Wm4Query.h
     WildMagic4/Wm4Query.inl
     WildMagic4/Wm4Query2.h
@@ -289,6 +316,8 @@ SET(Mesh_SRCS
     ${Mesh_XML_SRCS}
     AppMesh.cpp
     AppMeshPy.cpp
+    Exporter.cpp
+    Exporter.h
     Facet.cpp
     Facet.h
     FacetPyImp.cpp

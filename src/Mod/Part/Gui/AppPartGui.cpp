@@ -13,7 +13,11 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <Standard_math.hxx>
+# include <Inventor/system/inttypes.h>
 #endif
+
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -24,6 +28,7 @@
 
 #include <Mod/Part/App/PropertyTopoShape.h>
 
+#include "AttacherTexts.h"
 #include "SoBrepFaceSet.h"
 #include "SoBrepEdgeSet.h"
 #include "SoBrepPointSet.h"
@@ -76,17 +81,32 @@ void loadPartResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-static struct PyMethodDef PartGui_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+namespace PartGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("PartGui")
+    {
+        initialize("This module is the PartGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
 };
 
-extern "C" {
-void PartGuiExport initPartGui()
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace PartGui
+
+PyMOD_INIT_FUNC(PartGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     // load needed modules
@@ -95,11 +115,23 @@ void PartGuiExport initPartGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
 
-    (void) Py_InitModule("PartGui", PartGui_methods);   /* mod name, table ptr */
+    PyObject* partGuiModule = PartGui::initModule();
+
     Base::Console().Log("Loading GUI of Part module... done\n");
+
+#if PY_MAJOR_VERSION >= 3
+    static struct PyModuleDef pAttachEngineTextsModuleDef = {PyModuleDef_HEAD_INIT,"AttachEngineResources", "AttachEngineResources", -1, 0};
+    PyObject* pAttachEngineTextsModule = PyModule_Create(&pAttachEngineTextsModuleDef);
+#else
+    PyObject* pAttachEngineTextsModule = Py_InitModule3("AttachEngineResources", AttacherGui::AttacherGuiPy::Methods,
+        "AttachEngine Gui resources");
+#endif
+
+    Py_INCREF(pAttachEngineTextsModule);
+    PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
     PartGui::SoBrepFaceSet                  ::initClass();
     PartGui::SoBrepEdgeSet                  ::initClass();
@@ -125,6 +157,7 @@ void PartGuiExport initPartGui()
     PartGui::ViewProviderLoft               ::init();
     PartGui::ViewProviderSweep              ::init();
     PartGui::ViewProviderOffset             ::init();
+    PartGui::ViewProviderOffset2D           ::init();
     PartGui::ViewProviderThickness          ::init();
     PartGui::ViewProviderCustom             ::init();
     PartGui::ViewProviderCustomPython       ::init();
@@ -156,6 +189,13 @@ void PartGuiExport initPartGui()
     CreatePartCommands();
     CreateSimplePartCommands();
     CreateParamPartCommands();
+    try{
+        Py::Object ae = Base::Interpreter().runStringObject("__import__('AttachmentEditor.Commands').Commands");
+        Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"),ae);
+    } catch (Base::PyException &err){
+        err.ReportException();
+    }
+
 
     // register preferences pages
     (void)new Gui::PrefPageProducer<PartGui::DlgSettingsGeneral>      ( QT_TRANSLATE_NOOP("QObject","Part design") );
@@ -174,5 +214,6 @@ void PartGuiExport initPartGui()
     Gui::BitmapFactoryInst& rclBmpFactory = Gui::BitmapFactory();
     rclBmpFactory.addXPM("PartFeature",(const char**) PartFeature_xpm);
     rclBmpFactory.addXPM("PartFeatureImport",(const char**) PartFeatureImport_xpm);
+
+    PyMOD_Return(partGuiModule);
 }
-} // extern "C"

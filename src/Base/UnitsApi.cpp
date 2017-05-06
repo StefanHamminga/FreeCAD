@@ -31,7 +31,8 @@
 #include "UnitsApi.h"
 #include "UnitsSchemaInternal.h"
 #include "UnitsSchemaImperial1.h"
-#include "UnitsSchemaMKS.h" 
+#include "UnitsSchemaMKS.h"
+#include "UnitsSchemaCentimeters.h"
 
 #ifndef M_PI
 #define M_PI       3.14159265358979323846
@@ -66,11 +67,11 @@ UnitSystem    UnitsApi::actSystem = SI1;
 //QString  UnitsApi::UserPrefUnit   [50];
 int      UnitsApi::UserPrefDecimals = 2;
 
-UnitsApi::UnitsApi(const char* filter)
+UnitsApi::UnitsApi(const char* /*filter*/)
 {
 }
 
-UnitsApi::UnitsApi(const std::string& filter)
+UnitsApi::UnitsApi(const std::string& /*filter*/)
 {
 }
 
@@ -90,6 +91,8 @@ void UnitsApi::setSchema(UnitSystem s)
         case SI2 : UserPrefSystem = new UnitsSchemaMKS(); break;
         case Imperial1: UserPrefSystem = new UnitsSchemaImperial1(); break;
         case ImperialDecimal: UserPrefSystem = new UnitsSchemaImperialDecimal(); break;
+        case Centimeters: UserPrefSystem = new UnitsSchemaCentimeters(); break;
+        case ImperialBuilding: UserPrefSystem = new UnitsSchemaImperialBuilding(); break;
         default  : UserPrefSystem = new UnitsSchemaInternal(); s = SI1; break;
     }
 
@@ -113,9 +116,9 @@ void UnitsApi::setSchema(UnitSystem s)
 
 // === static translation methodes ==========================================
 
-QString UnitsApi::schemaTranslate(Base::Quantity quant,double &factor,QString &unitString)
+QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
 {
-	return UserPrefSystem->schemaTranslate(quant,factor,unitString);
+    return UserPrefSystem->schemaTranslate(quant,factor,unitString);
 }
 
 
@@ -123,7 +126,7 @@ QString UnitsApi::schemaTranslate(Base::Quantity quant,double &factor,QString &u
 //{
 //    return UserPrefSystem->toStrWithUserPrefs(t,Value);
 //    //double UnitValue = Value/UserPrefFactor[t];
-//    //return QString::fromAscii("%1 %2").arg(UnitValue).arg(UserPrefUnit[t]);
+//    //return QString::fromLatin1("%1 %2").arg(UnitValue).arg(UserPrefUnit[t]);
 //}
 //
 //void UnitsApi::toStrWithUserPrefs(QuantityType t,double Value,QString &outValue,QString &outUnit)
@@ -145,7 +148,7 @@ double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u)
             return q.getValue();
-        throw Base::Exception("Wrong unit type!");
+        throw Base::UnitsMismatchError("Wrong unit type!");
     }
     else if (PyFloat_Check(ArgObj)) {
         return PyFloat_AsDouble(ArgObj);
@@ -154,7 +157,7 @@ double UnitsApi::toDbl(PyObject *ArgObj, const Base::Unit &u)
         return static_cast<double>(PyInt_AsLong(ArgObj));
     }
     else {
-        throw Base::Exception("Wrong parameter type!");
+        throw Base::UnitsMismatchError("Wrong parameter type!");
     }
 }
 
@@ -174,7 +177,7 @@ Quantity UnitsApi::toQuantity(PyObject *ArgObj, const Base::Unit &u)
         d = static_cast<double>(PyInt_AsLong(ArgObj));
     }
     else {
-        throw Base::Exception("Wrong parameter type!");
+        throw Base::UnitsMismatchError("Wrong parameter type!");
     }
 
     return Quantity(d,u);

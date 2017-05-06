@@ -346,14 +346,14 @@ FaceTypedPlane::FaceTypedPlane() : FaceTypedBase(GeomAbs_Plane)
 
 static Handle(Geom_Plane) getGeomPlane(const TopoDS_Face &faceIn)
 {
-  Handle_Geom_Plane planeSurfaceOut;
-  Handle_Geom_Surface surface = BRep_Tool::Surface(faceIn);
+  Handle(Geom_Plane) planeSurfaceOut;
+  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
   if (!surface.IsNull())
   {
     planeSurfaceOut = Handle(Geom_Plane)::DownCast(surface);
     if (planeSurfaceOut.IsNull())
     {
-      Handle_Geom_RectangularTrimmedSurface trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
+      Handle(Geom_RectangularTrimmedSurface) trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
       if (!trimmedSurface.IsNull())
         planeSurfaceOut = Handle(Geom_Plane)::DownCast(trimmedSurface->BasisSurface());
     }
@@ -435,11 +435,28 @@ FaceTypedCylinder::FaceTypedCylinder() : FaceTypedBase(GeomAbs_Cylinder)
 {
 }
 
+static Handle(Geom_CylindricalSurface) getGeomCylinder(const TopoDS_Face &faceIn)
+{
+  Handle(Geom_CylindricalSurface) cylinderSurfaceOut;
+  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
+  if (!surface.IsNull())
+  {
+    cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(surface);
+    if (cylinderSurfaceOut.IsNull())
+    {
+      Handle(Geom_RectangularTrimmedSurface) trimmedSurface = Handle(Geom_RectangularTrimmedSurface)::DownCast(surface);
+      if (!trimmedSurface.IsNull())
+        cylinderSurfaceOut = Handle(Geom_CylindricalSurface)::DownCast(trimmedSurface->BasisSurface());
+    }
+  }
+
+  return cylinderSurfaceOut;
+}
+
 bool FaceTypedCylinder::isEqual(const TopoDS_Face &faceOne, const TopoDS_Face &faceTwo) const
 {
-    //check if these handles are valid?
-    Handle(Geom_CylindricalSurface) surfaceOne = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faceOne));
-    Handle(Geom_CylindricalSurface) surfaceTwo = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faceTwo));
+    Handle(Geom_CylindricalSurface) surfaceOne = getGeomCylinder(faceOne);
+    Handle(Geom_CylindricalSurface) surfaceTwo = getGeomCylinder(faceTwo);
     if (surfaceOne.IsNull() || surfaceTwo.IsNull())
         return false;//probably need an error
     gp_Cylinder cylinderOne = surfaceOne->Cylinder();
@@ -487,7 +504,7 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
     gp_Ax1 cylAxis = cylinder->Axis();
     gp_Vec cv(cylAxis.Location().X(), cylAxis.Location().Y(), cylAxis.Location().Z()); // center of cylinder
     gp_Vec av(cylAxis.Direction().X(), cylAxis.Direction().Y(), cylAxis.Direction().Z()); // axis of cylinder
-    Handle_Geom_Plane plane = new Geom_Plane(gp_Ax3(cylAxis.Location(), cylAxis.Direction()));
+    Handle(Geom_Plane) plane = new Geom_Plane(gp_Ax3(cylAxis.Location(), cylAxis.Direction()));
     double totalArc = 0.0;
     bool firstSegment = false;
     bool secondSegment = false;
@@ -623,7 +640,9 @@ TopoDS_Face FaceTypedCylinder::buildFace(const FaceVectorType &faces) const
 
     // Find outer boundary wires that cut the cylinder into segments. This will be the case f we
     // have removed the seam edges of a complete (360 degrees) cylindrical face
-    Handle(Geom_CylindricalSurface) surface = Handle(Geom_CylindricalSurface)::DownCast(BRep_Tool::Surface(faces.at(0)));
+    Handle(Geom_CylindricalSurface) surface = getGeomCylinder(faces.at(0));
+    if (surface.IsNull())
+      return dummy;
     std::vector<TopoDS_Wire> innerWires, encirclingWires;
     std::vector<TopoDS_Wire>::iterator wireIt;    
     for (wireIt = allWires.begin(); wireIt != allWires.end(); ++wireIt) {
@@ -773,7 +792,7 @@ void collectConicEdges(const TopoDS_Shell &shell, TopTools_IndexedMapOfShape &ma
       continue;
     TopLoc_Location location;
     Standard_Real first, last;
-    const Handle_Geom_Curve &curve = BRep_Tool::Curve(currentEdge, location, first, last);
+    const Handle(Geom_Curve) &curve = BRep_Tool::Curve(currentEdge, location, first, last);
     if (curve.IsNull())
       continue;
     if (curve->IsKind(STANDARD_TYPE(Geom_Conic)))

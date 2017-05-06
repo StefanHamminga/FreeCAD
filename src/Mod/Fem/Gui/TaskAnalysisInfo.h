@@ -34,7 +34,7 @@ class Ui_TaskAnalysisInfo;
 class SoEventCallback;
 
 namespace Base {
-    class Polygon2D;
+    class Polygon2d;
 }
 namespace App {
     class Property;
@@ -49,7 +49,7 @@ namespace Fem{
     class FemAnalysis;
 }
 
-namespace FemGui { 
+namespace FemGui {
 
 class ViewProviderFemMesh;
 

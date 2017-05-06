@@ -35,7 +35,7 @@
 using namespace MeshGui;
 
 
-RemoveComponents::RemoveComponents(QWidget* parent, Qt::WFlags fl)
+RemoveComponents::RemoveComponents(QWidget* parent, Qt::WindowFlags fl)
   : QWidget(parent, fl)
 {
     ui = new Ui_RemoveComponents;
@@ -87,7 +87,7 @@ void RemoveComponents::on_deselectAll_clicked()
 
 void RemoveComponents::on_selectComponents_clicked()
 {
-    // select components upto a certain size
+    // select components up to a certain size
     int size = ui->spSelectComp->value();
     meshSel.selectComponent(size);
 }
@@ -157,7 +157,7 @@ void RemoveComponents::reject()
 
 // -------------------------------------------------
 
-RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WFlags fl)
+RemoveComponentsDialog::RemoveComponentsDialog(QWidget* parent, Qt::WindowFlags fl)
   : QDialog(parent, fl)
 {
     widget = new RemoveComponents(this);

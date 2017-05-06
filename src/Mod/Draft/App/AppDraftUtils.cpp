@@ -27,27 +27,25 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
 
-extern struct PyMethodDef DraftUtils_methods[];
-
-PyDoc_STRVAR(module_DraftUtils_doc, "The DraftUtils module contains utility functions for the Draft module.");
+namespace DraftUtils {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-    
-    void DraftUtilsExport initDraftUtils()
-    {
-        // load dependent module
-        try {
-            Base::Interpreter().loadModule("Part");
-        }
-        catch(const Base::Exception& e) {
-            PyErr_SetString(PyExc_ImportError, e.what());
-            return;
-        }
-        Py_InitModule3("DraftUtils", DraftUtils_methods, module_DraftUtils_doc);   /* mod name, table ptr */
-        Base::Console().Log("Loading DraftUtils module... done\n");
+PyMOD_INIT_FUNC(DraftUtils)
+{
+    // load dependent module
+    try {
+        Base::Interpreter().loadModule("Part");
     }
-
-} // extern "C"
+    catch(const Base::Exception& e) {
+        PyErr_SetString(PyExc_ImportError, e.what());
+        PyMOD_Return(0);
+    }
+    PyObject* mod = DraftUtils::initModule();
+    Base::Console().Log("Loading DraftUtils module... done\n");
+    PyMOD_Return(mod);
+}

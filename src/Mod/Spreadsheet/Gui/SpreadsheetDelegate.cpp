@@ -29,6 +29,7 @@
 #endif
 
 #include "SpreadsheetDelegate.h"
+#include "LineEdit.h"
 #include <App/DocumentObject.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <Gui/ExpressionCompleter.h>
@@ -45,7 +46,8 @@ QWidget *SpreadsheetDelegate::createEditor(QWidget *parent,
                                           const QStyleOptionViewItem &,
                                           const QModelIndex &index) const
 {
-    Gui::ExpressionLineEdit *editor = new Gui::ExpressionLineEdit(parent);
+    SpreadsheetGui::LineEdit *editor = new SpreadsheetGui::LineEdit(parent);
+    editor->setIndex(index);
 
     editor->setDocumentObject(sheet);
     connect(editor, SIGNAL(returnPressed()), this, SLOT(commitAndCloseEditor()));
@@ -84,8 +86,10 @@ void SpreadsheetDelegate::setModelData(QWidget *editor,
     }
 }
 
-QSize SpreadsheetDelegate::sizeHint( const QStyleOptionViewItem & option, const QModelIndex & index ) const
+QSize SpreadsheetDelegate::sizeHint(const QStyleOptionViewItem & option, const QModelIndex & index) const
 {
+    Q_UNUSED(option);
+    Q_UNUSED(index);
     return QSize();
 }
 

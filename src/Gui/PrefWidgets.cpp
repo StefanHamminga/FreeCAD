@@ -28,6 +28,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <App/Application.h>
 
 #include "PrefWidgets.h"
@@ -102,6 +103,7 @@ QByteArray PrefWidget::paramGrpPath() const
  */
 void PrefWidget::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
 {
+    Q_UNUSED(rCaller);
     if (std::strcmp(sReason,m_sPrefName) == 0)
         restorePreferences();
 }
@@ -488,7 +490,7 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
 
     QMenu *editMenu = lineEdit()->createStandardContextMenu();
     editMenu->setTitle(tr("Edit"));
-    QMenu* menu = new QMenu(QString::fromAscii("PrefQuantitySpinBox"));
+    QMenu* menu = new QMenu(QString::fromLatin1("PrefQuantitySpinBox"));
 
     menu->addMenu(editMenu);
     menu->addSeparator();
@@ -514,7 +516,7 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     // call the menu and wait until its back
     QAction *userAction = menu->exec(event->globalPos());
 
-    // look what the user has choosen
+    // look what the user has chosen
     if (userAction == saveValueAction) {
         pushToHistory(this->text());
     }
@@ -534,6 +536,16 @@ void PrefQuantitySpinBox::contextMenuEvent(QContextMenuEvent *event)
     delete menu;
 }
 
+void PrefQuantitySpinBox::onSave()
+{
+    pushToHistory();
+}
+
+void PrefQuantitySpinBox::onRestore()
+{
+    setToLastUsedValue();
+}
+
 void PrefQuantitySpinBox::pushToHistory(const QString &valueq)
 {
     Q_D(PrefQuantitySpinBox);
@@ -546,19 +558,24 @@ void PrefQuantitySpinBox::pushToHistory(const QString &valueq)
 
     std::string value(val.toUtf8());
     if (d->handle.isValid()) {
-        // do nothing if the given value is on top of the history
-        std::string tHist = d->handle->GetASCII("Hist0");
-        if (tHist != val.toUtf8().constData()) {
-            for (int i = d->historySize -1 ; i>=0 ;i--) {
-                QByteArray hist1 = "Hist";
-                QByteArray hist0 = "Hist";
-                hist1.append(QByteArray::number(i+1));
-                hist0.append(QByteArray::number(i));
-                std::string tHist = d->handle->GetASCII(hist0);
-                if (!tHist.empty())
-                    d->handle->SetASCII(hist1,tHist.c_str());
+        try {
+            // do nothing if the given value is on top of the history
+            std::string tHist = d->handle->GetASCII("Hist0");
+            if (tHist != val.toUtf8().constData()) {
+                for (int i = d->historySize -1 ; i>=0 ;i--) {
+                    QByteArray hist1 = "Hist";
+                    QByteArray hist0 = "Hist";
+                    hist1.append(QByteArray::number(i+1));
+                    hist0.append(QByteArray::number(i));
+                    std::string tHist = d->handle->GetASCII(hist0);
+                    if (!tHist.empty())
+                        d->handle->SetASCII(hist1,tHist.c_str());
+                }
+                d->handle->SetASCII("Hist0",value.c_str());
             }
-            d->handle->SetASCII("Hist0",value.c_str());
+        }
+        catch (const Base::Exception& e) {
+            Console().Warning("pushToHistory: %s\n", e.what());
         }
     }
 }
@@ -594,7 +611,11 @@ void PrefQuantitySpinBox::setToLastUsedValue()
 void PrefQuantitySpinBox::setParamGrpPath(const QByteArray& path)
 {
     Q_D(PrefQuantitySpinBox);
-    d->handle = App::GetApplication().GetParameterGroupByPath(path);
+    QByteArray groupPath = path;
+    if (!groupPath.startsWith("User parameter:")) {
+        groupPath.prepend("User parameter:BaseApp/Preferences/");
+    }
+    d->handle = App::GetApplication().GetParameterGroupByPath(groupPath);
     if (d->handle.isValid())
         d->prefGrp = path;
 }

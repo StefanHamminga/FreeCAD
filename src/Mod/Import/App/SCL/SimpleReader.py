@@ -107,11 +107,11 @@ class SimpleParser:
 
         for i in self._p21loader._instances_definition.keys():
             #print i
-            if not self.instanceMape.has_key(i):
+            if i not in self.instanceMape:
                 self._create_entity_instance(i)
 
     def _create_entity_instance(self, instance_id):
-        if self._p21loader._instances_definition.has_key(instance_id):
+        if instance_id in self._p21loader._instances_definition:
             instance_definition = self._p21loader._instances_definition[instance_id]
             #print "Instance definition to process",instance_definition
             # first find class name
@@ -144,11 +144,11 @@ class SimpleParser:
                 elif i[0] == '#':
                     key = int(i[1:])
                     #print 'Item: ',int(i[1:])
-                    if self.instanceMape.has_key(key):
+                    if key in self.instanceMape:
                         attrList[n] =  self.instanceMape[key]
                     else:
                         self._create_entity_instance(key)
-                        if not self.instanceMape.has_key(key):
+                        if key not in self.instanceMape:
                             raise NameError("Needed instance not instanciated: ",key)
                         else:
                             attrList[n] =  self.instanceMape[key]
@@ -165,7 +165,7 @@ class SimpleParser:
 
 if __name__ == "__main__":
     sys.path.append('..') # path where config_control_design.py is found
-    parser = SimpleParser("Aufspannung.stp") # simple test file
+    parser = SimpleReader("Aufspannung.stp") # simple test file
     #parser.instaciate()
     parser.writeGraphViz('TestGrap.gv')
     #dot.exe -Tsvg -o Test.svg e:\fem-dev\src\Mod\Import\App\SCL\TestGrap-geo.gv

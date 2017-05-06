@@ -28,6 +28,9 @@
 # include <stdint.h>
 #endif
 
+#include <sstream>
+#include <iomanip>
+
 namespace App
 {
 
@@ -55,9 +58,9 @@ public:
     bool operator==(const Color& c) const
     {
         return getPackedValue() == c.getPackedValue();
-        //return (c.r==r && c.g==g && c.b==b && c.a==a); 
+        //return (c.r==r && c.g==g && c.b==b && c.a==a);
     }
-    bool operator!=(const Color& c) const 
+    bool operator!=(const Color& c) const
     {
         return !operator==(c);
     }
@@ -101,6 +104,31 @@ public:
                 (uint32_t)(b*255.0f + 0.5f) << 8  |
                 (uint32_t)(a*255.0f + 0.5f));
     }
+    /**
+     * creates FC Color from template type, e.g. Qt QColor
+     */
+    template <typename T>
+    void setValue(const T& q)
+    { set(q.redF(),q.greenF(),q.blueF()); }
+    /**
+     * returns a template type e.g. Qt color equivalent to FC color
+     *
+     */
+    template <typename T>
+    inline T asValue(void) const {
+        return(T(int(r*255.0),int(g*255.0),int(b*255.0)));
+    }
+    /**
+     * returns color as CSS color "#RRGGBB"
+     *
+     */
+    std::string asCSSString() {
+        std::stringstream ss;
+        ss << "#" << std::hex << std::uppercase << std::setfill('0') << std::setw(2) << int(r*255.0)
+                                                                     << std::setw(2) << int(g*255.0)
+                                                                     << std::setw(2) << int(b*255.0);
+        return ss.str();
+}
 
     /// color values, public accesible
     float r,g,b,a;
@@ -111,7 +139,7 @@ public:
 class AppExport Material
 {
 public:
-    enum MaterialType { 
+    enum MaterialType {
         BRASS,
         BRONZE,
         COPPER,
@@ -175,14 +203,14 @@ public:
      *  \li Jade
      *  \li Ruby
      *  \li Emerald
-     * Furthermore there two additional modes \a Default which defines a kind of grey metalic and user defined that
+     * Furthermore there two additional modes \a Default which defines a kind of grey metallic and user defined that
      * does nothing.
      * The Color and the other properties of the material are defined in the range [0-1].
      * If \a MatName is an unknown material name then the type USER_DEFINED is set and the material doesn't get changed.
      */
     void set(const char* MatName);
     /**
-     * This method is provided for convenience which does basically the same as the method above unless that it accepts a MaterialType 
+     * This method is provided for convenience which does basically the same as the method above unless that it accepts a MaterialType
      * as argument.
      */
     void setType(const MaterialType MatType);

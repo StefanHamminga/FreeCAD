@@ -1,5 +1,6 @@
 <RCC>
-    <qresource> 
+    <qresource>
+        <file>icons/CompleteWorkbench.svg</file>
         <file>translations/Complete_af.qm</file>
         <file>translations/Complete_de.qm</file>
         <file>translations/Complete_fi.qm</file>
@@ -24,5 +25,12 @@
         <file>translations/Complete_hu.qm</file>
         <file>translations/Complete_pt-PT.qm</file>
         <file>translations/Complete_sr.qm</file>
+        <file>translations/Complete_el.qm</file>
+        <file>translations/Complete_sl.qm</file>
+        <file>translations/Complete_eu.qm</file>
+        <file>translations/Complete_ca.qm</file>
+        <file>translations/Complete_gl.qm</file>
+        <file>translations/Complete_kab.qm</file>
+        <file>translations/Complete_ko.qm</file>
     </qresource>
-</RCC> 
+</RCC>

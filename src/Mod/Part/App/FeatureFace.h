@@ -31,30 +31,25 @@ namespace Part
 
 class PartExport Face : public Part::Feature
 {
-    PROPERTY_HEADER(Part::Face);
+    PROPERTY_HEADER_WITH_OVERRIDE(Part::Face);
 
 public:
     Face();
 
     App::PropertyLinkList   Sources;
+    App::PropertyString FaceMakerClass;
 
     /** @name methods override feature */
     //@{
     /// recalculate the feature
-    App::DocumentObjectExecReturn *execute(void);
-    short mustExecute() const;
+    App::DocumentObjectExecReturn *execute(void) override;
+    short mustExecute() const override;
     /// returns the type name of the ViewProvider
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName(void) const override {
         return "PartGui::ViewProviderFace";
     }
+    void setupObject() override;
     //@}
-
-protected:
-    TopoDS_Shape makeFace(const std::vector<TopoDS_Wire>&) const;
-    TopoDS_Shape makeFace(std::list<TopoDS_Wire>&) const; // for internal use only
-
-private:
-    class Wire_Compare;
 };
 
 } //namespace Part

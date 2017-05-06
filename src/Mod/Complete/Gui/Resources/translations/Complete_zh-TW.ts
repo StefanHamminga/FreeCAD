@@ -24,7 +24,7 @@
     <message>
         <location filename="../../Workbench.cpp" line="+57"/>
         <source>Self-test...</source>
-        <translation>自我檢測</translation>
+        <translation>自我檢測...</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -37,7 +37,7 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>&amp;繪圖</translation>
+        <translation>繪圖(&amp;Dr)</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -65,13 +65,17 @@
         <translation>元件</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">參數</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>物件顯示</translation>
+        <translation type="obsolete">物件顯示</translation>
     </message>
     <message>
         <location line="+1"/>

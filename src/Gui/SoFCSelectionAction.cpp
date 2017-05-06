@@ -645,7 +645,7 @@ void SoFCDocumentObjectAction::finish()
   atexit_cleanup();
 }
 
-SoFCDocumentObjectAction::SoFCDocumentObjectAction () : _handled(FALSE)
+SoFCDocumentObjectAction::SoFCDocumentObjectAction () : _handled(false)
 {
   SO_ACTION_CONSTRUCTOR(SoFCDocumentObjectAction);
 }
@@ -666,7 +666,7 @@ void SoFCDocumentObjectAction::callDoAction(SoAction *action,SoNode *node)
 
 void SoFCDocumentObjectAction::setHandled()
 {
-  this->_handled = TRUE;
+  this->_handled = true;
 }
 
 SbBool SoFCDocumentObjectAction::isHandled() const
@@ -715,7 +715,7 @@ void SoGLSelectAction::initClass()
 
 SoGLSelectAction::SoGLSelectAction (const SbViewportRegion& region,
                                     const SbViewportRegion& select)
-  : vpregion(region), vpselect(select), _handled(FALSE)
+  : vpregion(region), vpselect(select), _handled(false)
 {
   SO_ACTION_CONSTRUCTOR(SoGLSelectAction);
 }
@@ -742,7 +742,7 @@ void SoGLSelectAction::callDoAction(SoAction *action,SoNode *node)
 
 void SoGLSelectAction::setHandled()
 {
-  this->_handled = TRUE;
+  this->_handled = true;
 }
 
 SbBool SoGLSelectAction::isHandled() const
@@ -790,7 +790,7 @@ void SoVisibleFaceAction::initClass()
   SO_ACTION_ADD_METHOD(SoFCSelection,callDoAction);
 }
 
-SoVisibleFaceAction::SoVisibleFaceAction () : _handled(FALSE)
+SoVisibleFaceAction::SoVisibleFaceAction () : _handled(false)
 {
   SO_ACTION_CONSTRUCTOR(SoVisibleFaceAction);
 }
@@ -811,7 +811,7 @@ void SoVisibleFaceAction::callDoAction(SoAction *action,SoNode *node)
 
 void SoVisibleFaceAction::setHandled()
 {
-  this->_handled = TRUE;
+  this->_handled = true;
 }
 
 SbBool SoVisibleFaceAction::isHandled() const
@@ -821,11 +821,90 @@ SbBool SoVisibleFaceAction::isHandled() const
 
 // ---------------------------------------------------------------
 
+
+SO_ACTION_SOURCE(SoUpdateVBOAction);
+
+/**
+ * The order of the defined SO_ACTION_ADD_METHOD statements is very important. First the base
+ * classes and afterwards subclasses of them must be listed, otherwise the registered methods
+ * of subclasses will be overridden. For more details see the thread in the Coin3d forum
+ * https://www.coin3d.org/pipermail/coin-discuss/2004-May/004346.html.
+ * This means that \c SoSwitch must be listed after \c SoGroup and \c SoFCSelection after
+ * \c SoSeparator because both classes inherits the others.
+ */
+void SoUpdateVBOAction::initClass()
+{
+  SO_ACTION_INIT_CLASS(SoUpdateVBOAction,SoAction);
+
+  SO_ENABLE(SoUpdateVBOAction, SoSwitchElement);
+
+  SO_ACTION_ADD_METHOD(SoNode,nullAction);
+
+  SO_ENABLE(SoUpdateVBOAction, SoModelMatrixElement);
+  SO_ENABLE(SoUpdateVBOAction, SoProjectionMatrixElement);
+  SO_ENABLE(SoUpdateVBOAction, SoCoordinateElement);
+  SO_ENABLE(SoUpdateVBOAction, SoViewVolumeElement);
+  SO_ENABLE(SoUpdateVBOAction, SoViewingMatrixElement);
+  SO_ENABLE(SoUpdateVBOAction, SoViewportRegionElement);
+
+
+  SO_ACTION_ADD_METHOD(SoCamera,callDoAction);
+  SO_ACTION_ADD_METHOD(SoCoordinate3,callDoAction);
+  SO_ACTION_ADD_METHOD(SoCoordinate4,callDoAction);
+  SO_ACTION_ADD_METHOD(SoGroup,callDoAction);
+  SO_ACTION_ADD_METHOD(SoSwitch,callDoAction);
+  SO_ACTION_ADD_METHOD(SoShape,callDoAction);
+  SO_ACTION_ADD_METHOD(SoIndexedFaceSet,callDoAction);
+
+  SO_ACTION_ADD_METHOD(SoSeparator,callDoAction);
+  SO_ACTION_ADD_METHOD(SoFCSelection,callDoAction);
+}
+
+SoUpdateVBOAction::SoUpdateVBOAction ()
+{
+  SO_ACTION_CONSTRUCTOR(SoUpdateVBOAction);
+}
+
+SoUpdateVBOAction::~SoUpdateVBOAction()
+{
+}
+
+void SoUpdateVBOAction::finish()
+{
+  atexit_cleanup();
+}
+
+void SoUpdateVBOAction::beginTraversal(SoNode *node)
+{
+  traverse(node);
+}
+
+void SoUpdateVBOAction::callDoAction(SoAction *action,SoNode *node)
+{
+  node->doAction(action);
+}
+
+// ---------------------------------------------------------------
+
 namespace Gui {
 class SoBoxSelectionRenderActionP {
 public:
     SoBoxSelectionRenderActionP(SoBoxSelectionRenderAction * master) 
-      : master(master) { }
+      : master(master)
+      , searchaction(0)
+      , selectsearch(0)
+      , camerasearch(0)
+      , bboxaction(0)
+      , basecolor(0)
+      , postprocpath(0)
+      , highlightPath(0)
+      , localRoot(0)
+      , xform(0)
+      , cube(0)
+      , drawstyle(0)
+    {
+
+    }
 
     SoBoxSelectionRenderAction * master;
     SoSearchAction * searchaction;
@@ -976,7 +1055,7 @@ SoBoxSelectionRenderAction::constructorCommon(void)
     // Initialize local variables
     PRIVATE(this)->initBoxGraph();
 
-    this->hlVisible = TRUE;
+    this->hlVisible = true;
 
     PRIVATE(this)->basecolor->rgb.setValue(1.0f, 0.0f, 0.0f);
     PRIVATE(this)->drawstyle->linePattern = 0xffff;

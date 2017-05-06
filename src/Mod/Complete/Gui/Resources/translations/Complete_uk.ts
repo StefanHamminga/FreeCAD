@@ -65,18 +65,22 @@
         <translation>Примітиви</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Параметричний</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Поведінка об&apos;єкту</translation>
+        <translation type="obsolete">Поведінка об&apos;єкту</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Wire Tools</source>
-        <translation>Інструмент Струна</translation>
+        <translation>Інструменти каркасу</translation>
     </message>
 </context>
 </TS>

@@ -29,7 +29,7 @@
 #include <TColgp_Array1OfPnt.hxx>
 #include <TColgp_Array2OfPnt.hxx>
 #include <TColgp_Array1OfPnt2d.hxx>
-#include <Handle_Geom_BSplineSurface.hxx>
+#include <Geom_BSplineSurface.hxx>
 #include <math_Matrix.hxx>
 
 #include <Base/Vector3D.h>
@@ -312,7 +312,7 @@ public:
     /**
      * Berechnet eine B-Spline-Flaeche.aus den geg. Punkten
      */
-    virtual Handle_Geom_BSplineSurface CreateSurface(const TColgp_Array1OfPnt& points,
+    virtual Handle(Geom_BSplineSurface) CreateSurface(const TColgp_Array1OfPnt& points,
                                                      int iIter,
                                                      bool bParaCor,
                                                      double fSizeFactor=0.0f);

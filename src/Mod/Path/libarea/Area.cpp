@@ -1,31 +1,7 @@
 // Area.cpp
 
-/*==============================
-Copyright (c) 2011-2015 Dan Heeks
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
-are met:
-1. Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
-2. Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
-3. The name of the author may not be used to endorse or promote products
-   derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
-OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
-IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
-INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
-NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
-THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-==============================*/
-
+// Copyright 2011, Dan Heeks
+// This program is released under the BSD license. See the file COPYING for details.
 
 #include "Area.h"
 #include "AreaOrderer.h"
@@ -34,7 +10,11 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 double CArea::m_accuracy = 0.01;
 double CArea::m_units = 1.0;
+bool CArea::m_clipper_simple = false;
+double CArea::m_clipper_clean_distance = 0.0;
 bool CArea::m_fit_arcs = true;
+int CArea::m_min_arc_points = 4;
+int CArea::m_max_arc_points = 100;
 double CArea::m_single_area_processing_length = 0.0;
 double CArea::m_processing_done = 0.0;
 bool CArea::m_please_abort = false;
@@ -43,6 +23,24 @@ double CArea::m_split_processing_length = 0.0;
 bool CArea::m_set_processing_length_in_split = false;
 double CArea::m_after_MakeOffsets_length = 0.0;
 //static const double PI = 3.1415926535897932;
+
+#define _CAREA_PARAM_DEFINE(_class,_type,_name) \
+    _type CArea::get_##_name() {return _class::_name;}\
+    void CArea::set_##_name(_type _name) {_class::_name = _name;}
+
+#define CAREA_PARAM_DEFINE(_type,_name) \
+    _type CArea::get_##_name() {return m_##_name;}\
+    void CArea::set_##_name(_type _name) {m_##_name = _name;}
+
+_CAREA_PARAM_DEFINE(Point,double,tolerance);
+CAREA_PARAM_DEFINE(bool,fit_arcs)
+CAREA_PARAM_DEFINE(bool,clipper_simple);
+CAREA_PARAM_DEFINE(double,clipper_clean_distance);
+CAREA_PARAM_DEFINE(double,accuracy);
+CAREA_PARAM_DEFINE(double,units);
+CAREA_PARAM_DEFINE(short,min_arc_points);
+CAREA_PARAM_DEFINE(short,max_arc_points);
+CAREA_PARAM_DEFINE(double,clipper_scale);
 
 void CArea::append(const CCurve& curve)
 {
@@ -75,6 +73,75 @@ Point CArea::NearestPoint(const Point& p)const
 	return best_point;
 }
 
+void CArea::ChangeStartToNearest(const Point *point, double min_dist) 
+{
+	for(std::list<CCurve>::iterator It=m_curves.begin(),ItNext=It; 
+            It != m_curves.end(); It=ItNext) 
+    {
+        ++ItNext;
+        if(It->m_vertices.size()<=1)
+            m_curves.erase(It);
+    }
+
+    if(m_curves.empty()) return;
+
+    std::list<CCurve> curves;
+    Point p;
+    if(point) p =*point;
+    if(min_dist < Point::tolerance) 
+        min_dist = Point::tolerance;
+
+    while(m_curves.size()) {
+        std::list<CCurve>::iterator It=m_curves.begin();
+        std::list<CCurve>::iterator ItBest=It++;
+        Point best_point = ItBest->NearestPoint(p);
+        double best_dist = p.dist(best_point);
+        for(; It != m_curves.end(); ++It)
+        {
+            const CCurve& curve = *It;
+            Point near_point;
+            double dist;
+            if(min_dist>Point::tolerance && !curve.IsClosed()) {
+                double d1 = curve.m_vertices.front().m_p.dist(p);
+                double d2 = curve.m_vertices.back().m_p.dist(p);
+                if(d1<d2) {
+                    dist = d1;
+                    near_point = curve.m_vertices.front().m_p;
+                }else{
+                    dist = d2;
+                    near_point = curve.m_vertices.back().m_p;
+                }
+            }else{
+                near_point = curve.NearestPoint(p);
+                dist = near_point.dist(p);
+            }
+            if(dist < best_dist)
+            {
+                best_dist = dist;
+                best_point = near_point;
+                ItBest = It;
+            }
+        }
+        if(ItBest->IsClosed()) {
+            ItBest->ChangeStart(best_point);
+        }else{
+            double dfront = ItBest->m_vertices.front().m_p.dist(best_point);
+            double dback = ItBest->m_vertices.back().m_p.dist(best_point);
+            if(min_dist>Point::tolerance && dfront>min_dist && dback>min_dist) {
+                ItBest->Break(best_point);
+                m_curves.push_back(*ItBest);
+                m_curves.back().ChangeEnd(best_point);
+                ItBest->ChangeStart(best_point);
+            }else if(dfront>dback)
+                ItBest->Reverse();
+        }
+        curves.splice(curves.end(),m_curves,ItBest);
+        p = curves.back().m_vertices.back().m_p;
+    }
+    m_curves.splice(m_curves.end(),curves);
+}
+
+
 void CArea::GetBox(CBox2D &box)
 {
 	for(std::list<CCurve>::iterator It = m_curves.begin(); It != m_curves.end(); It++)
@@ -94,17 +161,22 @@ void CArea::Reorder()
 	// returns 1, if the curves are overlapping
 
 	CAreaOrderer ao;
-	for(std::list<CCurve>::iterator It = m_curves.begin(); It != m_curves.end(); It++)
+	for(std::list<CCurve>::iterator It = m_curves.begin(), ItNext=It; It != m_curves.end(); It=ItNext)
 	{
+        ++ItNext;
 		CCurve& curve = *It;
-		ao.Insert(&curve);
+        if(!It->IsClosed())
+            continue;
+		ao.Insert(make_shared<CCurve>(curve));
 		if(m_set_processing_length_in_split)
 		{
 			CArea::m_processing_done += (m_split_processing_length / m_curves.size());
 		}
+        m_curves.erase(It);
 	}
 
-	*this = ao.ResultArea();
+    if(ao.m_top_level)
+        ao.m_top_level->GetArea(*this);
 }
 
 class ZigZag
@@ -219,13 +291,13 @@ static void make_zig_curve(const CCurve& input_curve, double y0, double y)
 
     // find a high point to start looking from
 	Point top_left;
-	int top_left_index;
+	int top_left_index = 0;
 	bool top_left_found = false;
 	Point top_right;
-	int top_right_index;
+	int top_right_index = 0;
 	bool top_right_found = false;
 	Point bottom_left;
-	int bottom_left_index;
+	int bottom_left_index = 0;
 	bool bottom_left_found = false;
 
 	int i =0;
@@ -736,11 +808,11 @@ void CArea::InsideCurves(const CCurve& curve, std::list<CCurve> &curves_inside)c
 	std::list<Point> pts;
 	CurveIntersections(curve, pts);
 
-	//2.seperate curve2 in multiple curves between these intersections.
+	//2.separate curve2 in multiple curves between these intersections.
 	std::list<CCurve> separate_curves;
 	curve.ExtractSeparateCurves(pts, separate_curves);
 
-	//3. if the midpoint of a seperate curve lies in a1, then we return it.
+	//3. if the midpoint of a separate curve lies in a1, then we return it.
 	for(std::list<CCurve>::iterator It = separate_curves.begin(); It != separate_curves.end(); It++)
 	{
 		CCurve &curve = *It;

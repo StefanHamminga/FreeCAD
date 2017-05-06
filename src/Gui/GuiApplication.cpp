@@ -30,6 +30,7 @@
 # include <QDataStream>
 # include <QDebug>
 # include <QFileInfo>
+# include <QFileOpenEvent>
 # include <QSessionManager>
 # include <QTimer>
 #endif
@@ -47,20 +48,28 @@
 #endif
 
 #include "GuiApplication.h"
+#include "Application.h"
 #include "SpaceballEvent.h"
 #include "MainWindow.h"
 
 #include <Base/Console.h>
 #include <Base/Exception.h>
-#include <Base/Interpreter.h>
 
 #include <App/Application.h>
 
 using namespace Gui;
 
-GUIApplication::GUIApplication(int & argc, char ** argv, int exitcode)
-    : GUIApplicationNativeEventAware(argc, argv), systemExit(exitcode)
+GUIApplication::GUIApplication(int & argc, char ** argv)
+    : GUIApplicationNativeEventAware(argc, argv)
 {
+#if QT_VERSION > 0x050000
+    // In Qt 4.x 'commitData' is a virtual method
+    connect(this, SIGNAL(commitDataRequest(QSessionManager &)),
+            SLOT(commitData(QSessionManager &)), Qt::DirectConnection);
+#endif
+#if QT_VERSION >= 0x050600
+    setFallbackSessionManagementEnabled(false);
+#endif
 }
 
 GUIApplication::~GUIApplication()
@@ -69,9 +78,10 @@ GUIApplication::~GUIApplication()
 
 bool GUIApplication::notify (QObject * receiver, QEvent * event)
 {
-    if (!receiver && event) {
+    if (!receiver) {
         Base::Console().Log("GUIApplication::notify: Unexpected null receiver, event type: %d\n",
             (int)event->type());
+        return false;
     }
     try {
         if (event->type() == Spaceball::ButtonEvent::ButtonEventType || 
@@ -80,8 +90,9 @@ bool GUIApplication::notify (QObject * receiver, QEvent * event)
         else
             return QApplication::notify(receiver, event);
     }
-    catch (const Base::SystemExitException&) {
-        qApp->exit(systemExit);
+    catch (const Base::SystemExitException &e) {
+        caughtException.reset(new Base::SystemExitException(e));
+        qApp->exit(e.getExitCode());
         return true;
     }
     catch (const Base::Exception& e) {
@@ -142,6 +153,21 @@ void GUIApplication::commitData(QSessionManager &manager)
         App::GetApplication().closeAllDocuments();
         Gui::getMainWindow()->close();
     }
+}
+
+bool GUIApplication::event(QEvent * ev)
+{
+    if (ev->type() == QEvent::FileOpen) {
+        QString file = static_cast<QFileOpenEvent*>(ev)->file();
+        QFileInfo fi(file);
+        if (fi.suffix().toLower() == QLatin1String("fcstd")) {
+            QByteArray fn = file.toUtf8();
+            Application::Instance->open(fn, "FreeCAD");
+            return true;
+        }
+    }
+
+    return GUIApplicationNativeEventAware::event(ev);
 }
 
 // ----------------------------------------------------------------------------
@@ -208,8 +234,8 @@ public:
     bool running;
 };
 
-GUISingleApplication::GUISingleApplication(int & argc, char ** argv, int exitcode)
-    : GUIApplication(argc, argv, exitcode),
+GUISingleApplication::GUISingleApplication(int & argc, char ** argv)
+    : GUIApplication(argc, argv),
       d_ptr(new Private(this))
 {
     d_ptr->setupConnection();

@@ -35,7 +35,7 @@
 #include <Base/Matrix.h>
 
 namespace Base{
-  class Polygon2D;
+  class Polygon2d;
   class ViewProjMethod;
 }
 
@@ -103,7 +103,7 @@ public:
     void RecalcBoundBox (void);
 
     /** Returns the point at the given index. This method is rather slow and should be
-     * called occassionally only. For fast access the MeshPointIterator interfsce should
+     * called occasionally only. For fast access the MeshPointIterator interfsce should
      * be used.
      */
     inline MeshPoint GetPoint (unsigned long ulIndex) const;
@@ -114,7 +114,7 @@ public:
     std::vector<Base::Vector3f> CalcVertexNormals() const;
 
     /** Returns the facet at the given index. This method is rather slow and should be
-     * called occassionally only. For fast access the MeshFacetIterator interface should
+     * called occasionally only. For fast access the MeshFacetIterator interface should
      * be used.
      */
     inline MeshGeomFacet GetFacet (unsigned long ulIndex) const;
@@ -130,7 +130,7 @@ public:
                                     unsigned long &rulNIdx1, unsigned long &rulNIdx2) const;
 
     /** Determines all facets that are associated to this point. This method is very
-     * slow and should be called occassionally only.
+     * slow and should be called occasionally only.
      */
     std::vector<unsigned long> HasFacets (const MeshPointIterator &rclIter) const;
 
@@ -141,12 +141,24 @@ public:
     /** Returns the array of all data points. */
     const MeshPointArray& GetPoints (void) const { return _aclPointArray; }
 
+    /** Returns a modifier for the point array */
+    MeshPointModifier ModifyPoints()
+    {
+        return MeshPointModifier(_aclPointArray);
+    }
+
     /** Returns the array of all facets */
     const MeshFacetArray& GetFacets (void) const { return _aclFacetArray; }
     /** Returns an array of facets to the given indices. The indices
      * must not be out of range.
      */
     MeshFacetArray GetFacets(const std::vector<unsigned long>&) const;
+
+    /** Returns a modifier for the facet array */
+    MeshFacetModifier ModifyFacets()
+    {
+        return MeshFacetModifier(_aclFacetArray);
+    }
 
     /** Returns the array of all edges.
      *  Notice: The Edgelist will be temporary generated. Changes on the mesh
@@ -255,11 +267,11 @@ public:
     /** @name Modification */
     //@{
     /** Adds a single facet to the data structure. This method is very slow and should
-     * be called occassionally only.
+     * be called occasionally only.
      */
     MeshKernel& operator += (const MeshGeomFacet &rclSFacet);
     /** Adds a single facet to the data structure. This method is very slow and should
-     * be called occassionally only. This does the same as the += operator above.
+     * be called occasionally only. This does the same as the += operator above.
      */
     void AddFacet(const MeshGeomFacet &rclSFacet);
     /** Adds an array of facets to the data structure. This method keeps temporarily 
@@ -278,7 +290,7 @@ public:
      * This method might be useful to close gaps or fill up holes in a mesh.
      * @note This method is quite expensive and should be rarely used.
      */
-    unsigned long AddFacets(const std::vector<MeshFacet> &rclFAry);
+    unsigned long AddFacets(const std::vector<MeshFacet> &rclFAry, bool checkManifolds);
     /**
      * Adds new points and facets to the data structure. The client programmer must make sure
      * that all new points are referenced by the new facets.
@@ -288,13 +300,14 @@ public:
      *
      * Example:
      * We have a mesh with p points and f facets where we want append new points and facets to.
-     * Let's assume that the first facet of \a rclFAry refereneces the 1st, 2nd and 3rd points
+     * Let's assume that the first facet of \a rclFAry references the 1st, 2nd and 3rd points
      * of \a rclPAry then its indices must be p, p+1, p+2 -- not 0,1,2. This is due to the fact
      * that facets of \a rclFAry can also reference point indices of the internal point array.
      * @note This method is quite expensive and should be rarely used.
      */
     unsigned long AddFacets(const std::vector<MeshFacet> &rclFAry,
-                            const std::vector<Base::Vector3f>& rclPAry);
+                            const std::vector<Base::Vector3f>& rclPAry,
+                            bool checkManifolds);
     /**
      * Adds all facets and referenced points to the underlying mesh structure. The client programmer
      * must be sure that both meshes don't have geometric overlaps, otherwise the resulting mesh might
@@ -318,7 +331,7 @@ public:
      * \li Adjust the indices of the neighbour facets of all facets.
      * \li If there is no neighbour facet check if the points can be deleted.
      * True is returned if the facet could be deleted.
-     * @note This method is very slow and should only be called occassionally.
+     * @note This method is very slow and should only be called occasionally.
      * @note After deletion of the facet \a rclIter becomes invalid and must not 
      * be used before setting to a new position.
      */
@@ -331,14 +344,14 @@ public:
      * @note This method overwrites the free usable property of each mesh point.
      * @note This method also removes points from the structure that are no longer
      * referenced by the facets.
-     * @note This method is very slow and should only be called occassionally.
+     * @note This method is very slow and should only be called occasionally.
      */
     void DeleteFacets (const std::vector<unsigned long> &raulFacets);
     /** Deletes the point the iterator points to. The deletion of a point requires the following step:
      * \li Find all associated facets to this point.
      * \li Delete these facets.
      * True is returned if the point could be deleted.
-     * @note This method is very slow and should only be called occassionally.
+     * @note This method is very slow and should only be called occasionally.
      * @note After deletion of the point \a rclIter becomes invalid and must not 
      * be used before setting to a new position.
      */
@@ -351,8 +364,12 @@ public:
      * @note This method overwrites the free usable property of each mesh point.
      */
     void DeletePoints (const std::vector<unsigned long> &raulPoints);
+    /** Removes all as INVALID marked points and facets from the structure. */
+    void RemoveInvalids ();
     /** Rebuilds the neighbour indices for all facets. */
     void RebuildNeighbours (void);
+    /** Removes unreferenced points or facets with invalid indices from the mesh. */
+    void Cleanup();
     /** Clears the whole data structure. */
     void Clear (void);
     /** Replaces the current data structure with the structure built up of the array 
@@ -385,28 +402,26 @@ public:
     inline void SetPoint (unsigned long ulPtIndex, const Base::Vector3f &rPoint);
     /** Sets the point at the given index to the new \a rPoint. */
     inline void SetPoint (unsigned long ulPtIndex, float x, float y, float z);
-    /** Smothes the mesh kernel. */
+    /** Smoothes the mesh kernel. */
     void Smooth(int iterations, float d_max);
     /**
      * CheckFacets() is invoked within this method and all found facets get deleted from the mesh structure. 
      * The facets to be deleted are returned with their geometric reprsentation.
      * @see CheckFacets().
      */
-    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod *pclP, const Base::Polygon2D& rclPoly, 
+    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod *pclP, const Base::Polygon2d& rclPoly,
                     bool bCutInner, std::vector<MeshGeomFacet> &raclFacets);
     /**
      * Does basically the same as method above unless that the facets to be deleted are returned with their
      * index number in the facet array of the mesh structure.
      */
-    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclP, const Base::Polygon2D& rclPoly, 
+    void CutFacets (const MeshFacetGrid& rclGrid, const Base::ViewProjMethod* pclP, const Base::Polygon2d& rclPoly,
                     bool bCutInner, std::vector<unsigned long> &raclCutted);
     //@}
 
 protected:
     /** Rebuilds the neighbour indices for subset of all facets from index \a index on. */
     void RebuildNeighbours (unsigned long);
-    /** Removes all as INVALID marked points and facets from the structure. */
-    void RemoveInvalids ();
     /** Checks if this point is associated to no other facet and deletes if so.
      * The point indices of the facets get adjusted.
      * \a ulIndex is the index of the point to be deleted. \a ulFacetIndex is the index
@@ -433,11 +448,6 @@ protected:
     friend class MeshFastFacetIterator;
     friend class MeshAlgorithm;
     friend class MeshTopoAlgorithm;
-    friend class MeshFixNeighbourhood;
-    friend class MeshFixDegenerations;
-    friend class MeshFixSingleFacet;
-    friend class MeshFixInvalids;
-    friend class MeshFixDegeneratedFacets;
     friend class MeshFixDuplicatePoints;
     friend class MeshBuilder;
     friend class MeshTrimming;

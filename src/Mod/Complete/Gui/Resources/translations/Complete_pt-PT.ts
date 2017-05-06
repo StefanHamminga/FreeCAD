@@ -37,7 +37,7 @@
     <message>
         <location line="-9"/>
         <source>Dr&amp;awing</source>
-        <translation>&amp;Desenho</translation>
+        <translation>&amp;Desenho (folha)</translation>
     </message>
     <message>
         <location line="-1"/>
@@ -52,12 +52,12 @@
     <message>
         <location line="+1"/>
         <source>&amp;Drafting</source>
-        <translation>&amp;Ferramentas de Desenho</translation>
+        <translation>&amp;Ferramentas de traço</translation>
     </message>
     <message>
         <location line="+1"/>
         <source>Sketch based</source>
-        <translation>Esboço baseado</translation>
+        <translation>Baseado em esboço</translation>
     </message>
     <message>
         <location line="+1"/>
@@ -65,13 +65,17 @@
         <translation>Primitivas</translation>
     </message>
     <message>
+        <location line="+1"/>
+        <source>Object appearance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Parametric</source>
         <translation type="obsolete">Paramétrico</translation>
     </message>
     <message>
-        <location line="+1"/>
         <source>Object appearence</source>
-        <translation>Aparência do objeto</translation>
+        <translation type="obsolete">Aparência do objeto</translation>
     </message>
     <message>
         <location line="+1"/>

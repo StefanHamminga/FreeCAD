@@ -28,6 +28,7 @@
 #include <QUrl>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
+#include <QAbstractListModel>
 
 class AutoSaver;
 class QFileIconProvider;
@@ -77,7 +78,6 @@ public Q_SLOTS:
 private Q_SLOTS:
     void save() const;
     void updateRow();
-    void replyFinished(QNetworkReply* reply);
 
 private:
     void addItem(DownloadItem *item);

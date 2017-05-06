@@ -11,7 +11,6 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ${OCC_INCLUDE_DIR}
     ${COIN3D_INCLUDE_DIRS}
-    ${QT_INCLUDE_DIR}
     ${ZLIB_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -19,23 +18,30 @@ include_directories(
 )
 link_directories(${OCC_LIBRARY_DIR})
 
+generate_from_xml(ViewProviderPy)
+
+
 set(PartDesignGui_LIBS
     PartDesign
+    SketcherGui
     PartGui
     SketcherGui
     FreeCADGui
 )
 
 set(PartDesignGui_MOC_HDRS
-    FeaturePickDialog.h
+    TaskFeaturePick.h
+    TaskFeatureParameters.h
+    TaskSketchBasedParameters.h
     TaskPadParameters.h
     TaskPocketParameters.h
     TaskChamferParameters.h
     TaskFilletParameters.h
     TaskDraftParameters.h
-    TaskHoleParameters.h
+    TaskThicknessParameters.h
+    TaskDressUpParameters.h
+    #TaskHoleParameters.h
     TaskRevolutionParameters.h
-    TaskGrooveParameters.h
     TaskTransformedMessages.h
     TaskTransformedParameters.h
     TaskMirroredParameters.h
@@ -43,38 +49,65 @@ set(PartDesignGui_MOC_HDRS
     TaskPolarPatternParameters.h
     TaskScaledParameters.h
     TaskMultiTransformParameters.h
+    TaskDatumParameters.h
+    TaskShapeBinder.h
+    TaskBooleanParameters.h
+    TaskPrimitiveParameters.h
+    TaskPipeParameters.h
+    TaskLoftParameters.h
 )
 fc_wrap_cpp(PartDesignGui_MOC_SRCS ${PartDesignGui_MOC_HDRS})
 SOURCE_GROUP("Moc" FILES ${PartDesignGui_MOC_SRCS})
 
-qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+if(BUILD_QT5)
+    qt5_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+else()
+    qt4_add_resources(PartDesignGui_SRCS Resources/PartDesign.qrc)
+endif()
 
 set(PartDesignGui_UIC_SRCS
-    FeaturePickDialog.ui
+    TaskFeaturePick.ui
     TaskPadParameters.ui
     TaskPocketParameters.ui
     TaskChamferParameters.ui
     TaskFilletParameters.ui
     TaskDraftParameters.ui
-    TaskHoleParameters.ui
+    TaskThicknessParameters.ui
+    TaskBooleanParameters.ui
+    #TaskHoleParameters.ui
     TaskRevolutionParameters.ui
-    TaskGrooveParameters.ui
     TaskTransformedMessages.ui
     TaskMirroredParameters.ui
     TaskLinearPatternParameters.ui
     TaskPolarPatternParameters.ui
     TaskScaledParameters.ui
     TaskMultiTransformParameters.ui
+    TaskShapeBinder.ui
+    TaskPrimitiveParameters.ui
+    TaskPipeParameters.ui
+    TaskPipeOrientation.ui
+    TaskPipeScaling.ui
+    TaskLoftParameters.ui
+    DlgReference.ui
 )
-qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
+
+if(BUILD_QT5)
+    qt5_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
+else()
+    qt4_wrap_ui(PartDesignGui_UIC_HDRS ${PartDesignGui_UIC_SRCS})
+endif()
 
 SET(PartDesignGuiViewProvider_SRCS
     ViewProvider.cpp
     ViewProvider.h
+    ViewProviderBody.cpp
+    ViewProviderBody.h
+    ViewProviderSketchBased.cpp
+    ViewProviderSketchBased.h
     ViewProviderPad.cpp
     ViewProviderPad.h
-    ViewProviderHole.cpp
-    ViewProviderHole.h
+    #ViewProviderHole.cpp
+    #ViewProviderHole.h
     ViewProviderPocket.cpp
     ViewProviderPocket.h
     ViewProviderChamfer.cpp
@@ -83,6 +116,10 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderFillet.h
     ViewProviderDraft.cpp
     ViewProviderDraft.h
+    ViewProviderThickness.cpp
+    ViewProviderThickness.h
+    ViewProviderDressUp.cpp
+    ViewProviderDressUp.h
     ViewProviderRevolution.cpp
     ViewProviderRevolution.h
     ViewProviderGroove.cpp
@@ -99,15 +136,41 @@ SET(PartDesignGuiViewProvider_SRCS
     ViewProviderScaled.h
     ViewProviderMultiTransform.cpp
     ViewProviderMultiTransform.h
+    ViewProviderDatum.cpp
+    ViewProviderDatum.h
+    ViewProviderDatumPoint.cpp
+    ViewProviderDatumPoint.h
+    ViewProviderDatumLine.cpp
+    ViewProviderDatumLine.h
+    ViewProviderDatumPlane.cpp
+    ViewProviderDatumPlane.h
+    ViewProviderDatumCS.cpp
+    ViewProviderDatumCS.h
+    ViewProviderShapeBinder.h
+    ViewProviderShapeBinder.cpp
+    ViewProviderBoolean.cpp
+    ViewProviderBoolean.h
+    ViewProviderAddSub.cpp
+    ViewProviderAddSub.h
+    ViewProviderPrimitive.h
+    ViewProviderPrimitive.cpp
+    ViewProviderPipe.h
+    ViewProviderPipe.cpp
+    ViewProviderLoft.h
+    ViewProviderLoft.cpp
 )
 SOURCE_GROUP("ViewProvider" FILES ${PartDesignGuiViewProvider_SRCS})
 
 SET(PartDesignGuiTaskDlgs_SRCS
-    FeaturePickDialog.ui
-    FeaturePickDialog.cpp
-    FeaturePickDialog.h
+    TaskFeaturePick.ui
+    TaskFeaturePick.cpp
+    TaskFeaturePick.h
     ReferenceSelection.cpp
     ReferenceSelection.h
+    TaskFeatureParameters.cpp
+    TaskFeatureParameters.h
+    TaskSketchBasedParameters.cpp
+    TaskSketchBasedParameters.h
     TaskPadParameters.ui
     TaskPadParameters.cpp
     TaskPadParameters.h
@@ -123,12 +186,14 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskDraftParameters.ui
     TaskDraftParameters.cpp
     TaskDraftParameters.h
+    TaskThicknessParameters.ui
+    TaskThicknessParameters.cpp
+    TaskThicknessParameters.h
+    TaskDressUpParameters.cpp
+    TaskDressUpParameters.h
     TaskRevolutionParameters.ui
     TaskRevolutionParameters.cpp
     TaskRevolutionParameters.h
-    TaskGrooveParameters.ui
-    TaskGrooveParameters.cpp
-    TaskGrooveParameters.h
     TaskTransformedMessages.ui
     TaskTransformedMessages.cpp
     TaskTransformedMessages.h
@@ -149,23 +214,54 @@ SET(PartDesignGuiTaskDlgs_SRCS
     TaskMultiTransformParameters.ui
     TaskMultiTransformParameters.cpp
     TaskMultiTransformParameters.h
-    TaskHoleParameters.ui
-    TaskHoleParameters.cpp
-    TaskHoleParameters.h
+    #TaskHoleParameters.ui
+    #TaskHoleParameters.cpp
+    #TaskHoleParameters.h
+    TaskDatumParameters.cpp
+    TaskDatumParameters.h
+    TaskShapeBinder.ui
+    TaskShapeBinder.cpp
+    TaskShapeBinder.h
+    TaskBooleanParameters.ui
+    TaskBooleanParameters.cpp
+    TaskBooleanParameters.h
+    TaskPrimitiveParameters.h
+    TaskPrimitiveParameters.cpp
+    TaskPipeParameters.ui
+    TaskPipeOrientation.ui
+    TaskPipeScaling.ui
+    TaskPipeParameters.h
+    TaskPipeParameters.cpp
+    TaskLoftParameters.ui
+    TaskLoftParameters.h
+    TaskLoftParameters.cpp
 )
 SOURCE_GROUP("TaskDialogs" FILES ${PartDesignGuiTaskDlgs_SRCS})
 
 SET(PartDesignGuiModule_SRCS
     AppPartDesignGui.cpp
-    AppPartDesignGuiPy.cpp
     Command.cpp
+    CommandPrimitive.cpp
+    CommandBody.cpp
     Resources/PartDesign.qrc
     PreCompiled.cpp
     PreCompiled.h
+    Utils.cpp
+    Utils.h
     Workbench.cpp
     Workbench.h
+    WorkflowManager.cpp
+    WorkflowManager.h
 )
 SOURCE_GROUP("Module" FILES ${PartDesignGuiModule_SRCS})
+
+
+SET(Python_SRCS
+    ViewProviderPy.xml
+    ViewProviderPyImp.cpp
+)
+SOURCE_GROUP("Python" FILES ${Python_SRCS})
+
 
 SET(PartDesignGui_Scripts
     InitGui.py
@@ -178,6 +274,7 @@ SET(PartDesignGui_SRCS
     ${PartDesignGuiModule_SRCS}
     ${PartDesignGuiTaskDlgs_SRCS}
     ${PartDesignGuiViewProvider_SRCS}
+	${Python_SRCS}
 )
 
 add_library(PartDesignGui SHARED ${PartDesignGui_SRCS})
@@ -194,3 +291,10 @@ SET_PYTHON_PREFIX_SUFFIX(PartDesignGui)
 
 INSTALL(TARGETS PartDesignGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
+SET(PartDesignGuiIcon_SVG
+    Resources/icons/PartDesignWorkbench.svg
+)
+
+fc_copy_sources(PartDesignGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/PartDesign" ${PartDesignGuiIcon_SVG})
+
+INSTALL(FILES ${PartDesignGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/PartDesign/Resources/icons")

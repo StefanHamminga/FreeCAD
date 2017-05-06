@@ -9,7 +9,6 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${PYTHON_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
     ${XercesC_INCLUDE_DIRS}
 )
 
@@ -27,7 +26,13 @@ SOURCE_GROUP("Moc" FILES ${PointsGui_MOC_SRCS})
 set(Dialog_UIC_SRCS
     DlgPointsRead.ui
 )
-qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialog_UIC_SRCS})
+
+if (BUILD_QT5)
+    qt5_wrap_ui(Dialogs_UIC_HDRS ${Dialog_UIC_SRCS})
+else()
+    qt4_wrap_ui(Dialogs_UIC_HDRS ${Dialog_UIC_SRCS})
+endif()
+
 SET(Dialogs_SRCS
     ${Dialogs_UIC_HDRS}
     DlgPointsRead.ui
@@ -36,7 +41,12 @@ SET(Dialogs_SRCS
 )
 SOURCE_GROUP("Dialogs" FILES ${Dialogs_SRCS})
 
-qt4_add_resources(Resource_SRCS Resources/Points.qrc)
+if (BUILD_QT5)
+    qt5_add_resources(Resource_SRCS Resources/Points.qrc)
+else()
+    qt4_add_resources(Resource_SRCS Resources/Points.qrc)
+endif()
+
 SET(Resource_SRCS
     ${Resource_SRCS}
     Resources/Points.qrc
@@ -69,3 +79,11 @@ SET_BIN_DIR(PointsGui PointsGui /Mod/Points)
 SET_PYTHON_PREFIX_SUFFIX(PointsGui)
 
 INSTALL(TARGETS PointsGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PointsGuiIcon_SVG
+    Resources/icons/PointsWorkbench.svg
+)
+
+fc_copy_sources(PointsGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Points" ${PointsGuiIcon_SVG})
+
+INSTALL(FILES ${PointsGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Points/Resources/icons")

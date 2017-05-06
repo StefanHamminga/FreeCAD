@@ -25,7 +25,7 @@
 #define GUI_QUANTITYSPINBOX_H
 
 #include <QAbstractSpinBox>
-#include <Base/Quantity.h>
+#include <Gui/MetaTypes.h>
 #include "ExpressionBinding.h"
 
 #ifdef Q_MOC_RUN
@@ -114,6 +114,9 @@ protected Q_SLOTS:
     void userInput(const QString & text);
     void openFormulaDialog();
     void finishFormulaDialog();
+    
+    //get notified on expression change
+    virtual void onChange();
 
 protected:
     virtual StepEnabled stepEnabled() const;

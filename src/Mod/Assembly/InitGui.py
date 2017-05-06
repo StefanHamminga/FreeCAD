@@ -33,32 +33,11 @@
 
 class AssemblyWorkbench ( Workbench ):
 	"Assembly workbench object"
-	Icon = """
-			/* XPM */
-			static const char *Assembly_Box[]={
-			"16 16 3 1",
-			". c None",
-			"# c #000000",
-			"a c #c6c642",
-			"................",
-			".......#######..",
-			"......#aaaaa##..",
-			".....#aaaaa###..",
-			"....#aaaaa##a#..",
-			"...#aaaaa##aa#..",
-			"..#aaaaa##aaa#..",
-			".########aaaa#..",
-			".#aaaaa#aaaaa#..",
-			".#aaaaa#aaaa##..",
-			".#aaaaa#aaa##...",
-			".#aaaaa#aa##....",
-			".#aaaaa#a##... .",
-			".#aaaaa###......",
-			".########.......",
-			"................"};
-			"""
-	MenuText = "Assembly"
-	ToolTip = "Assembly workbench"
+
+	def __init__(self):
+		self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Assembly/Resources/icons/AssemblyWorkbench.svg"
+		self.__class__.MenuText = "Assembly"
+		self.__class__.ToolTip = "Assembly workbench"
 
 	def Initialize(self):
 		# load the module

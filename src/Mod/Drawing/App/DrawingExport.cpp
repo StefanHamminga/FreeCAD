@@ -64,12 +64,11 @@
 #include <BRep_Tool.hxx>
 
 #include <BRepAdaptor_CompCurve.hxx>
-#include <Handle_BRepAdaptor_HCompCurve.hxx>
+#include <BRepAdaptor_HCompCurve.hxx>
 #include <Approx_Curve3d.hxx>
 #include <BRepAdaptor_HCurve.hxx>
-#include <Handle_BRepAdaptor_HCurve.hxx>
+#include <BRepAdaptor_HCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
-#include <Handle_Geom_BSplineCurve.hxx>
 #include <Geom_BezierCurve.hxx>
 #include <GeomConvert_BSplineCurveToBezierCurve.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
@@ -158,12 +157,12 @@ TopoDS_Edge DrawingOutput::asBSpline(const BRepAdaptor_Curve& c, int maxDegree) 
 {
     Standard_Real tol3D = 0.001;
     Standard_Integer maxSegment = 50;
-    Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+    Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
     // approximate the curve using a tolerance
     Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
     if (approx.IsDone() && approx.HasResult()) {
         // have the result
-        Handle_Geom_BSplineCurve spline = approx.Curve();
+        Handle(Geom_BSplineCurve) spline = approx.Curve();
         BRepBuilderAPI_MakeEdge mkEdge(spline, spline->FirstParameter(), spline->LastParameter());
         return mkEdge.Edge();
     }
@@ -257,6 +256,14 @@ void SVGOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
     gp_Pnt m = c.Value((l+f)/2.0);
     gp_Pnt e = c.Value(l);
 
+    // If the minor radius is very small compared to the major radius
+    // the geometry actually degenerates to a line
+    double ratio = std::min(r1,r2)/std::max(r1,r2);
+    if (ratio < 0.001) {
+        printGeneric(c, id, out);
+        return;
+    }
+
     gp_Vec v1(m,s);
     gp_Vec v2(m,e);
     gp_Vec v3(0,0,1);
@@ -290,7 +297,7 @@ void SVGOutput::printBezier(const BRepAdaptor_Curve& c, int id, std::ostream& ou
         std::stringstream str;
         str << "<path d=\"M";
 
-        Handle_Geom_BezierCurve bezier = c.Bezier();
+        Handle(Geom_BezierCurve) bezier = c.Bezier();
         Standard_Integer poles = bezier->NbPoles();
 
         // if it's a bezier with degree higher than 3 convert it into a B-spline
@@ -352,11 +359,11 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
 {
     try {
         std::stringstream str;
-        Handle_Geom_BSplineCurve spline = c.BSpline();
+        Handle(Geom_BSplineCurve) spline = c.BSpline();
         if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
             Standard_Integer maxDegree = 3, maxSegment = 50;
-            Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+            Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
             Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
             if (approx.IsDone() && approx.HasResult()) {
@@ -369,7 +376,7 @@ void SVGOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
         Standard_Integer arcs = crt.NbArcs();
         str << "<path d=\"M";
         for (Standard_Integer i=1; i<=arcs; i++) {
-            Handle_Geom_BezierCurve bezier = crt.Arc(i);
+            Handle(Geom_BezierCurve) bezier = crt.Arc(i);
             Standard_Integer poles = bezier->NbPoles();
             if (i == 1) {
                 gp_Pnt p1 = bezier->Pole(1);
@@ -495,6 +502,10 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 	    out << "CIRCLE"		<< endl;
 	    out << 8			<< endl;	// Group code for layer name
 	    out << "sheet_layer"	<< endl;	// Layer number
+        out << "100"        << endl;
+        out << "AcDbEntity" << endl;
+        out << "100"        << endl;
+        out << "AcDbCircle"   << endl;
 	    out << 10			<< endl;	// Centre X
 	    out << p.X()		<< endl;	// X in WCS coordinates
 	    out << 20			<< endl;
@@ -534,6 +545,10 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 	out << "ARC"		<< endl;
 	out << 8			<< endl;	// Group code for layer name
 	out << "sheet_layer"	<< endl;	// Layer number
+    out << "100"        << endl;
+    out << "AcDbEntity" << endl;
+    out << "100"        << endl;
+    out << "AcDbCircle" << endl;
 	out << 10			<< endl;	// Centre X
 	out << p.X()		<< endl;	// X in WCS coordinates
 	out << 20			<< endl;
@@ -542,6 +557,8 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
 	out << 0		<< endl;	// Z in WCS coordinates
 	out << 40			<< endl;	//
 	out << r		<< endl;	// Radius
+    out << "100"        << endl;
+    out << "AcDbArc" << endl;
 	out << 50			<< endl;
 	out << start_angle	<< endl;	// Start angle
 	out << 51			<< endl;
@@ -552,7 +569,7 @@ void DXFOutput::printCircle(const BRepAdaptor_Curve& c, std::ostream& out)
     }
 }
 
-void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int /*id*/, std::ostream& out)
 {
     gp_Elips ellp = c.Ellipse();
     const gp_Pnt& p= ellp.Location();
@@ -601,6 +618,10 @@ void DXFOutput::printEllipse(const BRepAdaptor_Curve& c, int id, std::ostream& o
 	out << "ELLIPSE"		<< endl;
 	out << 8			<< endl;	// Group code for layer name
 	out << "sheet_layer"	<< endl;	// Layer number
+    out << "100"        << endl;
+    out << "AcDbEntity" << endl;
+    out << "100"        << endl;
+    out << "AcDbEllipse"   << endl;
 	out << 10			<< endl;	// Centre X
 	out << p.X()		<< endl;	// X in WCS coordinates
 	out << 20			<< endl;
@@ -625,11 +646,11 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
 {
     try {
         std::stringstream str;
-        Handle_Geom_BSplineCurve spline = c.BSpline();
+        Handle(Geom_BSplineCurve) spline = c.BSpline();
         if (spline->Degree() > 3 || spline->IsRational()) {
             Standard_Real tol3D = 0.001;
             Standard_Integer maxDegree = 3, maxSegment = 50;
-            Handle_BRepAdaptor_HCurve hCurve = new BRepAdaptor_HCurve(c);
+            Handle(BRepAdaptor_HCurve) hCurve = new BRepAdaptor_HCurve(c);
             // approximate the curve using a tolerance
             Approx_Curve3d approx(hCurve,tol3D,GeomAbs_C0,maxSegment,maxDegree);
             if (approx.IsDone() && approx.HasResult()) {
@@ -657,17 +678,14 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
 
 
         str << 0 << endl
-            << "SECTION" << endl
-            << 2 << endl
-            << "ENTITIES" << endl
-            << 0 << endl
-            << "SPLINE" << endl;
-        //<< 8 << endl
-        //<< 0 << endl
-        //<< 66 << endl
-        //<< 1 << endl
-        //<< 0 << endl;
-        str << 70 << endl
+            << "SPLINE" << endl
+            << 8 << endl // Group code for layer name
+            << "sheet_layer" << endl // Layer name
+            << "100"        << endl
+            << "AcDbEntity" << endl
+            << "100"        << endl
+            << "AcDbSpline"   << endl
+            << 70 << endl
             << spline->IsRational()*4 << endl //flags
             << 71 << endl << spline->Degree() << endl
             << 72 << endl << knotsequence.Length() << endl
@@ -695,7 +713,7 @@ void DXFOutput::printBSpline(const BRepAdaptor_Curve& c, int id, std::ostream& o
     }
 }
 
-void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& out)
+void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int /*id*/, std::ostream& out)
 {
     double uStart = c.FirstParameter();
     gp_Pnt PS;
@@ -711,6 +729,10 @@ void DXFOutput::printGeneric(const BRepAdaptor_Curve& c, int id, std::ostream& o
     out << "LINE"		<< endl;
     out << "8"			<< endl;	// Group code for layer name
     out << "sheet_layer" << endl; // Layer name 
+    out << "100"        << endl;
+    out << "AcDbEntity" << endl;
+    out << "100"        << endl;
+    out << "AcDbLine"   << endl;
     out << "10"			<< endl;	// Start point of line
     out << PS.X()		<< endl;	// X in WCS coordinates
     out << "20"			<< endl;

@@ -15,32 +15,45 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include "Sheet.h"
-#include "SpreadsheetExpression.h"
 
+namespace Spreadsheet {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("Spreadsheet")
+    {
+        initialize("This module is the Spreadsheet module."); // register with Python
+    }
 
-/* registration table  */
-static struct PyMethodDef Spreadsheet_methods[] = {
-    {NULL, NULL}                   /* end of table marker */
+    virtual ~Module() {}
+
+private:
 };
 
-/* Python entry */
-extern "C" {
-void SpreadsheetExport initSpreadsheet() {
-    (void) Py_InitModule("Spreadsheet", Spreadsheet_methods);   /* mod name, table ptr */
-    Base::Console().Log("Loading Spreadsheet module... done\n");
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+} // namespace Spreadsheet
 
+/* Python entry */
+PyMOD_INIT_FUNC(Spreadsheet)
+{
     Spreadsheet::PropertySpreadsheetQuantity::init();
     Spreadsheet::PropertyColumnWidths::init();
     Spreadsheet::PropertyRowHeights::init();
     Spreadsheet::PropertySheet::init();
 
     Spreadsheet::Sheet::init();
-    Spreadsheet::AggregateFunctionExpression::init();
-    Spreadsheet::RangeExpression::init();
+    Spreadsheet::SheetPython::init();
 
-    return;
+    PyObject* mod = Spreadsheet::initModule();
+    Base::Console().Log("Loading Spreadsheet module... done\n");
+    PyMOD_Return(mod);
 }
-
-} // extern "C"

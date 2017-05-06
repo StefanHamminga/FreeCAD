@@ -26,11 +26,14 @@
 # include <Python.h>
 #endif
 
+#include <CXX/Extensions.hxx>
+#include <CXX/Objects.hxx>
+
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Language/Translator.h>
+#include "CurveOnMesh.h"
 #include "Workbench.h"
-//#include "resources/qrc_MeshPart.cpp"
 
 // use a different name to CreateCommand()
 void CreateMeshPartCommands(void);
@@ -42,28 +45,46 @@ void loadMeshPartResource()
     Gui::Translator::instance()->refresh();
 }
 
-/* registration table  */
-extern struct PyMethodDef MeshPartGui_Import_methods[];
+namespace MeshPartGui {
+class Module : public Py::ExtensionModule<Module>
+{
+public:
+    Module() : Py::ExtensionModule<Module>("MeshPartGui")
+    {
+        initialize("This module is the MeshPartGui module."); // register with Python
+    }
+
+    virtual ~Module() {}
+
+private:
+};
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+} // namespace MeshPartGui
 
 
 /* Python entry */
-extern "C" {
-void MeshPartGuiExport initMeshPartGui()
+PyMOD_INIT_FUNC(MeshPartGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
-    (void) Py_InitModule("MeshPartGui", MeshPartGui_Import_methods);   /* mod name, table ptr */
+    PyObject* mod = MeshPartGui::initModule();
     Base::Console().Log("Loading GUI of MeshPart module... done\n");
 
     // instantiating the commands
     CreateMeshPartCommands();
-    MeshPartGui::Workbench::init();
+    MeshPartGui::Workbench                  ::init();
+    MeshPartGui::ViewProviderCurveOnMesh    ::init();
 
      // add resources and reloads the translators
     loadMeshPartResource();
-}
 
-} // extern "C" {
+    PyMOD_Return(mod);
+}

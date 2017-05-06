@@ -44,8 +44,8 @@ App::Color calcColor(double value,double min, double max)
     if (max < 0) max = 0;
     if (min > 0) min = 0;
 
-    if (value < min) 
-        return App::Color (0.0,0.0,1.0);    
+    if (value < min)
+        return App::Color (0.0,0.0,1.0);
     if (value > max)
         return App::Color (1.0,0.0,0.0);
     if (value == 0.0)
@@ -145,7 +145,7 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
         //std::map<long,App::Color> NodeColorMap;
 
         //for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it){
-        //    Py::Int id((*it).first);
+        //    Py::Long id((*it).first);
         //    Py::Tuple color((*it).second);
         //    NodeColorMap[id] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
         //}
@@ -154,7 +154,7 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
 
         long i = 0;
         for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it,i++){
-            Py::Int id((*it).first);
+            Py::Long id((*it).first);
             Py::Tuple color((*it).second);
             NodeIds[i]    = id;
             NodeColors[i] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
@@ -164,7 +164,7 @@ void ViewProviderFemMeshPy::setNodeColor(Py::Dict arg)
         //this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeColorMap);
         this->getViewProviderFemMeshPtr()->setColorByNodeId(NodeIds,NodeColors);
         Base::Console().Log("    %f: Finish ViewProviderFemMeshPy::setNodeColor() call \n",Base::TimeInfo::diffTimeF(Start,Base::TimeInfo()));
-	}
+    }
 }
 
 Py::Dict ViewProviderFemMeshPy::getElementColor(void) const
@@ -181,12 +181,12 @@ void ViewProviderFemMeshPy::setElementColor(Py::Dict arg)
         std::map<long,App::Color> NodeColorMap;
 
         for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it){
-            Py::Int id((*it).first);
+            Py::Long id((*it).first);
             Py::Tuple color((*it).second);
             NodeColorMap[id] = App::Color(Py::Float(color[0]),Py::Float(color[1]),Py::Float(color[2]),0);
         }
         this->getViewProviderFemMeshPtr()->setColorByElementId(NodeColorMap);
-	}
+    }
 }
 
 Py::Dict ViewProviderFemMeshPy::getNodeDisplacement(void) const
@@ -205,14 +205,14 @@ void  ViewProviderFemMeshPy::setNodeDisplacement(Py::Dict arg)
         Py::Type vType(pyType.o);
 
         for( Py::Dict::iterator it = arg.begin(); it!= arg.end();++it){
-            Py::Int id((*it).first);
+            Py::Long id((*it).first);
             if ((*it).second.isType(vType)) {
                 Py::Vector p((*it).second);
                 NodeDispMap[id] = p.toVector();
             }
         }
         this->getViewProviderFemMeshPtr()->setDisplacementByNodeId(NodeDispMap);
-	}
+    }
 }
 
 Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
@@ -224,12 +224,12 @@ Py::List ViewProviderFemMeshPy::getHighlightedNodes(void) const
 void  ViewProviderFemMeshPy::setHighlightedNodes(Py::List arg)
 {
     ViewProviderFemMesh* vp = this->getViewProviderFemMeshPtr();
-    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((dynamic_cast<Fem::FemMeshObject*>
+    SMESHDS_Mesh* data = const_cast<SMESH_Mesh*>((static_cast<Fem::FemMeshObject*>
         (vp->getObject())->FemMesh).getValue().getSMesh())->GetMeshDS();
 
     std::set<long> res;
     for(Py::List::iterator it = arg.begin(); it!= arg.end();++it){
-        long id = static_cast<long>(Py::Int(*it));
+        long id = static_cast<long>(Py::Long(*it));
         const SMDS_MeshNode *node = data->FindNode(id);
         if(node)
             res.insert(id);
@@ -243,7 +243,7 @@ Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
     const std::vector<unsigned long> & visElmFc = this->getViewProviderFemMeshPtr()->getVisibleElementFaces();
     std::vector<unsigned long> trans;
 
-    // sorting out double faces through higer order elements and null entries
+    // sorting out double faces through higher order elements and null entries
     long elementOld =0, faceOld=0;
     for (std::vector<unsigned long>::const_iterator it = visElmFc.begin();it!=visElmFc.end();++it){
         if(*it == 0)
@@ -265,8 +265,8 @@ Py::List ViewProviderFemMeshPy::getVisibleElementFaces(void) const
         Py::Tuple tup(2);
         long element = *it>>3;
         long face    = (*it&7)+1;
-        tup.setItem( 0,Py::Int( element ) );
-        tup.setItem( 1,Py::Int( face ) );
+        tup.setItem( 0,Py::Long( element ) );
+        tup.setItem( 1,Py::Long( face ) );
         result.setItem(i,tup);
     }
 
@@ -281,7 +281,7 @@ PyObject *ViewProviderFemMeshPy::getCustomAttributes(const char* /*attr*/) const
 
 int ViewProviderFemMeshPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
-    return 0; 
+    return 0;
 }
 
 

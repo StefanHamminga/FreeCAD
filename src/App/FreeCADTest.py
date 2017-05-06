@@ -1,7 +1,7 @@
-# FreeCAD test module  
+# FreeCAD test module
 # (c) 2002 Juergen Riegel
 #
-# Testing the function of the base system and run 
+# Testing the function of the base system and run
 # (if existing) the test function of the modules
 #
 
@@ -32,9 +32,12 @@
 
 Log ("FreeCAD test running...\n\n")
 
-import TestApp;TestApp.TestText("TestApp.All")
+import TestApp, sys
 
+testCase = FreeCAD.ConfigGet("TestCase")
+
+testResult = TestApp.TestText(testCase)
 
 Log ("FreeCAD test done\n")
 
-
+sys.exit(0 if testResult.wasSuccessful() else 1)

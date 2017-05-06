@@ -32,24 +32,27 @@
 #include <Gui/Language/Translator.h>
 #include <Base/Console.h>
 
-class UnitTestModule : public Py::ExtensionModule<UnitTestModule>
+namespace TestGui {
+class Module : public Py::ExtensionModule<Module>
 {
 
 public:
-    UnitTestModule() : Py::ExtensionModule<UnitTestModule>("QtUnitGui")
+    Module() : Py::ExtensionModule<Module>("QtUnitGui")
     {
         TestGui::UnitTestDialogPy::init_type();
-        add_varargs_method("UnitTest",&UnitTestModule::new_UnitTest,"UnitTest");
-        add_varargs_method("setTest",&UnitTestModule::setTest,"setTest");
-        add_varargs_method("addTest",&UnitTestModule::addTest,"addTest");
+        add_varargs_method("UnitTest",&Module::new_UnitTest,"UnitTest");
+        add_varargs_method("setTest",&Module::setTest,"setTest");
+        add_varargs_method("addTest",&Module::addTest,"addTest");
         initialize("This module is the QtUnitGui module"); // register with Python
     }
     
-    virtual ~UnitTestModule() {}
+    virtual ~Module() {}
 
 private:
     Py::Object new_UnitTest(const Py::Tuple& args)
     {
+        if (!PyArg_ParseTuple(args.ptr(), ""))
+            throw Py::Exception();
         return Py::asObject(new TestGui::UnitTestDialogPy());
     }
     Py::Object setTest(const Py::Tuple& args)
@@ -80,6 +83,13 @@ private:
     }
 };
 
+PyObject* initModule()
+{
+    return (new Module())->module().ptr();
+}
+
+}
+
 void loadTestResource()
 {
     // add resources and reloads the translators
@@ -88,18 +98,15 @@ void loadTestResource()
 }
 
 /* Python entry */
-extern "C" {
-void AppTestGuiExport initQtUnitGui()
+PyMOD_INIT_FUNC(QtUnitGui)
 {
     // the following constructor call registers our extension module
     // with the Python runtime system
-    (void)new UnitTestModule;
+    PyObject* mod = TestGui::initModule();
 
     Base::Console().Log("Loading GUI of Test module... done\n");
 
     // add resources and reloads the translators
     loadTestResource();
-    return;
+    PyMOD_Return(mod);
 }
-
-} // extern "C"

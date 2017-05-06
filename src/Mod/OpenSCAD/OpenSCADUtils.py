@@ -29,16 +29,22 @@ This Script includes various pyhton helper functions that are shared across
 the module
 '''
 
-def translate(context,text):
-    "convenience function for Qt translator"
+try:
     from PySide import QtGui
-    return QtGui.QApplication.translate(context, text, None, \
-        QtGui.QApplication.UnicodeUTF8)
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text):
+        "convenience function for Qt translator"
+        return QtGui.QApplication.translate(context, text, None, _encoding)
+except AttributeError:
+    def translate(context, text):
+        "convenience function for Qt translator"
+        from PySide import QtGui
+        return QtGui.QApplication.translate(context, text, None)
 
 try:
     import FreeCAD
     BaseError = FreeCAD.Base.FreeCADError
-except ImportError,AttributeError:
+except (ImportError, AttributeError):
     BaseError = RuntimeError
 
 class OpenSCADError(BaseError):
@@ -87,7 +93,8 @@ def workaroundforissue128needed():
     for versions <= 2012.06.23 to the current working dir
     for versions above to the inputfile dir
     see https://github.com/openscad/openscad/issues/128'''
-    vdate=getopenscadversion().split(' ')[2].split('.')
+    vdate=getopenscadversion().split('-')[0]
+    vdate=vdate.split(' ')[2].split('.')
     year,mon=int(vdate[0]),int(vdate[1])
     return (year<2012 or (year==2012 and (mon <6 or (mon == 6 and \
         (len(vdate)<3 or int(vdate[2]) <=23)))))

@@ -27,15 +27,13 @@
 # include <QAction>
 # include <QApplication>
 # include <QFileInfo>
-# include <QGLFramebufferObject>
 # include <QKeyEvent>
 # include <QEvent>
 # include <QDropEvent>
 # include <QDragEnterEvent>
 # include <QFileDialog>
-# include <QGLFormat>
-# include <QGLWidget>
-# include <QGLPixelBuffer>
+# include <QLayout>
+# include <QMdiSubWindow>
 # include <QMessageBox>
 # include <QPainter>
 # include <QPrinter>
@@ -44,6 +42,7 @@
 # include <QStackedWidget>
 # include <QTimer>
 # include <QUrl>
+# include <QMimeData>
 # include <Inventor/actions/SoWriteAction.h>
 # include <Inventor/actions/SoGetPrimitiveCountAction.h>
 # include <Inventor/nodes/SoDirectionalLight.h>
@@ -57,6 +56,11 @@
 # include <Inventor/fields/SoSFColor.h>
 #endif
 # include <QStackedWidget>
+#include <QtOpenGL.h>
+
+#if defined(HAVE_QT5_OPENGL)
+# include <QWindow>
+#endif
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
@@ -92,7 +96,7 @@
 
 using namespace Gui;
 
-void GLOverlayWidget::paintEvent(QPaintEvent* ev)
+void GLOverlayWidget::paintEvent(QPaintEvent*)
 {
     QPainter paint(this);
     paint.drawImage(0,0,image);
@@ -104,7 +108,7 @@ void GLOverlayWidget::paintEvent(QPaintEvent* ev)
 TYPESYSTEM_SOURCE_ABSTRACT(Gui::View3DInventor,Gui::MDIView);
 
 View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
-                               const QGLWidget* sharewidget, Qt::WFlags wflags)
+                               const QtGLWidget* sharewidget, Qt::WindowFlags wflags)
     : MDIView(pcDocument, parent, wflags), _viewerPy(0)
 {
     stack = new QStackedWidget(this);
@@ -118,23 +122,29 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     hGrp->Attach(this);
 
     //anti-aliasing settings
-    QGLFormat f;
+    QtGLFormat f;
     bool smoothing = false;
     bool glformat = false;
     switch( hGrp->GetInt("AntiAliasing",0) ) {
       case View3DInventorViewer::MSAA2x:
           glformat = true;
+#if !defined(HAVE_QT5_OPENGL)
           f.setSampleBuffers(true);
+#endif
           f.setSamples(2);
           break;
       case View3DInventorViewer::MSAA4x:
           glformat = true;
+#if !defined(HAVE_QT5_OPENGL)
           f.setSampleBuffers(true);
+#endif
           f.setSamples(4);
           break;
       case View3DInventorViewer::MSAA8x:
           glformat = true;
+#if !defined(HAVE_QT5_OPENGL)
           f.setSampleBuffers(true);
+#endif
           f.setSamples(8);
           break;
       case View3DInventorViewer::Smoothing:
@@ -154,6 +164,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
         _viewer->getSoRenderManager()->getGLRenderAction()->setSmoothing(true);
 
     // create the inventor widget and set the defaults
+    _viewer->setDocument(this->_pcDocument);
     _viewer->setDocument(this->_pcDocument);
     stack->addWidget(_viewer->getWidget());
     // http://forum.freecadweb.org/viewtopic.php?f=3&t=6055&sid=150ed90cbefba50f1e2ad4b4e6684eba
@@ -175,6 +186,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"BackgroundColor4");
     OnChange(*hGrp,"UseBackgroundColorMid");
     OnChange(*hGrp,"ShowFPS");
+    OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"Orthographic");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
@@ -190,6 +202,7 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
     OnChange(*hGrp,"DimensionsVisible");
     OnChange(*hGrp,"Dimensions3dVisible");
     OnChange(*hGrp,"DimensionsDeltaVisible");
+    OnChange(*hGrp,"PickRadius");
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, SIGNAL(timeout()), this, SLOT(stopAnimating()));
@@ -252,8 +265,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"HeadlightDirection") == 0) {
         std::string pos = rGrp.GetASCII("HeadlightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -277,8 +290,8 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"BacklightDirection") == 0) {
         std::string pos = rGrp.GetASCII("BacklightDirection");
-        QString flt = QString::fromAscii("([-+]?[0-9]+\\.?[0-9]+)");
-        QRegExp rx(QString::fromAscii("^\\(%1,%1,%1\\)$").arg(flt));
+        QString flt = QString::fromLatin1("([-+]?[0-9]+\\.?[0-9]+)");
+        QRegExp rx(QString::fromLatin1("^\\(%1,%1,%1\\)$").arg(flt));
         if (rx.indexIn(QLatin1String(pos.c_str())) > -1) {
             float x = rx.cap(1).toFloat();
             float y = rx.cap(2).toFloat();
@@ -343,7 +356,7 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
         _viewer->navigationStyle()->setZoomInverted(on);
     }
     else if (strcmp(Reason,"ZoomAtCursor") == 0) {
-        bool on = rGrp.GetBool("ZoomAtCursor", false);
+        bool on = rGrp.GetBool("ZoomAtCursor", true);
         _viewer->navigationStyle()->setZoomAtCursor(on);
     }
     else if (strcmp(Reason,"ZoomStep") == 0) {
@@ -364,6 +377,9 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"ShowFPS") == 0) {
         _viewer->setEnabledFPSCounter(rGrp.GetBool("ShowFPS",false));
+    }
+    else if (strcmp(Reason,"UseVBO") == 0) {
+        _viewer->setEnabledVBO(rGrp.GetBool("UseVBO",false));
     }
     else if (strcmp(Reason,"Orthographic") == 0) {
         // check whether a perspective or orthogrphic camera should be set
@@ -393,6 +409,10 @@ void View3DInventor::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
       else
         _viewer->turnDeltaDimensionsOff();
     } 
+    else if (strcmp(Reason, "PickRadius") == 0)
+    {
+        _viewer->setPickRadius(rGrp.GetFloat("PickRadius", 5.0f));
+    }
     else{
         unsigned long col1 = rGrp.GetUnsigned("BackgroundColor",3940932863UL);
         unsigned long col2 = rGrp.GetUnsigned("BackgroundColor2",859006463UL); // default color (dark blue)
@@ -532,6 +552,7 @@ void View3DInventor::print(QPrinter* printer)
 #else
     QImage img;
     QPainter p(printer);
+    p.setRenderHints(QPainter::Antialiasing | QPainter::HighQualityAntialiasing);
     if (!p.isActive() && !printer->outputFileName().isEmpty()) {
         qApp->setOverrideCursor(Qt::ArrowCursor);
         QMessageBox::critical(this, tr("Opening file failed"),
@@ -541,7 +562,11 @@ void View3DInventor::print(QPrinter* printer)
     }
     QRect rect = printer->pageRect();
 
+#if !defined(HAVE_QT5_OPENGL)
     bool pbuffer = QGLPixelBuffer::hasOpenGLPbuffers();
+#else
+    bool pbuffer = false;
+#endif
     if (App::GetApplication().GetParameterGroupByPath
         ("User parameter:BaseApp/Preferences/Document")->GetBool("DisablePBuffers",!pbuffer)) {
         previewFromFramebuffer(rect, img);
@@ -562,13 +587,20 @@ void View3DInventor::print(QPrinter* printer)
 
 void View3DInventor::previewFromFramebuffer(const QRect& rect, QImage& img)
 {
+    static_cast<QtGLWidget*>(_viewer->getGLWidget())->makeCurrent();
+
 #if QT_VERSION >= 0x040600
-    QGLFramebufferObjectFormat format;
+    QtGLFramebufferObjectFormat format;
     format.setSamples(8);
-    format.setAttachment(QGLFramebufferObject::Depth);
-    QGLFramebufferObject fbo(rect.width(), rect.height(), format);
+    format.setAttachment(QtGLFramebufferObject::Depth);
+#if defined(HAVE_QT5_OPENGL)
+    format.setInternalTextureFormat(GL_RGB32F_ARB);
 #else
-    QGLFramebufferObject fbo(rect.width(), rect.height(), QGLFramebufferObject::Depth);
+    format.setInternalTextureFormat(GL_RGB);
+#endif
+    QtGLFramebufferObject fbo(rect.width(), rect.height(), format);
+#else
+    QtGLFramebufferObject fbo(rect.width(), rect.height(), QtGLFramebufferObject::Depth);
 #endif
     const QColor col = _viewer->backgroundColor();
     bool on = _viewer->hasGradientBackground();
@@ -616,7 +648,7 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
     else if(strcmp("SetStereoOff",pMsg) == 0 ) {
         _viewer->setStereoMode(Quarter::SoQTQuarterAdaptor::MONO );
         return true;
-   }
+    }
     else if(strcmp("Example1",pMsg) == 0 ) {
         SoSeparator * root = new SoSeparator;
         Texture3D(root);
@@ -793,7 +825,7 @@ bool View3DInventor::setCamera(const char* pCamera)
 {
     SoCamera * CamViewer = _viewer->getSoRenderManager()->getCamera();
     if (!CamViewer) {
-        throw Base::Exception("No camera set so far...");
+        throw Base::RuntimeError("No camera set so far...");
     }
 
     SoInput in;
@@ -803,7 +835,7 @@ bool View3DInventor::setCamera(const char* pCamera)
     SoDB::read(&in,Cam);
 
     if (!Cam){
-        throw Base::Exception("Camera settings failed to read");
+        throw Base::RuntimeError("Camera settings failed to read");
     }
 
     // toggle between persepective and orthographic camera
@@ -830,7 +862,7 @@ bool View3DInventor::setCamera(const char* pCamera)
             CamViewerP->farDistance   = ((SoPerspectiveCamera *)Cam)->farDistance;
             CamViewerP->focalDistance = ((SoPerspectiveCamera *)Cam)->focalDistance;
         } else {
-            throw Base::Exception("Camera type mismatch");
+            throw Base::TypeError("Camera type mismatch");
         }
     } else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
         if (CamViewerO){
@@ -843,7 +875,7 @@ bool View3DInventor::setCamera(const char* pCamera)
             CamViewerO->aspectRatio      = ((SoOrthographicCamera *)Cam)->aspectRatio ;
             CamViewerO->height           = ((SoOrthographicCamera *)Cam)->height;
         } else {
-            throw Base::Exception("Camera type mismatch");
+            throw Base::TypeError("Camera type mismatch");
         }
     }
 
@@ -944,7 +976,7 @@ void View3DInventor::dropEvent (QDropEvent * e)
 
 void View3DInventor::dragEnterEvent (QDragEnterEvent * e)
 {
-    // Here we must allow uri drafs and check them in dropEvent
+    // Here we must allow uri drags and check them in dropEvent
     const QMimeData* data = e->mimeData();
     if (data->hasUrls())
         e->accept();
@@ -957,7 +989,32 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     ViewMode oldmode = MDIView::currentViewMode();
     if (oldmode == newmode)
         return;
+
+#if defined(HAVE_QT5_OPENGL)
+    if (newmode == Child) {
+        // Fix in two steps:
+        // The mdi view got a QWindow when it became a top-level widget and when resetting it to a child widget
+        // the QWindow must be deleted because it has an impact on resize events and may break the layout of
+        // mdi view inside the QMdiSubWindow.
+        // In the second step below the layout must be invalidated after it's again a child widget to make sure
+        // the mdi view fits into the QMdiSubWindow.
+        QWindow* winHandle = this->windowHandle();
+        if (winHandle)
+            winHandle->destroy();
+    }
+#endif
+
     MDIView::setCurrentViewMode(newmode);
+
+#if defined(HAVE_QT5_OPENGL)
+    // Internally the QOpenGLWidget switches of the multi-sampling and there is no
+    // way to switch it on again. So as a workaround we just re-create a new viewport
+    // The method is private but defined as slot to avoid to call it by accident.
+    //int index = _viewer->metaObject()->indexOfMethod("replaceViewport()");
+    //if (index >= 0) {
+    //    _viewer->qt_metacall(QMetaObject::InvokeMetaMethod, index, 0);
+    //}
+#endif
 
     // This widget becomes the focus proxy of the embedded GL widget if we leave 
     // the 'Child' mode. If we reenter 'Child' mode the focus proxy is reset to 0.
@@ -967,7 +1024,7 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
     // be avoided because when two or more windows are either in 'TopLevel' or 'Fullscreen'
     // mode only the last window gets all key event even if it is not the active one.
     //
-    // It is important to set the focus proxy to get all key events otherwise we would loose
+    // It is important to set the focus proxy to get all key events otherwise we would lose
     // control after redirecting the first key event to the GL widget.
     if (oldmode == Child) {
         // To make a global shortcut working from this window we need to add
@@ -984,6 +1041,13 @@ void View3DInventor::setCurrentViewMode(ViewMode newmode)
         QList<QAction*> acts = this->actions();
         for (QList<QAction*>::Iterator it = acts.begin(); it != acts.end(); ++it)
             this->removeAction(*it);
+
+#if defined(HAVE_QT5_OPENGL)
+        // Step two
+        QMdiSubWindow* mdi = qobject_cast<QMdiSubWindow*>(parentWidget());
+        if (mdi && mdi->layout())
+            mdi->layout()->invalidate();
+#endif
     }
 }
 
@@ -1027,7 +1091,7 @@ void View3DInventor::keyReleaseEvent (QKeyEvent* e)
     QMainWindow::keyReleaseEvent(e);
 }
 
-void View3DInventor::focusInEvent (QFocusEvent * e)
+void View3DInventor::focusInEvent (QFocusEvent *)
 {
     _viewer->getGLWidget()->setFocus();
 }

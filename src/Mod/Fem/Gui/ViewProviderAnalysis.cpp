@@ -37,6 +37,8 @@
 #include <Gui/ActionFunction.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
+#include <Mod/Fem/App/FemSolverObject.h>
+#include <Mod/Fem/App/FemResultObject.h>
 #include <Mod/Fem/App/FemMeshObject.h>
 #include <Mod/Fem/App/FemSetObject.h>
 #include <Mod/Fem/App/FemConstraint.h>
@@ -77,7 +79,7 @@ std::vector<App::DocumentObject*> ViewProviderFemAnalysis::claimChildren(void)co
     return temp;
 }
 
-void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void ViewProviderFemAnalysis::setupContextMenu(QMenu* menu, QObject* , const char* )
 {
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
     QAction* act = menu->addAction(tr("Activate analysis"));
@@ -111,7 +113,7 @@ bool ViewProviderFemAnalysis::setEdit(int ModNum)
 //        if (padDlg)
 //            Gui::Control().showDialog(padDlg);
 //        else
-        
+
         //Fem::FemAnalysis* pcAna = static_cast<Fem::FemAnalysis*>(this->getObject());
         //Gui::Control().showDialog(new TaskDlgAnalysis(pcAna));
         //return true;
@@ -136,11 +138,11 @@ void ViewProviderFemAnalysis::unsetEdit(int ModNum)
 bool ViewProviderFemAnalysis::onDelete(const std::vector<std::string> &)
 {
     //// get the support and Sketch
-    //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject()); 
+    //PartDesign::Pad* pcPad = static_cast<PartDesign::Pad*>(getObject());
     //Sketcher::SketchObject *pcSketch = 0;
     //App::DocumentObject    *pcSupport = 0;
     //if (pcPad->Sketch.getValue()){
-    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue()); 
+    //    pcSketch = static_cast<Sketcher::SketchObject*>(pcPad->Sketch.getValue());
     //    pcSupport = pcSketch->Support.getValue();
     //}
 
@@ -163,6 +165,10 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
     if (!obj)
         return false;
     if (obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId()))
+        return true;
+    else if (obj->getTypeId().isDerivedFrom(Fem::FemResultObject::getClassTypeId()))
         return true;
     else if (obj->getTypeId().isDerivedFrom(Fem::Constraint::getClassTypeId()))
         return true;

@@ -12,7 +12,6 @@ include_directories(
     ${COIN3D_INCLUDE_DIRS}
     ${ZLIB_INCLUDE_DIR}
     ${OCC_INCLUDE_DIR}
-    ${QT_INCLUDE_DIR}
     ${EIGEN3_INCLUDE_DIR}
     ${PYTHON_INCLUDE_DIRS}
     ${XercesC_INCLUDE_DIRS}
@@ -22,10 +21,15 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(PathGui_LIBS
     Path
+    PartGui
     FreeCADGui
 )
 
-qt4_add_resources(PathResource_SRCS Resources/Path.qrc)
+if(BUILD_QT5)
+    qt5_add_resources(PathResource_SRCS Resources/Path.qrc)
+else()
+    qt4_add_resources(PathResource_SRCS Resources/Path.qrc)
+endif()
 
 SOURCE_GROUP("Resources" FILES ${PathResource_SRCS})
 
@@ -43,7 +47,12 @@ set(PathGui_UIC_SRCS
     TaskDlgPathCompound.ui
     DlgProcessorChooser.ui
 )
-qt4_wrap_ui(PathGui_UIC_HDRS ${PathGui_UIC_SRCS})
+
+if(BUILD_QT5)
+    qt5_wrap_ui(PathGui_UIC_HDRS ${PathGui_UIC_SRCS})
+else()
+    qt4_wrap_ui(PathGui_UIC_HDRS ${PathGui_UIC_SRCS})
+endif()
 
 SET(PathGui_SRCS_Module
     Command.cpp
@@ -72,6 +81,8 @@ SET(PathGui_SRCS_ViewProvider
     ViewProviderPathCompound.h
     ViewProviderPathShape.cpp
     ViewProviderPathShape.h
+    ViewProviderArea.cpp
+    ViewProviderArea.h
 )
 
 SOURCE_GROUP("ViewProvider" FILES ${PathGui_SRCS_ViewProvider})
@@ -86,8 +97,7 @@ SET(PathGui_SRCS
 add_library(PathGui SHARED ${PathGui_SRCS})
 target_link_libraries(PathGui ${PathGui_LIBS})
 
-
-fc_target_copy_resource(PathGui 
+fc_target_copy_resource(PathGui
     ${CMAKE_SOURCE_DIR}/src/Mod/Path
     ${CMAKE_BINARY_DIR}/Mod/Path
     InitGui.py)
@@ -96,3 +106,11 @@ SET_BIN_DIR(PathGui PathGui /Mod/Path)
 SET_PYTHON_PREFIX_SUFFIX(PathGui)
 
 INSTALL(TARGETS PathGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+SET(PathGuiIcon_SVG
+    Resources/icons/PathWorkbench.svg
+)
+
+fc_copy_sources(PathGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Path" ${PathGuiIcon_SVG})
+
+INSTALL(FILES ${PathGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Path/Resources/icons")

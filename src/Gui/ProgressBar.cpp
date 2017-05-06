@@ -208,18 +208,22 @@ void Sequencer::setValue(int step)
         }
     }
     else {
-        if (thr != currentThread) {
-            QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
+        int elapsed = d->progressTime.elapsed();
+        if (elapsed > 100) {
+            d->progressTime.restart();
+            if (thr != currentThread) {
+                QMetaObject::invokeMethod(d->bar, "setValue", Qt::/*Blocking*/QueuedConnection,
                 QGenericReturnArgument(), Q_ARG(int,step));
-            if (d->bar->isVisible())
-                showRemainingTime();
-        }
-        else {
-            d->bar->setValue(step);
-            if (d->bar->isVisible())
-                showRemainingTime();
-            d->bar->resetObserveEventFilter();
-            qApp->processEvents();
+                if (d->bar->isVisible())
+                    showRemainingTime();
+            }
+            else {
+                d->bar->setValue(step);
+                if (d->bar->isVisible())
+                    showRemainingTime();
+                d->bar->resetObserveEventFilter();
+                qApp->processEvents();
+            }
         }
     }
 }
@@ -243,7 +247,7 @@ void Sequencer::showRemainingTime()
             QTime time( 0,0, 0);
             time = time.addSecs( rest/1000 );
             QString remain = Gui::ProgressBar::tr("Remaining: %1").arg(time.toString());
-            QString status = QString::fromAscii("%1\t[%2]").arg(txt).arg(remain);
+            QString status = QString::fromLatin1("%1\t[%2]").arg(txt).arg(remain);
 
             if (thr != currentThread) {
                 QMetaObject::invokeMethod(getMainWindow()->statusBar(), "showMessage",
@@ -424,7 +428,7 @@ void ProgressBar::leaveControlEvents()
 {
     qApp->removeEventFilter(this);
 
-    // relase the keyboard again
+    // release the keyboard again
     releaseKeyboard();
 }
 

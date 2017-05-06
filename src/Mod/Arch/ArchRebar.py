@@ -27,17 +27,30 @@ if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtCore, QtGui
     from DraftTools import translate
+    from PySide.QtCore import QT_TRANSLATE_NOOP
 else:
+    # \cond
     def translate(ctxt,txt):
         return txt
+    def QT_TRANSLATE_NOOP(ctxt,txt):
+        return txt
+    # \endcond
+
+## @package ArchRebar
+#  \ingroup ARCH
+#  \brief The Rebar object and tools
+#
+#  This module provides tools to build Rebar objects.
+#  Rebars (or Reinforcing Bars) are metallic bars placed
+#  inside concrete strutures to reinforce them.
 
 __title__="FreeCAD Rebar"
 __author__ = "Yorik van Havre"
 __url__ = "http://www.freecadweb.org"
 
 
-def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
-    """makeRebar(baseobj,sketch,[diameter,amount,offset,name]): adds a Reinforcement Bar object
+def makeRebar(baseobj=None,sketch=None,diameter=None,amount=1,offset=None,name="Rebar"):
+    """makeRebar([baseobj,sketch,diameter,amount,offset,name]): adds a Reinforcement Bar object
     to the given structural object, using the given sketch as profile."""
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     obj = FreeCAD.ActiveDocument.addObject("Part::FeaturePython",name)
@@ -45,24 +58,34 @@ def makeRebar(baseobj,sketch,diameter=None,amount=1,offset=None,name="Rebar"):
     _Rebar(obj)
     if FreeCAD.GuiUp:
         _ViewProviderRebar(obj.ViewObject)
-    if hasattr(sketch,"Support"):
-        if sketch.Support:
-            if isinstance(sketch.Support,tuple):
-                if sketch.Support[0] == baseobj:
+    if baseobj and sketch:
+        if hasattr(sketch,"Support"):
+            if sketch.Support:
+                if isinstance(sketch.Support,tuple):
+                    if sketch.Support[0] == baseobj:
+                        sketch.Support = None
+                elif sketch.Support == baseobj:
                     sketch.Support = None
-            elif sketch.Support == baseobj:
-                sketch.Support = None
-    obj.Base = sketch
-    if FreeCAD.GuiUp:
-        sketch.ViewObject.hide()
-    a = baseobj.Armatures
-    a.append(obj)
-    baseobj.Armatures = a
+        obj.Base = sketch
+        if FreeCAD.GuiUp:
+            sketch.ViewObject.hide()
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
+        if p.GetBool("archRemoveExternal",False):
+            a = baseobj.Armatures
+            a.append(obj)
+            baseobj.Armatures = a
+        else:
+            import Arch
+            host = getattr(Arch,"make"+Draft.getType(baseobj))(baseobj)
+            a = host.Armatures
+            a.append(obj)
+            host.Armatures = a
     if diameter:
         obj.Diameter = diameter
     else:
         obj.Diameter = p.GetFloat("RebarDiameter",6)
     obj.Amount = amount
+    obj.Document.recompute()
     if offset:
         obj.OffsetStart = offset
         obj.OffsetEnd = offset
@@ -78,9 +101,9 @@ class _CommandRebar:
 
     def GetResources(self):
         return {'Pixmap'  : 'Arch_Rebar',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
+                'MenuText': QT_TRANSLATE_NOOP("Arch_Rebar","Rebar"),
                 'Accel': "R, B",
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
+                'ToolTip': QT_TRANSLATE_NOOP("Arch_Rebar","Creates a Reinforcement bar from the selected face of a structural object")}
 
     def IsActive(self):
         return not FreeCAD.ActiveDocument is None
@@ -92,14 +115,15 @@ class _CommandRebar:
             if Draft.getType(obj) == "Structure":
                 if len(sel) > 1:
                     sk = sel[1].Object
-                    if Draft.getType(sk) == "Sketch":
-                        # we have a base object and a sketch: create the rebar now
-                        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                        FreeCADGui.addModule("Arch")
-                        FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
-                        FreeCAD.ActiveDocument.commitTransaction()
-                        FreeCAD.ActiveDocument.recompute()
-                        return
+                    if sk.isDerivedFrom("Part::Feature"):
+                        if len(sk.Shape.Wires) == 1:
+                            # we have a base object and a sketch: create the rebar now
+                            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
+                            FreeCADGui.addModule("Arch")
+                            FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+obj.Name+",FreeCAD.ActiveDocument."+sk.Name+")")
+                            FreeCAD.ActiveDocument.commitTransaction()
+                            FreeCAD.ActiveDocument.recompute()
+                            return
                 else:
                     # we have only a base object: open the sketcher
                     FreeCADGui.activateWorkbench("SketcherWorkbench")
@@ -107,23 +131,25 @@ class _CommandRebar:
                     FreeCAD.ArchObserver = ArchComponent.ArchSelectionObserver(obj,FreeCAD.ActiveDocument.Objects[-1],hide=False,nextCommand="Arch_Rebar")
                     FreeCADGui.Selection.addObserver(FreeCAD.ArchObserver)
                     return
-            elif Draft.getType(obj) == "Sketch":
+            elif obj.isDerivedFrom("Part::Feature"):
+                if len(obj.Shape.Wires) == 1:
                 # we have only the sketch: extract the base object from it
-                if hasattr(obj,"Support"):
-                    if obj.Support:
-                        if isinstance(obj.Support,tuple):
-                            sup = obj.Support[0]
+                    if hasattr(obj,"Support"):
+                        if obj.Support:
+                            if len(obj.Support) != 0:
+                                sup = obj.Support[0][0]
+                            else:
+                                print("Arch: error: couldn't extract a base object")
+                                return
+                            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
+                            FreeCADGui.addModule("Arch")
+                            FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
+                            FreeCAD.ActiveDocument.commitTransaction()
+                            FreeCAD.ActiveDocument.recompute()
+                            return
                         else:
-                            sup = obj.Support
-                        FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Rebar"))
-                        FreeCADGui.addModule("Arch")
-                        FreeCADGui.doCommand("Arch.makeRebar(FreeCAD.ActiveDocument."+sup.Name+",FreeCAD.ActiveDocument."+obj.Name+")")
-                        FreeCAD.ActiveDocument.commitTransaction()
-                        FreeCAD.ActiveDocument.recompute()
-                        return
-                    else:
-                        print "Arch: error: couldn't extract a base object"
-                        return
+                            print("Arch: error: couldn't extract a base object")
+                            return
 
         FreeCAD.Console.PrintMessage(translate("Arch","Please select a base face on a structural object\n"))
         FreeCADGui.Control.showDialog(ArchComponent.SelectionTaskPanel())
@@ -136,13 +162,13 @@ class _Rebar(ArchComponent.Component):
 
     def __init__(self,obj):
         ArchComponent.Component.__init__(self,obj)
-        obj.addProperty("App::PropertyLength","Diameter","Arch","The diameter of the bar")
-        obj.addProperty("App::PropertyLength","OffsetStart","Arch","The distance between the border of the beam and the fist bar (concrete cover).")
-        obj.addProperty("App::PropertyLength","OffsetEnd","Arch","The distance between the border of the beam and the last bar (concrete cover).")
-        obj.addProperty("App::PropertyInteger","Amount","Arch","The amount of bars")
-        obj.addProperty("App::PropertyLength","Spacing","Arch","The spacing between the bars")
-        obj.addProperty("App::PropertyVector","Direction","Arch","The direction to use to spread the bars. Keep (0,0,0) for automatic direction.")
-        obj.addProperty("App::PropertyFloat","Rounding","Arch","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter.")
+        obj.addProperty("App::PropertyLength","Diameter","Arch",QT_TRANSLATE_NOOP("App::Property","The diameter of the bar"))
+        obj.addProperty("App::PropertyLength","OffsetStart","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the fist bar (concrete cover)."))
+        obj.addProperty("App::PropertyLength","OffsetEnd","Arch",QT_TRANSLATE_NOOP("App::Property","The distance between the border of the beam and the last bar (concrete cover)."))
+        obj.addProperty("App::PropertyInteger","Amount","Arch",QT_TRANSLATE_NOOP("App::Property","The amount of bars"))
+        obj.addProperty("App::PropertyLength","Spacing","Arch",QT_TRANSLATE_NOOP("App::Property","The spacing between the bars"))
+        obj.addProperty("App::PropertyVector","Direction","Arch",QT_TRANSLATE_NOOP("App::Property","The direction to use to spread the bars. Keep (0,0,0) for automatic direction."))
+        obj.addProperty("App::PropertyFloat","Rounding","Arch",QT_TRANSLATE_NOOP("App::Property","The fillet to apply to the angle of the base profile. This value is multiplied by the bar diameter."))
         self.Type = "Rebar"
         obj.setEditorMode("Spacing",1)
 
@@ -161,11 +187,61 @@ class _Rebar(ArchComponent.Component):
                     return e.Vertexes[0].Point,v
         return None,None
 
+    def getRebarData(self,obj):
+        if len(obj.InList) != 1:
+            return
+        if Draft.getType(obj.InList[0]) != "Structure":
+            return
+        if not obj.InList[0].Shape:
+            return
+        if not obj.Base:
+            return
+        if not obj.Base.Shape:
+            return
+        if not obj.Base.Shape.Wires:
+            return
+        if not obj.Diameter.Value:
+            return
+        if not obj.Amount:
+            return
+        father = obj.InList[0]
+        wire = obj.Base.Shape.Wires[0]
+        axis = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(0,0,-1))
+        size = (ArchCommands.projectToVector(father.Shape.copy(),axis)).Length
+        if hasattr(obj,"Rounding"):
+            if obj.Rounding:
+                radius = obj.Rounding * obj.Diameter.Value
+                import DraftGeomUtils
+                wire = DraftGeomUtils.filletWire(wire,radius)
+        wires = []
+        if obj.Amount == 1:
+            offset = DraftVecUtils.scaleTo(axis,size/2)
+            wire.translate(offset)
+            wires.append(wire)
+        else:
+            if obj.OffsetStart.Value:
+                baseoffset = DraftVecUtils.scaleTo(axis,obj.OffsetStart.Value)
+            else:
+                baseoffset = None
+            interval = size - (obj.OffsetStart.Value + obj.OffsetEnd.Value)
+            interval = interval / (obj.Amount - 1)
+            vinterval = DraftVecUtils.scaleTo(axis,interval)
+            for i in range(obj.Amount):
+                if i == 0:
+                    if baseoffset:
+                        wire.translate(baseoffset)
+                    wires.append(wire)
+                else:
+                    wire = wire.copy()
+                    wire.translate(vinterval)
+                    wires.append(wire)
+        return [wires,obj.Diameter.Value/2]
+
     def execute(self,obj):
-        
+
         if self.clone(obj):
             return
-        
+
         if len(obj.InList) != 1:
             return
         if Draft.getType(obj.InList[0]) != "Structure":
@@ -185,7 +261,7 @@ class _Rebar(ArchComponent.Component):
         father = obj.InList[0]
         wire = obj.Base.Shape.Wires[0]
         if hasattr(obj,"Rounding"):
-            #print obj.Rounding
+            #print(obj.Rounding)
             if obj.Rounding:
                 radius = obj.Rounding * obj.Diameter.Value
                 import DraftGeomUtils
@@ -200,8 +276,8 @@ class _Rebar(ArchComponent.Component):
                 axis = FreeCAD.Vector(obj.Direction) #.normalize()
                 # don't normalize so the vector can also be used to determine the distance
                 size = axis.Length
-        #print axis
-        #print size
+        #print(axis)
+        #print(size)
         if (obj.OffsetStart.Value + obj.OffsetEnd.Value) > size:
             return
 
@@ -213,7 +289,7 @@ class _Rebar(ArchComponent.Component):
         try:
             bar = wire.makePipeShell([circle],True,False,2)
         except Part.OCCError:
-            print "Arch: error sweeping rebar profile along the base sketch"
+            print("Arch: error sweeping rebar profile along the base sketch")
             return
         # building final shape
         shapes = []

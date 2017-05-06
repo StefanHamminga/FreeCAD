@@ -68,7 +68,7 @@ public:
      * Constructs an empty main window. For default \a parent is 0, as there usually is
      * no toplevel window there.
      */
-    MainWindow(QWidget * parent = 0, Qt::WFlags f = Qt::Window);
+    MainWindow(QWidget * parent = 0, Qt::WindowFlags f = Qt::Window);
     /** Destroys the object and frees any allocated resources. */
     ~MainWindow();
     /**
@@ -120,8 +120,6 @@ public:
     void stopSplasher(void);
     /* The image of the splash screen of the application. */
     QPixmap splashImage() const;
-    /** Shows the Tip-of-the-day dialog after startup. */
-    void showTipOfTheDay(bool force=false);
     /** Shows the online documentation. */
     void showDocumentation(const QString& help);
     //@}

@@ -32,20 +32,19 @@
 # include <Inventor/nodes/SoPickStyle.h>
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoVertexProperty.h>
+# include <cfloat>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
+#include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Base/Reader.h>
 #include <Base/ViewProj.h>
 #include <App/Application.h>
 #include <Gui/SoFCBoundingBox.h>
 
 #include "ViewProvider2DObject.h"
 #include <Mod/Part/App/PartFeature.h>
-
-
-//#include "Tree.h"
-
 
 
 using namespace PartGui;
@@ -56,6 +55,7 @@ using namespace std;
 // Construction/Destruction
 
 const char* ViewProvider2DObject::GridStyleEnums[]= {"Dashed","Light",NULL};
+App::PropertyQuantityConstraint::Constraints ViewProvider2DObject::GridSizeRange = {0.001,DBL_MAX,1.0};
 
 PROPERTY_SOURCE(PartGui::ViewProvider2DObject, PartGui::ViewProviderPart)
 
@@ -63,7 +63,7 @@ ViewProvider2DObject::ViewProvider2DObject()
 {
     ADD_PROPERTY_TYPE(ShowGrid,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid on/off");
     ADD_PROPERTY_TYPE(GridSize,(10),"Grid",(App::PropertyType)(App::Prop_None),"Gap size of the grid");
-    ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearence style of the grid");
+    ADD_PROPERTY_TYPE(GridStyle,((long)0),"Grid",(App::PropertyType)(App::Prop_None),"Appearance style of the grid");
     ADD_PROPERTY_TYPE(TightGrid,(true),"Grid",(App::PropertyType)(App::Prop_None),"Switch the tight grid mode on/off");
     ADD_PROPERTY_TYPE(GridSnap,(false),"Grid",(App::PropertyType)(App::Prop_None),"Switch the grid snap on/off");
 
@@ -72,9 +72,10 @@ ViewProvider2DObject::ViewProvider2DObject()
     MinX = MinY = -100;
     MaxX = MaxY = 100;
     GridStyle.setEnums(GridStyleEnums);
+    GridSize.setConstraints(&GridSizeRange);
 
     pcRoot->addChild(GridRoot);
- 
+
     sPixmap = "PartFeatureImport";
 }
 
@@ -142,7 +143,6 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
 
     // gridlines
     mycolor = new SoBaseColor;
-
     mycolor->rgb.setValue(0.7f, 0.7f ,0.7f);
     parent->addChild(mycolor);
 
@@ -168,24 +168,40 @@ SoSeparator* ViewProvider2DObject::createGrid(void)
     vts = new SoVertexProperty;
     grid->vertexProperty = vts;
 
-    int vi=0, l=0;
+    // vertical lines
+    int vlines = static_cast<int>((MaX - MiX) / Step + 0.5f);
+
+    // horizontal lines
+    int hlines = static_cast<int>((MaY - MiY) / Step + 0.5f);
+
+    int lines = vlines + hlines;
+
+    // set the grid indices
+    grid->numVertices.setNum(lines);
+    int32_t* vertices = grid->numVertices.startEditing();
+    for (int i=0; i<lines; i++)
+        vertices[i] = 2;
+    grid->numVertices.finishEditing();
+
+    // set the grid coordinates
+    vts->vertex.setNum(2*lines);
+    SbVec3f* coords = vts->vertex.startEditing();
 
     // vertical lines
-    float i;
-    for (i=MiX; i<MaX; i+=Step) {
-        /*float h=-0.5*dx + float(i) / gridsize * dx;*/
-        vts->vertex.set1Value(vi++, i, MiY, zGrid);
-        vts->vertex.set1Value(vi++, i,  MaY, zGrid);
-        grid->numVertices.set1Value(l++, 2);
+    int i_offset_x = static_cast<int>(MiX / Step);
+    for (int i=0; i<vlines; i++) {
+        coords[2*i].setValue((i+i_offset_x)*Step, MiY, zGrid);
+        coords[2*i+1].setValue((i+i_offset_x)*Step, MaY, zGrid);
     }
 
     // horizontal lines
-    for (i=MiY; i<MaY; i+=Step) {
-        //float v=-0.5*dy + float(i) / gridsize * dy;
-        vts->vertex.set1Value(vi++, MiX, i, zGrid);
-        vts->vertex.set1Value(vi++,  MaX, i, zGrid);
-        grid->numVertices.set1Value(l++, 2);
+    int i_offset_y = static_cast<int>(MiY / Step);
+    for (int i=vlines; i<lines; i++) {
+        coords[2*i].setValue(MiX, (i-vlines+i_offset_y)*Step, zGrid);
+        coords[2*i+1].setValue(MaX, (i-vlines+i_offset_y)*Step, zGrid);
     }
+    vts->vertex.finishEditing();
+
     parent->addChild(vts);
     parent->addChild(grid);
 
@@ -203,11 +219,11 @@ void ViewProvider2DObject::updateData(const App::Property* prop)
         Base::Placement place = static_cast<const Part::PropertyPartShape*>(prop)->getComplexData()->getPlacement();
         place.invert();
         Base::ViewProjMatrix proj(place.toMatrix());
-        Base::BoundBox2D bbox2d = bbox.ProjectBox(&proj);
-        this->MinX = bbox2d.fMinX;
-        this->MaxX = bbox2d.fMaxX;
-        this->MinY = bbox2d.fMinY;
-        this->MaxY = bbox2d.fMaxY;
+        Base::BoundBox2d bbox2d = bbox.ProjectBox(&proj);
+        this->MinX = bbox2d.MinX;
+        this->MaxX = bbox2d.MaxX;
+        this->MinY = bbox2d.MinY;
+        this->MaxY = bbox2d.MaxY;
         if (ShowGrid.getValue()) {
             createGrid();
         }
@@ -231,6 +247,56 @@ void ViewProvider2DObject::onChanged(const App::Property* prop)
             createGrid();
         }
     }
+}
+
+void ViewProvider2DObject::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("Properties");
+    int Cnt = reader.getAttributeAsInteger("Count");
+
+    for (int i=0 ;i<Cnt ;i++) {
+        reader.readElement("Property");
+        const char* PropName = reader.getAttribute("name");
+        const char* TypeName = reader.getAttribute("type");
+        App::Property* prop = getPropertyByName(PropName);
+
+        try {
+            if (prop && strcmp(prop->getTypeId().getName(), TypeName) == 0) {
+                prop->Restore(reader);
+            }
+            else if (prop) {
+                Base::Type inputType = Base::Type::fromName(TypeName);
+                if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+                    inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+                    // Do not directly call the property's Restore method in case the implmentation
+                    // has changed. So, create a temporary PropertyFloat object and assign the value.
+                    App::PropertyFloat floatProp;
+                    floatProp.Restore(reader);
+                    static_cast<App::PropertyFloat*>(prop)->setValue(floatProp.getValue());
+                }
+            }
+        }
+        catch (const Base::XMLParseException&) {
+            throw; // re-throw
+        }
+        catch (const Base::Exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const std::exception &e) {
+            Base::Console().Error("%s\n", e.what());
+        }
+        catch (const char* e) {
+            Base::Console().Error("%s\n", e);
+        }
+#ifndef FC_DEBUG
+        catch (...) {
+            Base::Console().Error("Primitive::Restore: Unknown C++ exception thrown");
+        }
+#endif
+
+        reader.readEndElement("Property");
+    }
+    reader.readEndElement("Properties");
 }
 
 void ViewProvider2DObject::attach(App::DocumentObject *pcFeat)

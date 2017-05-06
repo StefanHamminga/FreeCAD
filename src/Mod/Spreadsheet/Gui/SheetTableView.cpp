@@ -22,19 +22,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+# include <QKeyEvent>
+# include <QAction>
 #endif
 
-#include "SheetTableView.h"
-#include <QKeyEvent>
-#include <QAction>
 #include <Gui/Command.h>
-#include "PropertiesDialog.h"
-#include "../App/Utils.h"
-#include "../App/Range.h"
 #include <boost/bind.hpp>
+#include "../App/Utils.h"
+#include <App/Range.h>
+#include "SheetTableView.h"
+#include "LineEdit.h"
+#include "PropertiesDialog.h"
 
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
+using namespace App;
 
 void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 {
@@ -44,6 +46,7 @@ void SheetViewHeader::mouseReleaseEvent(QMouseEvent *event)
 
 SheetTableView::SheetTableView(QWidget *parent)
     : QTableView(parent)
+    , sheet(0)
 {
     QAction * insertRows = new QAction(tr("Insert rows"), this);
     QAction * removeRows = new QAction(tr("Remove rows"), this);
@@ -70,13 +73,14 @@ SheetTableView::SheetTableView(QWidget *parent)
     addAction(cellProperties);
 
     setContextMenuPolicy(Qt::ActionsContextMenu);
+    setTabKeyNavigation(false);
 
     connect(cellProperties, SIGNAL(triggered()), this, SLOT(cellProperties()));
 }
 
 void SheetTableView::cellProperties()
 {
-    std::auto_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
+    std::unique_ptr<PropertiesDialog> dialog(new PropertiesDialog(sheet, selectedRanges(), this));
 
     if (dialog->exec() == QDialog::Accepted) {
         dialog->apply();
@@ -234,7 +238,7 @@ SheetTableView::~SheetTableView()
 
 }
 
-void SheetTableView::updateCellSpan(Spreadsheet::CellAddress address)
+void SheetTableView::updateCellSpan(CellAddress address)
 {
     int rows, cols;
 
@@ -288,6 +292,53 @@ bool SheetTableView::edit ( const QModelIndex & index, EditTrigger trigger, QEve
     if (trigger & (QAbstractItemView::DoubleClicked | QAbstractItemView::AnyKeyPressed | QAbstractItemView::EditKeyPressed) )
         currentEditIndex = index;
     return QTableView::edit(index, trigger, event);
+}
+
+bool SheetTableView::event(QEvent *event)
+{
+    /* Catch key presses for navigating the table; Enter/Return (+Shift), and Tab (+Shift) */
+    if (event && event->type() == QEvent::KeyPress) {
+        QKeyEvent * kevent = static_cast<QKeyEvent*>(event);
+
+        if (kevent->key() == Qt::Key_Tab) {
+            QModelIndex c = currentIndex();
+
+            if (kevent->modifiers() == 0) {
+                setCurrentIndex(model()->index(c.row(), qMin(c.column() + 1, model()->columnCount() -1)));
+                return true;
+            }
+        }
+        else if (kevent->key() == Qt::Key_Backtab) {
+            QModelIndex c = currentIndex();
+
+            if (kevent->modifiers() == Qt::ShiftModifier) {
+                setCurrentIndex(model()->index(c.row(), qMax(c.column() - 1, 0)));
+                return true;
+            }
+        }
+        else if (kevent->key() == Qt::Key_Enter || kevent->key() == Qt::Key_Return) {
+            QModelIndex c = currentIndex();
+
+            if (kevent->modifiers() == 0) {
+                setCurrentIndex(model()->index(qMin(c.row() + 1, model()->rowCount() - 1), c.column()));
+                return true;
+            }
+            else if (kevent->modifiers() == Qt::ShiftModifier) {
+                setCurrentIndex(model()->index(qMax(c.row() - 1, 0), c.column()));
+                return true;
+            }
+        }
+    }
+    return QTableView::event(event);
+}
+
+void SheetTableView::closeEditor(QWidget * editor, QAbstractItemDelegate::EndEditHint hint)
+{
+    SpreadsheetGui::LineEdit * le = qobject_cast<SpreadsheetGui::LineEdit*>(editor);
+
+    currentEditIndex = QModelIndex();
+    QTableView::closeEditor(editor, hint);
+    setCurrentIndex(le->next());
 }
 
 void SheetTableView::edit ( const QModelIndex & index )

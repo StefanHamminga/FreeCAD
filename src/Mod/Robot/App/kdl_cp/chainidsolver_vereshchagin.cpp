@@ -61,7 +61,7 @@ int ChainIdSolver_Vereshchagin::CartToJnt(const JntArray &q, const JntArray &q_d
     return 0;
 }
 
-void ChainIdSolver_Vereshchagin::initial_upwards_sweep(const JntArray &q, const JntArray &qdot, const JntArray &qdotdot, const Wrenches& f_ext)
+void ChainIdSolver_Vereshchagin::initial_upwards_sweep(const JntArray &q, const JntArray &qdot, const JntArray &/*qdotdot*/, const Wrenches& f_ext)
 {
     //if (q.rows() != nj || qdot.rows() != nj || qdotdot.rows() != nj || f_ext.size() != ns)
     //        return -1;
@@ -220,8 +220,8 @@ void ChainIdSolver_Vereshchagin::downwards_sweep(const Jacobian& alfa, const Jnt
             s.PC = s.P * s.C;
 
             //u=(Q-Z(R+PC)=sum of external forces along the joint axes,
-            //R are the forces comming from the children,
-            //Q is taken zero (do we need to take the previous calculated torques?
+            //R are the forces coming from the children,
+            //Q is taken zero (do we need to take the previous calculated torques?)
 
             //projection of coriolis and centrepital forces into joint subspace (0 0 Z)
             s.totalBias = -dot(s.Z, s.R + s.PC);
@@ -388,7 +388,7 @@ void ChainIdSolver_Vereshchagin::getJointBiasAcceleration(JntArray& bias_q_dotdo
     {
         //this is only force
         double tmp = results[i + 1].totalBias;
-        //this is accelleration
+        //this is acceleration
         bias_q_dotdot(i) = tmp / results[i + 1].D;
 
         //s.totalBias = - dot(s.Z, s.R + s.PC);

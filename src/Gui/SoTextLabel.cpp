@@ -35,7 +35,6 @@
 # include <cfloat>
 # include <algorithm>
 # include <QFontMetrics>
-# include <QGLWidget>
 # include <QPainter>
 # include <QPen>
 # include <Inventor/actions/SoGLRenderAction.h>
@@ -62,6 +61,7 @@
 #include <Inventor/elements/SoGLTexture3EnabledElement.h>
 #endif
 
+#include <QtOpenGL.h>
 #include "SoTextLabel.h"
 #include "SoFCInteractiveElement.h"
 #include "BitmapFactory.h"
@@ -105,7 +105,7 @@ SoTextLabel::SoTextLabel()
 {
     SO_NODE_CONSTRUCTOR(SoTextLabel);
     SO_NODE_ADD_FIELD(backgroundColor, (SbVec3f(1.0f,1.0f,1.0f)));
-    SO_NODE_ADD_FIELD(background, (TRUE));
+    SO_NODE_ADD_FIELD(background, (true));
     SO_NODE_ADD_FIELD(frameSize, (10.0f));
 }
 
@@ -131,7 +131,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
     SbVec3f center;
     this->computeBBox(action, box, center);
 
-    if (!SoCullElement::cullTest(state, box, TRUE)) {
+    if (!SoCullElement::cullTest(state, box, true)) {
         SoMaterialBundle mb(action);
         mb.sendFirst();
         const SbMatrix & mat = SoModelMatrixElement::get(state);
@@ -209,7 +209,7 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         // The font name is of the form "family:style". If 'style' is given it can be
         // 'Bold', 'Italic' or 'Bold Italic'.
         QFont font;
-        QString fn = QString::fromAscii(fontname.getString());
+        QString fn = QString::fromLatin1(fontname.getString());
         int pos = fn.indexOf(QLatin1Char(':'));
         if (pos > -1) {
             if (fn.indexOf(QLatin1String("Bold"),pos,Qt::CaseInsensitive) > pos)
@@ -254,11 +254,11 @@ void SoTextLabel::GLRender(SoGLRenderAction *action)
         state->push();
 
         // disable textures for all units
-        SoGLTextureEnabledElement::set(state, this, FALSE);
+        SoGLTextureEnabledElement::set(state, this, false);
 #if COIN_MAJOR_VERSION > 3
-        SoMultiTextureEnabledElement::set(state, this, FALSE);
+        SoMultiTextureEnabledElement::set(state, this, false);
 #else
-        SoGLTexture3EnabledElement::set(state, this, FALSE);
+        SoGLTexture3EnabledElement::set(state, this, false);
 #endif
 
         glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
@@ -318,7 +318,7 @@ SoStringLabel::SoStringLabel()
  */
 void SoStringLabel::GLRender(SoGLRenderAction *action)
 {
-    QGLWidget* window;
+    QtGLWidget* window;
     SoState * state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);
@@ -376,7 +376,11 @@ void SoStringLabel::GLRender(SoGLRenderAction *action)
     QStringList list;
     for (int i=0; i<this->string.getNum(); i++)
         list << QLatin1String(this->string[i].getString());
+#if !defined(HAVE_QT5_OPENGL)
     window->renderText(nil[0],nil[1],nil[2],list.join(QLatin1String("\n")),font);
+#else
+    //FIXME: HAVE_QT5_OPENGL
+#endif
 
     // Leave 2D screen mode
     glPopAttrib();
@@ -406,7 +410,7 @@ SoFrameLabel::SoFrameLabel()
     SO_NODE_ADD_FIELD(justification, (LEFT));
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (12));
-    SO_NODE_ADD_FIELD(frame, (TRUE));
+    SO_NODE_ADD_FIELD(frame, (true));
   //SO_NODE_ADD_FIELD(image, (SbVec2s(0,0), 0, NULL));
 }
 
@@ -434,7 +438,7 @@ void SoFrameLabel::drawImage()
         return;
     }
 
-    QFont font(QString::fromAscii(name.getValue()), size.getValue());
+    QFont font(QString::fromLatin1(name.getValue()), size.getValue());
     QFontMetrics fm(font);
     int w = 0;
     int h = fm.height() * num;
@@ -492,7 +496,7 @@ void SoFrameLabel::GLRender(SoGLRenderAction *action)
 {
     inherited::GLRender(action);
 #if 0
-    QGLWidget* window;
+    QtGLWidget* window;
     SoState * state = action->getState();
     state->push();
     SoLazyElement::setLightModel(state, SoLazyElement::BASE_COLOR);

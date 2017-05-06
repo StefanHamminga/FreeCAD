@@ -46,15 +46,16 @@ void loadRaytracingResource()
     Gui::Translator::instance()->refresh();
 }
 
-extern struct PyMethodDef RaytracingGui_methods[];
+namespace RaytracingGui {
+    PyObject* initModule();
+}
 
 
-extern "C" {
-void AppRaytracingGuiExport initRaytracingGui()
+PyMOD_INIT_FUNC(RaytracingGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
     try {
@@ -62,9 +63,9 @@ void AppRaytracingGuiExport initRaytracingGui()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    (void) Py_InitModule("RaytracingGui", RaytracingGui_methods);   /* mod name, table ptr */
+    PyObject* mod = RaytracingGui::initModule();
     Base::Console().Log("Loading GUI of Raytracing module... done\n");
 
     // instantiating the commands
@@ -78,6 +79,6 @@ void AppRaytracingGuiExport initRaytracingGui()
 
     // add resources and reloads the translators
     loadRaytracingResource();
-}
 
-} // extern "C" {
+    PyMOD_Return(mod);
+}

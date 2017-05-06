@@ -35,6 +35,7 @@
 #include <Base/Stream.h>
 #include <Base/Rotation.h>
 #include <Base/Quantity.h>
+#include <Base/Tools.h>
 #include <Base/VectorPy.h>
 #include <Base/MatrixPy.h>
 #include <Base/PlacementPy.h>
@@ -264,13 +265,13 @@ PyObject *PropertyVectorList::getPyObject(void)
 
 void PropertyVectorList::setPyObject(PyObject *value)
 {
-    if (PyList_Check(value)) {
-        Py_ssize_t nSize = PyList_Size(value);
+    if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
         std::vector<Base::Vector3d> values;
         values.resize(nSize);
 
         for (Py_ssize_t i=0; i<nSize;++i) {
-            PyObject* item = PyList_GetItem(value, i);
+            PyObject* item = PySequence_GetItem(value, i);
             PropertyVector val;
             val.setPyObject( item );
             values[i] = val.getValue();
@@ -567,6 +568,44 @@ void PropertyPlacement::getPaths(std::vector<ObjectIdentifier> &paths) const
                     << ObjectIdentifier::Component::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
+void PropertyPlacement::setPathValue(const ObjectIdentifier &path, const boost::any &value)
+{
+    if (path.getSubPathStr() == ".Rotation.Angle") {
+        double avalue;
+
+        if (value.type() == typeid(Base::Quantity))
+            avalue = boost::any_cast<Base::Quantity>(value).getValue();
+        else if (value.type() == typeid(double))
+            avalue = boost::any_cast<double>(value);
+        else if (value.type() == typeid(int))
+            avalue =  boost::any_cast<int>(value);
+        else if (value.type() == typeid(unsigned int))
+            avalue =  boost::any_cast<unsigned int >(value);
+        else if (value.type() == typeid(short))
+            avalue =  boost::any_cast<short>(value);
+        else if (value.type() == typeid(unsigned short))
+            avalue =  boost::any_cast<unsigned short>(value);
+        else
+            throw std::bad_cast();
+
+        Property::setPathValue(path, Base::toRadians(avalue));
+    }
+    else
+        Property::setPathValue(path, value);
+}
+
+const boost::any PropertyPlacement::getPathValue(const ObjectIdentifier &path) const
+{
+    std::string p = path.getSubPathStr();
+
+    if (p == ".Base.x" || p == ".Base.y" || p == ".Base.z") {
+        // Convert double to quantity
+        return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), Unit::Length);
+    }
+    else
+        return Property::getPathValue(path);
+}
+
 PyObject *PropertyPlacement::getPyObject(void)
 {
     return new Base::PlacementPy(new Base::Placement(_cPos));
@@ -634,6 +673,191 @@ void PropertyPlacement::Paste(const Property &from)
     _cPos = dynamic_cast<const PropertyPlacement&>(from)._cPos;
     hasSetValue();
 }
+
+
+//**************************************************************************
+// PropertyPlacementList
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+TYPESYSTEM_SOURCE(App::PropertyPlacementList , App::PropertyLists);
+
+//**************************************************************************
+// Construction/Destruction
+
+PropertyPlacementList::PropertyPlacementList()
+{
+
+}
+
+PropertyPlacementList::~PropertyPlacementList()
+{
+
+}
+
+//**************************************************************************
+// Base class implementer
+
+void PropertyPlacementList::setSize(int newSize)
+{
+    _lValueList.resize(newSize);
+}
+
+int PropertyPlacementList::getSize(void) const
+{
+    return static_cast<int>(_lValueList.size());
+}
+
+void PropertyPlacementList::setValue(const Base::Placement& lValue)
+{
+    aboutToSetValue();
+    _lValueList.resize(1);
+    _lValueList[0]=lValue;
+    hasSetValue();
+}
+
+void PropertyPlacementList::setValues(const std::vector<Base::Placement>& values)
+{
+    aboutToSetValue();
+    _lValueList = values;
+    hasSetValue();
+}
+
+PyObject *PropertyPlacementList::getPyObject(void)
+{
+    PyObject* list = PyList_New( getSize() );
+
+    for (int i = 0;i<getSize(); i++)
+        PyList_SetItem( list, i, new Base::PlacementPy(new Base::Placement(_lValueList[i])));
+
+    return list;
+}
+
+void PropertyPlacementList::setPyObject(PyObject *value)
+{
+    if (PySequence_Check(value)) {
+        Py_ssize_t nSize = PySequence_Size(value);
+        std::vector<Base::Placement> values;
+        values.resize(nSize);
+
+        for (Py_ssize_t i=0; i<nSize;++i) {
+            PyObject* item = PySequence_GetItem(value, i);
+            PropertyPlacement val;
+            val.setPyObject( item );
+            values[i] = val.getValue();
+        }
+
+        setValues(values);
+    }
+    else if (PyObject_TypeCheck(value, &(PlacementPy::Type))) {
+        Base::PlacementPy  *pcObject = static_cast<Base::PlacementPy*>(value);
+        Base::Placement* val = pcObject->getPlacementPtr();
+        setValue(*val);
+    }
+    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
+        PropertyPlacement val;
+        val.setPyObject( value );
+        setValue( val.getValue() );
+    }
+    else {
+        std::string error = std::string("type must be 'Placement' or list of 'Placement', not ");
+        error += value->ob_type->tp_name;
+        throw Base::TypeError(error);
+    }
+}
+
+void PropertyPlacementList::Save (Base::Writer &writer) const
+{
+    if (!writer.isForceXML()) {
+        writer.Stream() << writer.ind() << "<PlacementList file=\"" << writer.addFile(getName(), this) << "\"/>" << std::endl;
+    }
+}
+
+void PropertyPlacementList::Restore(Base::XMLReader &reader)
+{
+    reader.readElement("PlacementList");
+    std::string file (reader.getAttribute("file") );
+
+    if (!file.empty()) {
+        // initate a file read
+        reader.addFile(file.c_str(),this);
+    }
+}
+
+void PropertyPlacementList::SaveDocFile (Base::Writer &writer) const
+{
+    Base::OutputStream str(writer.Stream());
+    uint32_t uCt = (uint32_t)getSize();
+    str << uCt;
+    if (writer.getFileVersion() > 0) {
+        for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            str << it->getPosition().x << it->getPosition().y << it->getPosition().z
+                << it->getRotation()[0] << it->getRotation()[1] << it->getRotation()[2] << it->getRotation()[3] ;
+        }
+    }
+    else {
+        for (std::vector<Base::Placement>::const_iterator it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+            float x = (float)it->getPosition().x;
+            float y = (float)it->getPosition().y;
+            float z = (float)it->getPosition().z;
+            float q0 = (float)it->getRotation()[0];
+            float q1 = (float)it->getRotation()[1];
+            float q2 = (float)it->getRotation()[2];
+            float q3 = (float)it->getRotation()[3];
+            str << x << y << z << q0 << q1 << q2 << q3;
+        }
+    }
+}
+
+void PropertyPlacementList::RestoreDocFile(Base::Reader &reader)
+{
+    Base::InputStream str(reader);
+    uint32_t uCt=0;
+    str >> uCt;
+    std::vector<Base::Placement> values(uCt);
+    if (reader.getFileVersion() > 0) {
+        for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
+            Base::Vector3d pos;
+            float q0, q1, q2, q3;
+            str >> pos.x >> pos.y >> pos.z >> q0 >> q1 >> q2 >> q3;
+            Base::Rotation rot(q0,q1,q2,q3);
+            it->setPosition(pos);
+            it->setRotation(rot);
+        }
+    }
+    else {
+        float x,y,z,q0,q1,q2,q3;
+        for (std::vector<Base::Placement>::iterator it = values.begin(); it != values.end(); ++it) {
+            str >> x >> y >> z >> q0 >> q1 >> q2 >> q3;
+            Base::Vector3d pos(x, y, z);
+            Base::Rotation rot(q0,q1,q2,q3);
+            it->setPosition(pos);
+            it->setRotation(rot);
+        }
+    }
+    setValues(values);
+}
+
+Property *PropertyPlacementList::Copy(void) const
+{
+    PropertyPlacementList *p= new PropertyPlacementList();
+    p->_lValueList = _lValueList;
+    return p;
+}
+
+void PropertyPlacementList::Paste(const Property &from)
+{
+    aboutToSetValue();
+    _lValueList = dynamic_cast<const PropertyPlacementList&>(from)._lValueList;
+    hasSetValue();
+}
+
+unsigned int PropertyPlacementList::getMemSize (void) const
+{
+    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Vector3d));
+}
+
+
+
 
 //**************************************************************************
 //**************************************************************************

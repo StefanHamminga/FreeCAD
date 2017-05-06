@@ -27,6 +27,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
@@ -45,18 +46,23 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
+
 } // namespace _TEMPLATE_
 
 
 /* Python entry */
-extern "C" {
-void _TEMPLATE_AppExport init_TEMPLATE_() {
-
+PyMOD_INIT_FUNC(_TEMPLATE_)
+{
     // ADD YOUR CODE HERE
     //
     //
-    new _TEMPLATE_::Module();
+    PyObject* mod = _TEMPLATE_::initModule();
     Base::Console().Log("Loading _TEMPLATE_ module... done\n");
+    PyMOD_Return(mod);
 }
-
-} // extern "C"

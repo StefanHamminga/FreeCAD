@@ -278,7 +278,7 @@ void ParameterGrp::importFrom(const char* FileName)
     ParameterManager Mngr;
 
     if (Mngr.LoadDocument(FileName) != 1)
-        throw Exception("ParameterGrp::import() cannot load document");
+        throw FileException("ParameterGrp::import() cannot load document", FileName);
 
     Mngr.GetGroup("BaseApp")->copyTo(Base::Reference<ParameterGrp>(this));
 }
@@ -288,7 +288,7 @@ void ParameterGrp::insert(const char* FileName)
     ParameterManager Mngr;
 
     if (Mngr.LoadDocument(FileName) != 1)
-        throw Exception("ParameterGrp::import() cannot load document");
+        throw FileException("ParameterGrp::import() cannot load document", FileName);
 
     Mngr.GetGroup("root")->insertTo(Base::Reference<ParameterGrp>(this));
 }
@@ -959,6 +959,34 @@ void ParameterGrp::NotifyAll()
 
 //**************************************************************************
 //**************************************************************************
+// ParameterSerializer
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ParameterSerializer::ParameterSerializer(const std::string& fn)
+  : filename(fn)
+{
+}
+
+ParameterSerializer::~ParameterSerializer()
+{
+}
+
+void ParameterSerializer::SaveDocument(const ParameterManager& mgr)
+{
+    mgr.SaveDocument(filename.c_str());
+}
+
+int ParameterSerializer::LoadDocument(ParameterManager& mgr)
+{
+    return mgr.LoadDocument(filename.c_str());
+}
+
+bool ParameterSerializer::LoadOrCreateDocument(ParameterManager& mgr)
+{
+    return mgr.LoadOrCreateDocument(filename.c_str());
+}
+
+//**************************************************************************
+//**************************************************************************
 // ParameterManager
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
@@ -970,7 +998,7 @@ static XercesDOMParser::ValSchemes    gValScheme       = XercesDOMParser::Val_Au
 /** Default construction
   */
 ParameterManager::ParameterManager()
-  : ParameterGrp(), _pDocument(0)
+  : ParameterGrp(), _pDocument(0), paramSerializer(0)
 {
     // initialize the XML system
     Init();
@@ -991,8 +1019,8 @@ ParameterManager::ParameterManager()
 //      Indicates whether full schema constraint checking should be done.
 //
 //  gDoCreate
-//      Indicates whether entity reference nodes needs to be created or not
-//      Defaults to false
+//      Indicates whether entity reference nodes needs to be created or not.
+//      Defaults to false.
 //
 //  gOutputEncoding
 //      The encoding we are to output in. If not set on the command line,
@@ -1036,6 +1064,7 @@ ParameterManager::ParameterManager()
 ParameterManager::~ParameterManager()
 {
     delete _pDocument;
+    delete paramSerializer;
 }
 
 void ParameterManager::Init(void)
@@ -1056,10 +1085,54 @@ void ParameterManager::Init(void)
                 << "  Exception message:"
                 << pMsg;
             XMLString::release(&pMsg);
-            throw Exception(err.str().c_str());
+            throw XMLBaseException(err.str().c_str());
         }
         Init = true;
     }
+}
+
+void ParameterManager::Terminate(void)
+{
+    StrXUTF8::terminate();
+    XUTF8Str::terminate();
+    XMLPlatformUtils::Terminate();
+}
+
+//**************************************************************************
+// Serializer handling
+
+void ParameterManager::SetSerializer(ParameterSerializer* ps)
+{
+    if (paramSerializer != ps)
+        delete paramSerializer;
+    paramSerializer = ps;
+}
+
+bool ParameterManager::HasSerializer() const
+{
+    return (paramSerializer != 0);
+}
+
+int ParameterManager::LoadDocument()
+{
+    if (paramSerializer)
+        return paramSerializer->LoadDocument(*this);
+    else
+        return -1;
+}
+
+bool ParameterManager::LoadOrCreateDocument()
+{
+    if (paramSerializer)
+        return paramSerializer->LoadOrCreateDocument(*this);
+    else
+        return false;
+}
+
+void ParameterManager::SaveDocument() const
+{
+    if (paramSerializer)
+        paramSerializer->SaveDocument(*this);
 }
 
 //**************************************************************************
@@ -1118,7 +1191,7 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     parser->setErrorHandler(errReporter);
 
     //
-    //  Parse the XML file, catching any XML exceptions that might propogate
+    //  Parse the XML file, catching any XML exceptions that might propagate
     //  out of it.
     //
     bool errorsOccured = false;
@@ -1154,16 +1227,16 @@ int ParameterManager::LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSou
     delete errReporter;
 
     if (!_pDocument)
-        throw Exception("Malformed Parameter document: Invalid document");
+        throw XMLBaseException("Malformed Parameter document: Invalid document");
 
     DOMElement* rootElem = _pDocument->getDocumentElement();
     if (!rootElem)
-        throw Exception("Malformed Parameter document: Root group not found");
+        throw XMLBaseException("Malformed Parameter document: Root group not found");
 
     _pGroupNode = FindElement(rootElem,"FCParamGroup","Root");
 
     if (!_pGroupNode)
-        throw Exception("Malformed Parameter document: Root group not found");
+        throw XMLBaseException("Malformed Parameter document: Root group not found");
 
     return 1;
 }
@@ -1371,9 +1444,9 @@ short DOMPrintFilter::acceptNode(const DOMNode* node) const
     // The DOMWriter shall call getWhatToShow() before calling
     // acceptNode(), to show nodes which are supposed to be
     // shown to this filter.
-    //
+    // TODO:
     // REVISIT: In case the DOMWriter does not follow the protocol,
-    //          Shall the filter honour, or NOT, what it claimes
+    //          Shall the filter honor, or NOT, what it claims
     //         (when it is constructed/setWhatToShow())
     //          it is interested in ?
     //

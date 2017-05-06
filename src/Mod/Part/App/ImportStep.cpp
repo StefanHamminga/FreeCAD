@@ -38,8 +38,9 @@
 # include <sstream>
 #endif
 
-#include <Handle_XSControl_WorkSession.hxx>
-#include <Handle_XSControl_TransferReader.hxx>
+#include <Standard_Version.hxx>
+#include <XSControl_WorkSession.hxx>
+#include <XSControl_TransferReader.hxx>
 #include <XSControl_WorkSession.hxx>
 #include <XSControl_TransferReader.hxx>
 #include <Transfer_TransientProcess.hxx>
@@ -48,8 +49,8 @@
 #include <TColStd_HSequenceOfTransient.hxx>
 #include <STEPConstruct.hxx>
 #include <StepVisual_StyledItem.hxx>
-#include <Handle_StepShape_ShapeRepresentation.hxx>
-#include <Handle_StepVisual_PresentationStyleByContext.hxx>
+#include <StepShape_ShapeRepresentation.hxx>
+#include <StepVisual_PresentationStyleByContext.hxx>
 #include <StepVisual_StyleContextSelect.hxx>
 #include <StepVisual_PresentationStyleByContext.hxx>
 #include <Interface_EntityIterator.hxx>
@@ -57,15 +58,15 @@
 #include <StepShape_ShapeDefinitionRepresentation.hxx>
 #include <StepRepr_CharacterizedDefinition.hxx>
 #include <StepRepr_ProductDefinitionShape.hxx>
-#include <Handle_StepRepr_AssemblyComponentUsage.hxx>
+#include <StepRepr_AssemblyComponentUsage.hxx>
 #include <StepRepr_AssemblyComponentUsage.hxx>
 #include <StepRepr_SpecifiedHigherUsageOccurrence.hxx>
 #include <Quantity_Color.hxx>
 #include <TCollection_ExtendedString.hxx>
 #include <StepBasic_Product.hxx>
-#include <Handle_StepBasic_Product.hxx>
+#include <StepBasic_Product.hxx>
 #include <StepBasic_ProductDefinition.hxx>
-#include <Handle_StepBasic_ProductDefinition.hxx>
+#include <StepBasic_ProductDefinition.hxx>
 #include <StepBasic_ProductDefinitionFormation.hxx>
 
 #include <Base/Console.h>
@@ -104,7 +105,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
         throw Base::Exception("Cannot open STEP file");
     }
 
-    Handle_Message_ProgressIndicator pi = new ProgressIndicator(100);
+    Handle(Message_ProgressIndicator) pi = new ProgressIndicator(100);
     aReader.WS()->MapReader()->SetProgress(pi);
     pi->NewScope(100, "Reading STEP file...");
     pi->Show();
@@ -125,8 +126,8 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     }
     else {
         //Handle(StepData_StepModel) Model = aReader.StepModel();
-        //Handle_XSControl_WorkSession ws = aReader.WS();
-        //Handle_XSControl_TransferReader tr = ws->TransferReader();
+        //Handle(XSControl_WorkSession) ws = aReader.WS();
+        //Handle(XSControl_TransferReader) tr = ws->TransferReader();
 
         std::map<int, Quantity_Color> hash_col;
         //ReadColors(aReader.WS(), hash_col);
@@ -144,7 +145,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 const TopoDS_Solid& aSolid = TopoDS::Solid(ex.Current());
 
                 std::string name = fi.fileNamePure();
-                //Handle_Standard_Transient ent = tr->EntityFromShapeResult(aSolid, 3);
+                //Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aSolid, 3);
                 //if (!ent.IsNull()) {
                 //    name += ws->Model()->StringLabel(ent)->ToCString();
                 //}
@@ -180,7 +181,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
                 const TopoDS_Shell& aShell = TopoDS::Shell(ex.Current());
 
                 std::string name = fi.fileNamePure();
-                //Handle_Standard_Transient ent = tr->EntityFromShapeResult(aShell, 3);
+                //Handle(Standard_Transient) ent = tr->EntityFromShapeResult(aShell, 3);
                 //if (!ent.IsNull()) {
                 //    name += ws->Model()->StringLabel(ent)->ToCString();
                 //}
@@ -232,6 +233,7 @@ int Part::ImportStepParts(App::Document *pcDoc, const char* Name)
     return 0;
 }
 
+#if OCC_VERSION_HEX < 0x070000
 static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
                           Handle(StepShape_ShapeRepresentation)& aSR)
 {
@@ -250,9 +252,15 @@ static void findStyledSR (const Handle(StepVisual_StyledItem) &style,
             break;
     }
 }
+#endif
 
 bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Quantity_Color>& hash_col)
 {
+#if OCC_VERSION_HEX >= 0x070000
+    (void)WS;
+    (void)hash_col;
+    return Standard_False;
+#else
     STEPConstruct_Styles Styles (WS);
     if (!Styles.LoadStyles()) {
 #ifdef FC_DEBUG
@@ -267,7 +275,7 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
     // parse and search for color attributes
     Standard_Integer nb = Styles.NbStyles();
     for (Standard_Integer i=1; i <= nb; i++) {
-        Handle_StepVisual_StyledItem style = Styles.Style (i);
+        Handle(StepVisual_StyledItem) style = Styles.Style (i);
         if (style.IsNull()) continue;
 
         Standard_Boolean IsVisible = Standard_True;
@@ -296,23 +304,23 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
         // take shape with real location.
         while (IsComponent) {
             // take SR of NAUO
-            Handle_StepShape_ShapeRepresentation aSR;
+            Handle(StepShape_ShapeRepresentation) aSR;
             findStyledSR(style, aSR);
             // search for SR along model
             if (aSR.IsNull())
                 break;
 //          Handle(Interface_InterfaceModel) Model = WS->Model();
-            Handle_XSControl_TransferReader TR = WS->TransferReader();
-            Handle_Transfer_TransientProcess TP = TR->TransientProcess();
+            Handle(XSControl_TransferReader) TR = WS->TransferReader();
+            Handle(Transfer_TransientProcess) TP = TR->TransientProcess();
             Interface_EntityIterator subs = WS->HGraph()->Graph().Sharings( aSR );
-            Handle_StepShape_ShapeDefinitionRepresentation aSDR;
+            Handle(StepShape_ShapeDefinitionRepresentation) aSDR;
             for (subs.Start(); subs.More(); subs.Next()) {
                 aSDR = Handle(StepShape_ShapeDefinitionRepresentation)::DownCast(subs.Value());
                 if (aSDR.IsNull())
                     continue;
                 StepRepr_RepresentedDefinition aPDSselect = aSDR->Definition();
-                Handle_StepRepr_ProductDefinitionShape PDS = 
-                    Handle_StepRepr_ProductDefinitionShape::DownCast(aPDSselect.PropertyDefinition());
+                Handle(StepRepr_ProductDefinitionShape) PDS =
+                    Handle(StepRepr_ProductDefinitionShape)::DownCast(aPDSselect.PropertyDefinition());
                 if (PDS.IsNull())
                     continue;
                 StepRepr_CharacterizedDefinition aCharDef = PDS->Definition();
@@ -324,8 +332,8 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
                     isSkipSHUOstyle = Standard_True;
                     break;
                 }
-                Handle_StepRepr_NextAssemblyUsageOccurrence NAUO =
-                    Handle_StepRepr_NextAssemblyUsageOccurrence::DownCast(ACU);
+                Handle(StepRepr_NextAssemblyUsageOccurrence) NAUO =
+                    Handle(StepRepr_NextAssemblyUsageOccurrence)::DownCast(ACU);
                 if (NAUO.IsNull())
                     continue;
         
@@ -377,10 +385,15 @@ bool Part::ReadColors (const Handle(XSControl_WorkSession) &WS, std::map<int, Qu
     }
   
     return Standard_True;
+#endif
 }
 
 bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
 {
+#if OCC_VERSION_HEX >= 0x070000
+    (void)WS;
+    return Standard_False;
+#else
     // get starting data
     Handle(Interface_InterfaceModel) Model = WS->Model();
     Handle(XSControl_TransferReader) TR = WS->TransferReader();
@@ -437,4 +450,5 @@ bool Part::ReadNames (const Handle(XSControl_WorkSession) &WS)
     }
 
     return Standard_True;
+#endif
 }

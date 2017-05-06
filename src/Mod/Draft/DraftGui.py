@@ -26,10 +26,13 @@ __title__="FreeCAD Draft Workbench - GUI part"
 __author__ = "Yorik van Havre <yorik@uncreated.net>"
 __url__ = ["http://www.freecadweb.org"]
 
-## \defgroup DRAFTGUI DraftGui
+## @package DraftGui
 #  \ingroup DRAFT
+#  \brief GUI elements and utilities of the Draft workbench
 #
-# GUI elements and utilities of the Draft workbench
+#  This module provides GUI tools for the Draft workbench, such as
+#  toolbars and task panels, and Qt-dependent utilities such as 
+#  a delayed (todo) commit system
 
 '''
 This is the GUI part of the Draft module.
@@ -100,10 +103,16 @@ class todo:
         QtCore.QTimer.singleShot(0, todo.doTasks)
         todo.commitlist = cl
 
-def translate(context,text):
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def translate(context, text):
         "convenience function for Qt translator"
-        return QtGui.QApplication.translate(context, text, None,
-                                            QtGui.QApplication.UnicodeUTF8)
+        return QtGui.QApplication.translate(context, text, None, _encoding)
+except AttributeError:
+    def translate(context, text):
+        "convenience function for Qt translator"
+        return QtGui.QApplication.translate(context, text, None)
+
 
 #---------------------------------------------------------------------------
 # UNITS handling
@@ -134,23 +143,27 @@ def makeFormatSpec(decimals=4,dim='Length'):
         fmtSpec = "%." + str(decimals) + "f " + "??"
     return fmtSpec
 
-def displayExternal(internValue,decimals=4,dim='Length',showUnit=True):
+def displayExternal(internValue,decimals=None,dim='Length',showUnit=True,unit=None):
     '''return an internal value (ie mm) Length or Angle converted for display according 
-    to Units Schema in use.'''
+    to Units Schema in use. Unit can be used to force the value to express in a certain unit'''
     from FreeCAD import Units
-
     if dim == 'Length':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
-        pref = qty.getUserPreferred()
-        conversion = pref[1]
-        uom = pref[2]
+        q = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Length)
+        if not unit:
+            if (decimals == None) and showUnit:
+                return q.UserString
+            conversion = q.getUserPreferred()[1]
+            uom = q.getUserPreferred()[2]
+        else:
+            uom = unit
+            internValue = q.getValueAs(unit)
+            conversion = 1
     elif dim == 'Angle':
-        qty = FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle)
-        pref=qty.getUserPreferred()
-        conversion = pref[1]
-        uom = pref[2]
+        return FreeCAD.Units.Quantity(internValue,FreeCAD.Units.Angle).UserString
     else:
         conversion = 1.0
+        if decimals == None:
+            decimals = 2
         uom = "??"
     if not showUnit:
         uom = ""
@@ -186,8 +199,6 @@ class DraftLineEdit(QtGui.QLineEdit):
             self.emit(QtCore.SIGNAL("up()"))
         elif event.key() == QtCore.Qt.Key_Down:
             self.emit(QtCore.SIGNAL("down()"))
-        elif (event.key() == QtCore.Qt.Key_Z) and (int(event.modifiers()) == QtCore.Qt.ControlModifier):
-            self.emit(QtCore.SIGNAL("undo()"))
         else:
             QtGui.QLineEdit.keyPressEvent(self, event)
 
@@ -203,8 +214,11 @@ class DraftTaskPanel:
     def getStandardButtons(self):
         return int(QtGui.QDialogButtonBox.Close)
     def accept(self):
-        FreeCADGui.ActiveDocument.resetEdit()
-        return True
+        if hasattr(FreeCADGui,"draftToolBar"):
+            return FreeCADGui.draftToolBar.validatePoint()
+        else:
+            FreeCADGui.ActiveDocument.resetEdit()
+            return True
     def reject(self):
         FreeCADGui.draftToolBar.isTaskOn = False
         FreeCADGui.draftToolBar.escape()
@@ -236,10 +250,14 @@ class DraftToolBar:
         self.fillmode = Draft.getParam("fillmode",False)
         self.mask = None
         self.alock = False
-        self.DECIMALS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
-        self.FORMAT = makeFormatSpec(self.DECIMALS,'Length')
-        self.AFORMAT = makeFormatSpec(self.DECIMALS,'Angle')
+        self.angle = None
+        self.avalue = None
+        self.x = 0
+        self.y = 0
+        self.z = 0
         self.uiloader = FreeCADGui.UiLoader()
+        self.autogroup = None
+        self.isCenterPlane = False
         
         if self.taskmode:
             # add only a dummy widget, since widgets are created on demand
@@ -318,13 +336,14 @@ class DraftToolBar:
         return lineedit
 
     def _inputfield (self,name, layout, hide=True, width=None):
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-        bsize = p.GetInt("ToolbarIconSize",24)-2
         inputfield = self.uiloader.createWidget("Gui::InputField")
         inputfield.setObjectName(name)
         if hide: inputfield.hide()
-        if not width: width = 800
-        inputfield.setMaximumSize(QtCore.QSize(width,bsize))
+        if not width:
+            sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
+            inputfield.setSizePolicy(sizePolicy)
+        else:
+            inputfield.setMaximumWidth(width)
         layout.addWidget(inputfield)
         return inputfield
 
@@ -381,18 +400,21 @@ class DraftToolBar:
         xl = QtGui.QHBoxLayout()
         yl = QtGui.QHBoxLayout()
         zl = QtGui.QHBoxLayout()
+        bl = QtGui.QHBoxLayout()
         self.layout.addLayout(xl)
         self.layout.addLayout(yl)
         self.layout.addLayout(zl)
+        self.layout.addLayout(bl)
         self.labelx = self._label("labelx", xl)
         self.xValue = self._inputfield("xValue", xl) #width=60
-        self.xValue.setText(self.FORMAT % 0)
+        self.xValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labely = self._label("labely", yl)
         self.yValue = self._inputfield("yValue", yl)
-        self.yValue.setText(self.FORMAT % 0)
+        self.yValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelz = self._label("labelz", zl)
         self.zValue = self._inputfield("zValue", zl)
-        self.zValue.setText(self.FORMAT % 0)
+        self.zValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        self.pointButton = self._pushbutton("addButton", bl, icon="Draft_AddPoint", width=100)
         
         # text
         
@@ -406,20 +428,20 @@ class DraftToolBar:
         self.layout.addLayout(al)
         self.labellength = self._label("labellength", ll)
         self.lengthValue = self._inputfield("lengthValue", ll)
-        self.lengthValue.setText(self.FORMAT % 0)
+        self.lengthValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelangle = self._label("labelangle", al)
         self.angleLock = self._checkbox("angleLock",al,checked=self.alock)
         self.angleValue = self._inputfield("angleValue", al)
-        self.angleValue.setText(self.AFORMAT % 0)
+        self.angleValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Angle).UserString)
 
         # shapestring
         
         self.labelSSize = self._label("labelSize", self.layout)
         self.SSizeValue = self._inputfield("SSizeValue", self.layout)           #, width=60)      
-        self.SSizeValue.setText(self.FORMAT % 1.0)
+        self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
         self.labelSTrack = self._label("labelTracking", self.layout)
         self.STrackValue = self._inputfield("STrackValue", self.layout)         #, width=60)    
-        self.STrackValue.setText(self.FORMAT % 0)
+        self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.labelSString = self._label("labelString", self.layout)
         self.SStringValue = self._lineedit("SStringValue", self.layout)      
         self.SStringValue.setText("")
@@ -440,12 +462,12 @@ class DraftToolBar:
         self.layout.addLayout(ol)
         self.offsetLabel = self._label("offsetlabel", ol)
         self.offsetValue = self._inputfield("offsetValue", ol)
-        self.offsetValue.setText(self.FORMAT % 0)
+        self.offsetValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         rl = QtGui.QHBoxLayout()
         self.layout.addLayout(rl)
         self.labelRadius = self._label("labelRadius", rl)
         self.radiusValue = self._inputfield("radiusValue", rl)
-        self.radiusValue.setText(self.FORMAT % 0)
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.isRelative = self._checkbox("isRelative",self.layout,checked=self.relativeMode)
         self.hasFill = self._checkbox("hasFill",self.layout,checked=self.fillmode)
         self.continueCmd = self._checkbox("continueCmd",self.layout,checked=self.continueMode)
@@ -461,6 +483,16 @@ class DraftToolBar:
         self.currentViewButton = self._pushbutton("view", self.layout)
         self.resetPlaneButton = self._pushbutton("none", self.layout)
         self.isCopy = self._checkbox("isCopy",self.layout,checked=False)
+        gl = QtGui.QHBoxLayout()
+        self.layout.addLayout(gl)
+        self.gridLabel = self._label("gridLabel", gl)
+        self.gridValue = self._inputfield("gridValue", gl)
+        self.gridValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        ml = QtGui.QHBoxLayout()
+        self.layout.addLayout(ml)
+        self.mainlineLabel = self._label("mainlineLabel", ml)
+        self.mainlineValue = self._spinbox("mainlineValue", ml)
+        self.centerPlane = self._checkbox("centerPlane",self.layout,checked = self.isCenterPlane)
 
         # spacer
         if not self.taskmode:
@@ -488,6 +520,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("textEdited(QString)"),self.checkSpecialChars)
         QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
+        QtCore.QObject.connect(self.pointButton,QtCore.SIGNAL("clicked()"),self.validatePoint)
         QtCore.QObject.connect(self.radiusValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.angleValue,QtCore.SIGNAL("returnPressed()"),self.validatePoint)
         QtCore.QObject.connect(self.textValue,QtCore.SIGNAL("textChanged(QString)"),self.storeCurrentText)
@@ -512,14 +545,12 @@ class DraftToolBar:
         QtCore.QObject.connect(self.xyButton,QtCore.SIGNAL("clicked()"),self.selectXY)
         QtCore.QObject.connect(self.xzButton,QtCore.SIGNAL("clicked()"),self.selectXZ)
         QtCore.QObject.connect(self.yzButton,QtCore.SIGNAL("clicked()"),self.selectYZ)
-        QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)               
+        QtCore.QObject.connect(self.continueCmd,QtCore.SIGNAL("stateChanged(int)"),self.setContinue)
+        QtCore.QObject.connect(self.isCopy,QtCore.SIGNAL("stateChanged(int)"),self.setCopymode)
         QtCore.QObject.connect(self.isRelative,QtCore.SIGNAL("stateChanged(int)"),self.setRelative)
         QtCore.QObject.connect(self.hasFill,QtCore.SIGNAL("stateChanged(int)"),self.setFill) 
         QtCore.QObject.connect(self.currentViewButton,QtCore.SIGNAL("clicked()"),self.selectCurrentView)
         QtCore.QObject.connect(self.resetPlaneButton,QtCore.SIGNAL("clicked()"),self.selectResetPlane)
-        QtCore.QObject.connect(self.xValue,QtCore.SIGNAL("undo()"),self.undoSegment)
-        QtCore.QObject.connect(self.yValue,QtCore.SIGNAL("undo()"),self.undoSegment)
-        QtCore.QObject.connect(self.zValue,QtCore.SIGNAL("undo()"),self.undoSegment)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("resized()"),self.relocate)
         QtCore.QObject.connect(self.baseWidget,QtCore.SIGNAL("retranslate()"),self.retranslateUi)
         QtCore.QObject.connect(self.SSizeValue,QtCore.SIGNAL("valueChanged(double)"),self.changeSSizeValue)
@@ -529,6 +560,9 @@ class DraftToolBar:
         QtCore.QObject.connect(self.SStringValue,QtCore.SIGNAL("returnPressed()"),self.validateSString)
         QtCore.QObject.connect(self.chooserButton,QtCore.SIGNAL("pressed()"),self.pickFile)
         QtCore.QObject.connect(self.FFileValue,QtCore.SIGNAL("returnPressed()"),self.validateFile)
+        QtCore.QObject.connect(self.gridValue,QtCore.SIGNAL("textEdited(QString)"),self.setGridSize)
+        QtCore.QObject.connect(self.mainlineValue,QtCore.SIGNAL("valueChanged(int)"),self.setMainline)
+        QtCore.QObject.connect(self.centerPlane,QtCore.SIGNAL("stateChanged(int)"),self.setCenterPlane) 
         
         # following lines can cause a crash and are not needed anymore when using the task panel
         # http://forum.freecadweb.org/viewtopic.php?f=3&t=6952
@@ -574,6 +608,17 @@ class DraftToolBar:
         self.widthButton.setSuffix("px")
         self.fontsizeButton = self._spinbox("fontsizeButton",self.bottomtray, val=self.fontsize,vmax=999, hide=False,double=True,size=(bsize * 3,bsize))
         self.applyButton = self._pushbutton("applyButton", self.toptray, hide=False, icon='Draft_Apply',width=22)
+        self.autoGroupButton = self._pushbutton("autoGroup",self.bottomtray,icon="Draft_AutoGroup_off",hide=False,width=120)
+        self.autoGroupButton.setText("None")
+        
+        self.wplabel.setToolTip(translate("draft", "Current working plane:")+self.wplabel.text())
+        self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
+        self.colorButton.setToolTip(translate("draft", "Curreont line color"))
+        self.facecolorButton.setToolTip(translate("draft", "Current face color"))
+        self.widthButton.setToolTip(translate("draft", "Current line width"))
+        self.fontsizeButton.setToolTip(translate("draft", "Current font size"))
+        self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
+        self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
 
         QtCore.QObject.connect(self.wplabel,QtCore.SIGNAL("pressed()"),self.selectplane)
         QtCore.QObject.connect(self.colorButton,QtCore.SIGNAL("pressed()"),self.getcol)
@@ -582,6 +627,7 @@ class DraftToolBar:
         QtCore.QObject.connect(self.fontsizeButton,QtCore.SIGNAL("valueChanged(double)"),self.setfontsize)
         QtCore.QObject.connect(self.applyButton,QtCore.SIGNAL("pressed()"),self.apply)
         QtCore.QObject.connect(self.constrButton,QtCore.SIGNAL("toggled(bool)"),self.toggleConstrMode)
+        QtCore.QObject.connect(self.autoGroupButton,QtCore.SIGNAL("pressed()"),self.runAutoGroup)
 
     def setupStyle(self):
         style = "#constrButton:Checked {background-color: "
@@ -609,6 +655,8 @@ class DraftToolBar:
         self.labelz.setText(translate("draft", "Z"))
         self.yValue.setToolTip(translate("draft", "Y coordinate of next point"))
         self.zValue.setToolTip(translate("draft", "Z coordinate of next point"))
+        self.pointButton.setText(translate("draft", "Enter point"))
+        self.pointButton.setToolTip(translate("draft", "Enter a new point with the given coordinates"))
         self.labellength.setText(translate("draft", "Length"))
         self.labelangle.setText(translate("draft", "Angle"))
         self.lengthValue.setToolTip(translate("draft", "Length of current segment"))
@@ -624,7 +672,7 @@ class DraftToolBar:
         self.finishButton.setText(translate("draft", "&Finish"))
         self.finishButton.setToolTip(translate("draft", "Finishes the current drawing or editing operation (F)"))
         self.continueCmd.setToolTip(translate("draft", "If checked, command will not finish until you press the command button again"))
-        self.continueCmd.setText(translate("draft", "Con&tinue"))
+        self.continueCmd.setText(translate("draft", "Co&ntinue"))
         self.occOffset.setToolTip(translate("draft", "If checked, an OCC-style offset will be performed instead of the classic offset"))
         self.occOffset.setText(translate("draft", "&OCC-style offset"))
         self.addButton.setToolTip(translate("draft", "Add points to the current object"))
@@ -634,7 +682,7 @@ class DraftToolBar:
         self.symmetricButton.setToolTip(translate("draft", "Make Bezier node symmetric"))
         self.undoButton.setText(translate("draft", "&Undo"))
         self.undoButton.setToolTip(translate("draft", "Undo the last segment (CTRL+Z)"))
-        self.closeButton.setText(translate("draft", "&Close"))
+        self.closeButton.setText(translate("draft", "Cl&ose"))
         self.closeButton.setToolTip(translate("draft", "Finishes and closes the current line (C)"))
         self.wipeButton.setText(translate("draft", "&Wipe"))
         self.wipeButton.setToolTip(translate("draft", "Wipes the existing segments of this line and starts again from the last point (W)"))
@@ -643,17 +691,17 @@ class DraftToolBar:
         self.numFacesLabel.setText(translate("draft", "Sides"))
         self.numFaces.setToolTip(translate("draft", "Number of sides"))
         self.offsetLabel.setText(translate("draft", "Offset"))
-        self.xyButton.setText(translate("draft", "XY"))
+        self.xyButton.setText(translate("draft", "XY (top)"))
         self.xyButton.setToolTip(translate("draft", "Select XY plane"))
-        self.xzButton.setText(translate("draft", "XZ"))
+        self.xzButton.setText(translate("draft", "XZ (front)"))
         self.xzButton.setToolTip(translate("draft", "Select XZ plane"))
-        self.yzButton.setText(translate("draft", "YZ"))
+        self.yzButton.setText(translate("draft", "YZ (side)"))
         self.yzButton.setToolTip(translate("draft", "Select YZ plane"))
         self.currentViewButton.setText(translate("draft", "View"))
         self.currentViewButton.setToolTip(translate("draft", "Select plane perpendicular to the current view"))
         self.resetPlaneButton.setText(translate("draft", "Auto"))
         self.resetPlaneButton.setToolTip(translate("draft", "Do not project points to a drawing plane"))
-        self.isCopy.setText(translate("draft", "&Copy"))
+        self.isCopy.setText(translate("draft", "C&opy"))
         self.isCopy.setToolTip(translate("draft", "If checked, objects will be copied instead of moved (C)"))
         self.SStringValue.setToolTip(translate("draft", "Text string to draw"))
         self.labelSString.setText(translate("draft", "String"))
@@ -663,6 +711,11 @@ class DraftToolBar:
         self.labelSTrack.setText(translate("draft", "Tracking"))
         self.labelFFile.setText(translate("draft", "Full path to font file:"))
         self.chooserButton.setToolTip(translate("draft", "Open a FileChooser for font file"))
+        self.gridLabel.setText(translate("draft", "Grid spacing"))
+        self.gridValue.setToolTip(translate("draft", "The spacing between the grid lines"))
+        self.mainlineLabel.setText(translate("draft", "Main line every"))
+        self.mainlineValue.setToolTip(translate("draft", "The number of lines between main lines"))
+        self.centerPlane.setText(translate("draft", "Center plane on view"))
         
         # Update the maximum width of the push buttons
         maxwidth = 66 # that's the default
@@ -680,15 +733,6 @@ class DraftToolBar:
         maxwidth = maxwidth + 16 +10 # add icon width and a margin
         for i in pb:
             i.setMaximumWidth(maxwidth)
-        
-        if (not self.taskmode) or self.tray:
-            self.wplabel.setToolTip(translate("draft", "Set/unset a working plane"))
-            self.colorButton.setToolTip(translate("draft", "Line Color"))
-            self.facecolorButton.setToolTip(translate("draft", "Face Color"))
-            self.widthButton.setToolTip(translate("draft", "Line Width"))
-            self.fontsizeButton.setToolTip(translate("draft", "Font Size"))
-            self.applyButton.setToolTip(translate("draft", "Apply to selected objects"))
-            self.constrButton.setToolTip(translate("draft", "Toggles Construction Mode"))
 
 #---------------------------------------------------------------------------
 # Interface modes
@@ -742,6 +786,15 @@ class DraftToolBar:
         self.resetPlaneButton.show()
         self.offsetLabel.show()
         self.offsetValue.show()
+        self.gridLabel.show()
+        self.gridValue.show()
+        p = Draft.getParam("gridSpacing",1.0)
+        self.gridValue.setText(FreeCAD.Units.Quantity(p,FreeCAD.Units.Length).UserString)
+        self.mainlineLabel.show()
+        self.mainlineValue.show()
+        p = Draft.getParam("gridEvery",10)
+        self.mainlineValue.setValue(p)
+        self.centerPlane.show()
         
     def extraLineUi(self):
         '''shows length and angle controls'''
@@ -750,6 +803,7 @@ class DraftToolBar:
         self.labelangle.show()
         self.angleValue.show()
         self.angleLock.show()
+        self.angleLock.setChecked(False)
 
     def hideXYZ(self):
         ''' turn off all the point entry widgets '''
@@ -761,6 +815,7 @@ class DraftToolBar:
         self.xValue.hide()
         self.yValue.hide()
         self.zValue.hide()
+        self.pointButton.hide()
         self.lengthValue.hide()
         self.angleValue.hide()
         self.angleLock.hide()
@@ -816,8 +871,9 @@ class DraftToolBar:
         self.xValue.show()
         self.yValue.show()
         self.zValue.show()
+        self.pointButton.show()
         if rel: self.isRelative.show()
-        self.xValue.setFocus()
+        todo.delay(self.xValue.setFocus,None)
         self.xValue.selectAll()
 
     def extraUi(self):
@@ -829,8 +885,8 @@ class DraftToolBar:
         self.isCopy.show()
         self.occOffset.show()
         self.labelRadius.setText(translate("draft","Distance"))
-        self.radiusValue.setText(self.FORMAT % 0)
-        self.radiusValue.setFocus()
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
 
     def offUi(self):
@@ -882,27 +938,32 @@ class DraftToolBar:
             self.labelFFile.hide()
             self.FFileValue.hide()
             self.chooserButton.hide()
+            self.gridLabel.hide()
+            self.gridValue.hide()
+            self.mainlineLabel.hide()
+            self.mainlineValue.hide()
+            self.centerPlane.hide()
             
     def trimUi(self,title=translate("draft","Trim")):
         self.taskUi(title)
         self.radiusUi()
         self.labelRadius.setText(translate("draft","Distance"))
-        self.radiusValue.setText(self.FORMAT % 0)
-        self.radiusValue.setFocus()
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
+        todo.delay(self.radiusValue.setFocus,None)
         self.radiusValue.selectAll()
 
     def radiusUi(self):
         self.hideXYZ()
         self.labelRadius.setText(translate("draft", "Radius"))
         self.labelRadius.show()
-        self.radiusValue.setText(self.FORMAT % 0)
+        self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.radiusValue.show()
 
     def textUi(self):
         self.hideXYZ()
         self.textValue.show()
         self.textValue.setText('')
-        self.textValue.setFocus()
+        todo.delay(self.textValue.setFocus,None)
         self.textbuffer=[]
         self.textline=0
         self.continueCmd.show()
@@ -913,7 +974,7 @@ class DraftToolBar:
         self.labelSString.show()
         self.SStringValue.show()
         self.SStringValue.setText('')
-        self.SStringValue.setFocus()
+        todo.delay(self.SStringValue.setFocus,None)
         self.continueCmd.hide()
 
     def SSizeUi(self):
@@ -922,18 +983,18 @@ class DraftToolBar:
         self.SStringValue.hide()
         self.continueCmd.hide()
         self.labelSSize.show()
-        self.SSizeValue.setText(self.FORMAT % 1.0)
+        self.SSizeValue.setText(FreeCAD.Units.Quantity(1,FreeCAD.Units.Length).UserString)
         self.SSizeValue.show()
-        self.SSizeValue.setFocus()
+        todo.delay(self.SSizeValue.setFocus,None)
 
     def STrackUi(self):
         ''' set up ui for ShapeString tracking entry '''
         self.labelSSize.hide()
         self.SSizeValue.hide()
         self.labelSTrack.show()
-        self.STrackValue.setText(self.FORMAT % 0)
+        self.STrackValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
         self.STrackValue.show()
-        self.STrackValue.setFocus()
+        todo.delay(self.STrackValue.setFocus,None)
         
     def SFileUi(self):
         ''' set up UI for ShapeString font file selection '''
@@ -944,7 +1005,7 @@ class DraftToolBar:
         self.labelFFile.show()
         self.FFileValue.show()
         self.chooserButton.show()
-        self.FFileValue.setFocus()
+        todo.delay(self.FFileValue.setFocus,None)
                 
     def switchUi(self,store=True):
         if store:
@@ -1006,6 +1067,9 @@ class DraftToolBar:
 
     def modUi(self):
         self.isCopy.show()
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if p.GetBool("copymode",True):
+            self.isCopy.setChecked(p.GetBool("copymodeValue",False))
         self.continueCmd.show()
 
     def vertUi(self,addmode=True):
@@ -1056,6 +1120,10 @@ class DraftToolBar:
         self.relativeMode = bool(val)
         if (not self.taskmode) or self.isTaskOn:
             self.isRelative.show()
+            
+    def setCopymode(self,val=0):
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        p.SetBool("copymodeValue",bool(val))
 
     def relocate(self):
         "relocates the right-aligned buttons depending on the toolbar size"
@@ -1079,6 +1147,27 @@ class DraftToolBar:
         FreeCADGui.Control.closeDialog()
         panel = TaskPanel(extra,callback)
         FreeCADGui.Control.showDialog(panel)
+        
+    def setGridSize(self,text):
+        "sets the Draft grid to the given grid size"
+        try:
+            q = FreeCAD.Units.Quantity(text)
+        except:
+            pass
+        else:
+            Draft.setParam("gridSpacing",q.Value)
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+                
+    def setMainline(self,val):
+        "sets the grid main lines"
+        if val > 1:
+            Draft.setParam("gridEvery",val)
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.setGrid()
+                
+    def setCenterPlane(self,val):
+        self.isCenterPlane = bool(val)
 
 #---------------------------------------------------------------------------
 # Processing functions
@@ -1180,7 +1269,7 @@ class DraftToolBar:
                     pass
                 else:
                     self.sourceCmd.offsetHandler(offset)
-            else:
+            elif (self.labelx.isVisible()):
                 try:
                     #numx=float(self.xValue.text())
                     numx = self.x
@@ -1211,6 +1300,11 @@ class DraftToolBar:
                                 numy = last.y + v.y
                                 numz = last.z + v.z
                         self.sourceCmd.numericInput(numx,numy,numz)
+            elif (self.textValue.isVisible() or self.SStringValue.isVisible() or self.SSizeValue.isVisible() or self.STrackValue.isVisible() or self.FFileValue.isVisible()):
+                return False
+            else:
+                FreeCADGui.ActiveDocument.resetEdit()
+        return True
 
     def validateSNumeric(self):
         ''' send valid numeric parameters to ShapeString '''
@@ -1329,7 +1423,8 @@ class DraftToolBar:
 
     def undoSegment(self):
         "undo last line segment"
-        self.sourceCmd.undolast()
+        if hasattr(self.sourceCmd,"undolast"):
+            self.sourceCmd.undolast()
 
     def checkSpecialChars(self,txt):
         '''
@@ -1337,19 +1432,19 @@ class DraftToolBar:
         treated as shortcuts
         '''
         spec = False
-        if txt.endswith(" ") or txt.endswith("r"):
+        if txt.endswith("r"):
             self.isRelative.setChecked(not self.isRelative.isChecked())
             self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.endswith("i"):
+        elif txt.endswith("I"):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.endswith("f"):
+        elif txt.endswith("F"):
             if self.finishButton.isVisible():
                 self.finish()
             spec = True
-        elif txt.endswith("t"):
+        elif txt.endswith("T"):
             self.toggleContinue()
             spec = True
         elif txt.endswith("w"):
@@ -1367,6 +1462,10 @@ class DraftToolBar:
         elif txt.endswith("]"):
             self.toggleradius(-1)
             spec = True
+        elif txt.endswith("q"):
+            if hasattr(FreeCADGui,"Snapper"):
+                FreeCADGui.Snapper.addHoldPoint()
+            spec = True
         elif txt.endswith("x"):
             self.constrain("x")
             self.displayPoint()
@@ -1383,18 +1482,22 @@ class DraftToolBar:
             self.constrain("angle")
             self.displayPoint()
             spec = True
-        elif txt.endswith("c"):
+        elif txt.endswith("o"):
             if self.closeButton.isVisible():
                 self.closeLine()
             elif self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
-            elif self.continueCmd.isVisible():
+            spec = True
+        elif txt.endswith("N"):
+            if self.continueCmd.isVisible():
                 self.continueCmd.setChecked(not self.continueCmd.isChecked())
             spec = True
         if spec:
             for i in [self.xValue,self.yValue,self.zValue]:
                 if (i.property("text") == txt):
                     i.setProperty("text",txt[:-1])
+                    i.setFocus()
+                    i.selectAll()
 
     def storeCurrentText(self,qstr):
         self.currEditText = self.textValue.text()
@@ -1455,22 +1558,33 @@ class DraftToolBar:
                     dp = plane.getLocalCoords(point)
 
             # set widgets
-            if self.mask in ['y','z']:
-                self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            else:
-                if dp:
-                    self.xValue.setText(displayExternal(dp.x,self.DECIMALS,'Length'))
-            if self.mask in ['x','z']:
-                self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            else:
-                if dp:
-                    self.yValue.setText(displayExternal(dp.y,self.DECIMALS,'Length'))
-            if self.mask in ['x','y']:
-                self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
-            else:
-                if dp:
-                    self.zValue.setText(displayExternal(dp.z,self.DECIMALS,'Length'))
-
+            if dp:
+                if self.mask in ['y','z']:
+                    self.xValue.setText(displayExternal(dp.x,None,'Length'))
+                else:
+                    self.xValue.setText(displayExternal(dp.x,None,'Length'))
+                if self.mask in ['x','z']:
+                    self.yValue.setText(displayExternal(dp.y,None,'Length'))
+                else:
+                    self.yValue.setText(displayExternal(dp.y,None,'Length'))
+                if self.mask in ['x','y']:
+                    self.zValue.setText(displayExternal(dp.z,None,'Length'))
+                else:
+                    self.zValue.setText(displayExternal(dp.z,None,'Length'))
+                    
+            # set length and angle
+            if last and dp and plane:
+                self.lengthValue.setText(displayExternal(dp.Length,None,'Length'))
+                a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
+                if not self.angleLock.isChecked():
+                    self.angleValue.setText(displayExternal(a,None,'Angle'))
+                if not mask:
+                    # automask
+                    if a in [0,180,-180]:
+                        mask = "x"
+                    elif a in [90,270,-90]:
+                        mask = "y"
+                
             # set masks
             if (mask == "x") or (self.mask == "x"):
                 self.xValue.setEnabled(True)
@@ -1496,12 +1610,6 @@ class DraftToolBar:
                 self.zValue.setEnabled(True)
                 self.xValue.setFocus()
                 self.xValue.selectAll()
-                
-            # set length and angle
-            if last and dp and plane:
-                self.lengthValue.setText(displayExternal(dp.Length,self.DECIMALS,'Length'))
-                a = math.degrees(-DraftVecUtils.angle(dp,plane.u,plane.axis))
-                self.angleValue.setText(displayExternal(a,self.DECIMALS,'Angle'))
                 
             
     def getDefaultColor(self,type,rgb=False):
@@ -1630,13 +1738,37 @@ class DraftToolBar:
         if  not isinstance(val, (int, float)):       #??some code passes strings or ??? 
             t = val
         elif unit:
-            t= displayExternal(val,self.DECIMALS, unit)
+            t= displayExternal(val,None, unit)
         else:
             print("Error: setRadiusValue called for number without Dimension")
-            t = displayExternal(val,self.DECIMALS, None)
+            t = displayExternal(val,None, None)
         self.radiusValue.setText(t)
         self.radiusValue.setFocus()
         
+    def runAutoGroup(self):
+        FreeCADGui.runCommand("Draft_AutoGroup")
+        
+    def setAutoGroup(self,value=None):
+        if value == None:
+            self.autogroup = None
+            self.autoGroupButton.setText("None")
+            self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+            self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
+            self.autoGroupButton.setDown(False)
+        else:
+            obj = FreeCAD.ActiveDocument.getObject(value)
+            if obj:
+                self.autogroup = value
+                self.autoGroupButton.setText(obj.Label)
+                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_on.svg'))
+                self.autoGroupButton.setToolTip(translate("draft", "Autogroup: ")+obj.Label)
+                self.autoGroupButton.setDown(False)
+            else:
+                self.autogroup = None
+                self.autoGroupButton.setText("None")
+                self.autoGroupButton.setIcon(QtGui.QIcon(':/icons/Draft_AutoGroup_off.svg'))
+                self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
+                self.autoGroupButton.setDown(False)
 
     def show(self):
         if not self.taskmode:
@@ -1702,30 +1834,44 @@ class DraftToolBar:
         
     def changeLengthValue(self,d):
         v = FreeCAD.Vector(self.x,self.y,self.z)
+        if not v.Length:
+            if self.angle:
+                v = FreeCAD.Vector(self.angle)
+            else:
+                v = FreeCAD.Vector(FreeCAD.DraftWorkingPlane.u)
+                if self.avalue:
+                    v = DraftVecUtils.rotate(v,math.radians(d),FreeCAD.DraftWorkingPlane.axis)
         v = DraftVecUtils.scaleTo(v,d)
-        self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
-        self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
-        self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
+        self.xValue.setText(displayExternal(v.x,None,'Length'))
+        self.yValue.setText(displayExternal(v.y,None,'Length'))
+        self.zValue.setText(displayExternal(v.z,None,'Length'))
         
     def changeAngleValue(self,d):
+        self.avalue = d
         v = FreeCAD.Vector(self.x,self.y,self.z)
         a = DraftVecUtils.angle(v,FreeCAD.DraftWorkingPlane.u,FreeCAD.DraftWorkingPlane.axis)
         a = math.radians(d)+a
-        v=DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
-        self.xValue.setText(displayExternal(v.x,self.DECIMALS,'Length'))
-        self.yValue.setText(displayExternal(v.y,self.DECIMALS,'Length'))
-        self.zValue.setText(displayExternal(v.z,self.DECIMALS,'Length'))
+        v = DraftVecUtils.rotate(v,a,FreeCAD.DraftWorkingPlane.axis)
+        self.angle = v
+        self.xValue.setText(displayExternal(v.x,None,'Length'))
+        self.yValue.setText(displayExternal(v.y,None,'Length'))
+        self.zValue.setText(displayExternal(v.z,None,'Length'))
+        if self.angleLock.isChecked():
+            FreeCADGui.Snapper.setAngle(self.angle)
         
-    def toggleAngle(self,bool):
+    def toggleAngle(self,b):
         self.alock = self.angleLock.isChecked()
-        FreeCADGui.Snapper.setAngle()
-            
-            
+        if b:
+            FreeCADGui.Snapper.setAngle(self.angle)
+        else:
+            FreeCADGui.Snapper.setAngle()
+            self.angle = None
+
 
 #---------------------------------------------------------------------------
 # TaskView operations
 #---------------------------------------------------------------------------
-	                
+
     def setWatchers(self):
         class DraftCreateWatcher:
             def __init__(self):
@@ -1795,7 +1941,126 @@ class DraftToolBar:
         else:
             self.draftWidget.setVisible(False)
             self.draftWidget.toggleViewAction().setVisible(False)
-                        
+            
+            
+class FacebinderTaskPanel:
+    '''A TaskPanel for the facebinder'''
+    def __init__(self):
+        
+        self.obj = None
+        self.form = QtGui.QWidget()
+        self.form.setObjectName("FacebinderTaskPanel")
+        self.grid = QtGui.QGridLayout(self.form)
+        self.grid.setObjectName("grid")
+        self.title = QtGui.QLabel(self.form)
+        self.grid.addWidget(self.title, 0, 0, 1, 2)
+
+        # tree
+        self.tree = QtGui.QTreeWidget(self.form)
+        self.grid.addWidget(self.tree, 1, 0, 1, 2)
+        self.tree.setColumnCount(2)
+        self.tree.setHeaderLabels(["Name","Subelement"])
+
+        # buttons
+        self.addButton = QtGui.QPushButton(self.form)
+        self.addButton.setObjectName("addButton")
+        self.addButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
+        self.grid.addWidget(self.addButton, 3, 0, 1, 1)
+
+        self.delButton = QtGui.QPushButton(self.form)
+        self.delButton.setObjectName("delButton")
+        self.delButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
+        self.grid.addWidget(self.delButton, 3, 1, 1, 1)
+
+        QtCore.QObject.connect(self.addButton, QtCore.SIGNAL("clicked()"), self.addElement)
+        QtCore.QObject.connect(self.delButton, QtCore.SIGNAL("clicked()"), self.removeElement)
+        self.update()
+
+    def isAllowedAlterSelection(self):
+        return True
+
+    def isAllowedAlterView(self):
+        return True
+
+    def getStandardButtons(self):
+        return int(QtGui.QDialogButtonBox.Ok)
+
+    def update(self):
+        'fills the treewidget'
+        self.tree.clear()
+        if self.obj:
+            for f in self.obj.Faces:
+                if isinstance(f[1],tuple):
+                    for subf in f[1]:
+                        item = QtGui.QTreeWidgetItem(self.tree)
+                        item.setText(0,f[0].Name)
+                        item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                        item.setText(1,subf)  
+                else:
+                    item = QtGui.QTreeWidgetItem(self.tree)
+                    item.setText(0,f[0].Name)
+                    item.setIcon(0,QtGui.QIcon(":/icons/Tree_Part.svg"))
+                    item.setText(1,f[1])
+        self.retranslateUi(self.form)
+
+    def addElement(self):
+        if self.obj:
+            for sel in FreeCADGui.Selection.getSelectionEx():
+                if sel.HasSubObjects:
+                    obj = sel.Object
+                    for elt in sel.SubElementNames:
+                        if "Face" in elt:
+                            flist = self.obj.Faces
+                            found = False
+                            for face in flist:
+                                if (face[0] == obj.Name):
+                                    if isinstance(face[1],tuple):
+                                        for subf in face[1]:
+                                            if subf == elt:
+                                                found = True
+                                    else:
+                                        if (face[1] == elt):
+                                            found = True
+                            if not found:
+                                flist.append((obj,elt))
+                                self.obj.Faces = flist
+                                FreeCAD.ActiveDocument.recompute()
+            self.update()
+
+    def removeElement(self):
+        if self.obj:
+            it = self.tree.currentItem()
+            if it:
+                obj = FreeCAD.ActiveDocument.getObject(str(it.text(0)))
+                elt = str(it.text(1))
+                flist = []
+                for face in self.obj.Faces:
+                    if (face[0].Name != obj.Name):
+                        flist.append(face)
+                    else:
+                        if isinstance(face[1],tuple):
+                            for subf in face[1]:
+                                if subf != elt:
+                                    flist.append((obj,subf))
+                        else:
+                            if (face[1] != elt):
+                                flist.append(face)
+                self.obj.Faces = flist
+                FreeCAD.ActiveDocument.recompute()
+            self.update()
+
+    def accept(self):
+        FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def retranslateUi(self, TaskPanel):
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("draft", "Faces", None))
+        self.delButton.setText(QtGui.QApplication.translate("draft", "Remove", None))
+        self.addButton.setText(QtGui.QApplication.translate("draft", "Add", None))
+        self.title.setText(QtGui.QApplication.translate("draft", "Facebinder elements", None))
+
+
 if not hasattr(FreeCADGui,"draftToolBar"):
     FreeCADGui.draftToolBar = DraftToolBar()
 #----End of Python Features Definitions----#

@@ -15,6 +15,7 @@
 #endif
 
 #include <Base/Console.h>
+#include <Base/PyObjectBase.h>
 #include <Base/Interpreter.h>
  
 #include "FeaturePage.h"
@@ -23,18 +24,17 @@
 #include "FeatureViewAnnotation.h"
 #include "FeatureViewSymbol.h"
 #include "FeatureProjection.h"
+#include "FeatureViewSpreadsheet.h"
 #include "FeatureClip.h"
 #include "PageGroup.h"
 
-extern struct PyMethodDef Drawing_methods[];
 
-PyDoc_STRVAR(module_drawing_doc,
-"This module is the drawing module.");
-
+namespace Drawing {
+extern PyObject* initModule();
+}
 
 /* Python entry */
-extern "C" {
-void DrawingExport initDrawing()
+PyMOD_INIT_FUNC(Drawing)
 {
     // load dependent module
     try {
@@ -43,9 +43,9 @@ void DrawingExport initDrawing()
     }
     catch(const Base::Exception& e) {
         PyErr_SetString(PyExc_ImportError, e.what());
-        return;
+        PyMOD_Return(0);
     }
-    Py_InitModule3("Drawing", Drawing_methods, module_drawing_doc);   /* mod name, table ptr */
+    PyObject* mod = Drawing::initModule();
     Base::Console().Log("Loading Drawing module... done\n");
 
 
@@ -63,6 +63,7 @@ void DrawingExport initDrawing()
     Drawing::FeatureViewAnnotation  ::init();
     Drawing::FeatureViewSymbol      ::init();
     Drawing::FeatureClip            ::init();
-}
+    Drawing::FeatureViewSpreadsheet ::init();
 
-} // extern "C"
+    PyMOD_Return(mod);
+}

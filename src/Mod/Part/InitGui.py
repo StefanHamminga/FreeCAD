@@ -1,4 +1,4 @@
-# Part gui init module  
+# Part gui init module
 # (c) 2003 Juergen Riegel
 #
 # Gathering all the information to start FreeCAD
@@ -33,47 +33,24 @@
 
 class PartWorkbench ( Workbench ):
     "Part workbench object"
-    Icon = """
-                /* XPM */
-                static char * part_xpm[] = {
-                "16 16 9 1",
-                " 	c None",
-                ".	c #000209",
-                "+	c #00061D",
-                "@	c #010A2F",
-                "#	c #001152",
-                "$	c #001772",
-                "%	c #00209F",
-                "&	c #0025B8",
-                "*	c #0032FF",
-                "      ........  ",
-                "   ..+$&%%$$#+..",
-                "....#%*****%..$.",
-                ".##@.....+..%*&.",
-                ".%*****&%#.***&.",
-                ".%*******%.***&.",
-                ".%*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***%.",
-                ".&*******%.***$.",
-                ".&*******%.**#. ",
-                ".@$%&****%.%..  ",
-                " ......@##..    ",
-                "        ...     "};
-        """
-    MenuText = "Part"
-    ToolTip = "Part workbench"
+    def __init__(self):
+        self.__class__.Icon = FreeCAD.getResourceDir() + "Mod/Part/Resources/icons/PartWorkbench.svg"
+        self.__class__.MenuText = "Part"
+        self.__class__.ToolTip = "Part workbench"
 
     def Initialize(self):
         # load the module
         import PartGui
-        import Part
+
+        import CompoundTools._CommandCompoundFilter
+
         try:
-            import JoinFeatures
-        except ImportError:
-            print "JoinFeatures module cannot be loaded"
+            bop = __import__("BOPTools")
+            bop.importAll()
+            bop.addCommands()
+            PartGui.BOPTools = bop
+        except Exception as err:
+            FreeCAD.Console.PrintError("Features from BOPTools package cannot be loaded. {err}\n".format(err= str(err)))        
 
     def GetClassName(self):
         return "PartGui::Workbench"

@@ -2,9 +2,29 @@
 <!DOCTYPE TS>
 <TS version="2.0" language="cs" sourcelanguage="en">
 <context>
+    <name>CmdPointsConvert</name>
+    <message>
+        <location filename="../../Command.cpp" line="+190"/>
+        <source>Points</source>
+        <translation>Body</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Convert to points...</source>
+        <translation>Převést na body...</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <location line="+1"/>
+        <location line="+1"/>
+        <source>Convert to points</source>
+        <translation>Převést na body</translation>
+    </message>
+</context>
+<context>
     <name>CmdPointsExport</name>
     <message>
-        <location filename="../../Command.cpp" line="+104"/>
+        <location line="-82"/>
         <source>Points</source>
         <translation>Body</translation>
     </message>
@@ -24,7 +44,7 @@
 <context>
     <name>CmdPointsImport</name>
     <message>
-        <location line="-47"/>
+        <location line="-53"/>
         <source>Points</source>
         <translation>Body</translation>
     </message>
@@ -44,7 +64,7 @@
 <context>
     <name>CmdPointsPolyCut</name>
     <message>
-        <location line="+122"/>
+        <location line="+211"/>
         <source>Points</source>
         <translation>Body</translation>
     </message>
@@ -64,7 +84,7 @@
 <context>
     <name>CmdPointsTransform</name>
     <message>
-        <location line="-39"/>
+        <location line="-129"/>
         <source>Points</source>
         <translation>Body</translation>
     </message>
@@ -229,10 +249,30 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Command.cpp" line="-84"/>
-        <location line="+43"/>
         <source>Ascii Points (*.asc);;All Files (*.*)</source>
-        <translation>Body ve formátu ASCII (*.asc);;Všechny soubory (*.*)</translation>
+        <translation type="obsolete">Body ve formátu ASCII (*.asc);;Všechny soubory (*.*)</translation>
+    </message>
+    <message>
+        <location filename="../../Command.cpp" line="-80"/>
+        <location line="+51"/>
+        <source>Ascii Points</source>
+        <translation>ASCII body</translation>
+    </message>
+    <message>
+        <location line="-51"/>
+        <location line="+51"/>
+        <source>All Files</source>
+        <translation>Všechny soubory</translation>
+    </message>
+    <message>
+        <location line="+74"/>
+        <source>Distance</source>
+        <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+        <location line="+1"/>
+        <source>Enter maximum distance:</source>
+        <translation>Zadejte maximální vzdálenost:</translation>
     </message>
 </context>
 <context>

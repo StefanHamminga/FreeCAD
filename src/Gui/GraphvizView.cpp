@@ -67,12 +67,33 @@ public:
     GraphvizWorker(QObject * parent = 0)
         : QThread(parent)
     {
+#if QT_VERSION < 0x050000
         proc.moveToThread(this);
+#endif
+    }
+
+    virtual ~GraphvizWorker()
+    {
+#if QT_VERSION >= 0x050000
+        proc.moveToThread(this);
+#endif
     }
 
     void setData(const QByteArray & data)
     {
         str = data;
+    }
+
+    void startThread() {
+#if QT_VERSION >= 0x050000
+        // This doesn't actually run a thread but calls the function
+        // directly in the main thread.
+        // This is needed because embedding a QProcess into a QThread
+        // causes some problems with Qt5.
+        run();
+#else
+        start();
+#endif
     }
 
     void run() {
@@ -165,9 +186,9 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
 #endif
     bool pathChanged = false;
 #ifdef FC_OS_WIN32
-    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+    QString exe = QString::fromLatin1("\"%1/dot\"").arg(path);
 #else
-    QString exe = QString::fromAscii("%1/dot").arg(path);
+    QString exe = QString::fromLatin1("%1/dot").arg(path);
 #endif
     proc->setEnvironment(QProcess::systemEnvironment());
     do {
@@ -190,9 +211,9 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
             }
             pathChanged = true;
 #ifdef FC_OS_WIN32
-            exe = QString::fromAscii("\"%1/dot\"").arg(path);
+            exe = QString::fromLatin1("\"%1/dot\"").arg(path);
 #else
-            exe = QString::fromAscii("%1/dot").arg(path);
+            exe = QString::fromLatin1("%1/dot").arg(path);
 #endif
         }
         else {
@@ -210,7 +231,7 @@ void GraphvizView::updateSvgItem(const App::Document &doc)
 
     // Update worker thread, and start it
     thread->setData(QByteArray(graphCode.c_str(), graphCode.size()));
-    thread->start();
+    thread->startThread();
 }
 
 void GraphvizView::svgFileRead(const QByteArray & data)
@@ -266,9 +287,9 @@ QByteArray GraphvizView::exportGraph(const QString& format)
 #endif
 
 #ifdef FC_OS_WIN32
-    QString exe = QString::fromAscii("\"%1/dot\"").arg(path);
+    QString exe = QString::fromLatin1("\"%1/dot\"").arg(path);
 #else
-    QString exe = QString::fromAscii("%1/dot").arg(path);
+    QString exe = QString::fromLatin1("%1/dot").arg(path);
 #endif
     proc.setEnvironment(QProcess::systemEnvironment());
     proc.start(exe, args);
@@ -284,7 +305,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     return proc.readAll();
 }
 
-bool GraphvizView::onMsg(const char* pMsg,const char** ppReturn)
+bool GraphvizView::onMsg(const char* pMsg,const char**)
 {
     if (strcmp("Save",pMsg) == 0 || strcmp("SaveAs",pMsg) == 0) {
         QList< QPair<QString, QString> > formatMap;

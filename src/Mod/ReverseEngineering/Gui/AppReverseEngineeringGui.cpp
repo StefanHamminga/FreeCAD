@@ -34,8 +34,6 @@
 #include <CXX/Extensions.hxx>
 #include <CXX/Objects.hxx>
 
-//#include "resources/qrc_ReverseEngineering.cpp"
-
 // use a different name to CreateCommand()
 void CreateReverseEngineeringCommands(void);
 
@@ -59,19 +57,24 @@ public:
 
 private:
 };
+
+PyObject* initModule()
+{
+    return (new Module)->module().ptr();
+}
+
 } // namespace ReverseEngineeringGui
 
 
 /* Python entry */
-extern "C" {
-void ReenGuiExport initReverseEngineeringGui()
+PyMOD_INIT_FUNC(ReverseEngineeringGui)
 {
     if (!Gui::Application::Instance) {
         PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        return;
+        PyMOD_Return(0);
     }
 
-    new ReverseEngineeringGui::Module();
+    PyObject* mod = ReverseEngineeringGui::initModule();
     Base::Console().Log("Loading GUI of ReverseEngineering module... done\n");
 
     // instantiating the commands
@@ -80,6 +83,5 @@ void ReenGuiExport initReverseEngineeringGui()
 
      // add resources and reloads the translators
     loadReverseEngineeringResource();
+    PyMOD_Return(mod);
 }
-
-} // extern "C" {

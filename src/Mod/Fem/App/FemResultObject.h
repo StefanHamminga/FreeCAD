@@ -46,17 +46,12 @@ public:
     /// Link to the corresponding  mesh
     App::PropertyLink Mesh;
     /// Stats of analysis
+    App::PropertyFloat Time;
+    /// User defined results
     App::PropertyFloatList Stats;
     /// Displacement vectors of analysis
-    App::PropertyVectorList DisplacementVectors;
-    /// Lengths of displacement vestors of analysis
-    App::PropertyFloatList DisplacementLengths;
-    /// Von Mises Stress values of analysis
-    App::PropertyFloatList StressValues;
-    /// Eigenmode number
-    App::PropertyInteger Eigenmode;
-    /// Eigenmode frequency
-    App::PropertyFloat EigenmodeFrequency;
+
+
 
     /// returns the type name of the ViewProvider
     virtual const char* getViewProviderName(void) const {
